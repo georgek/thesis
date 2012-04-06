@@ -543,25 +543,42 @@ are not equal.  $D_{\ADCO}$ is a metric \citep{bae-2010}.
 \section{Partional clustering}
 \label{sec:part-clust-algor}
 
-We now turn to the problem of finding meaningful partitions of a dataset.
-This problem is known as partitional clustering.
+The problem of finding meaningful partitions of a dataset is called
+partitional clustering.  In the following subjection we will discuss the
+motivation for clustering and just a few of its many applications.  Then we
+will discuss the problem itself which is broadly divided into two parts: first
+one must decide what a meaningful partition actually is, and for this many
+criteria have been suggested, and then one can attempt to find a good
+partition according to that criterion.
 
-Applications for partitional clustering appear in nearly all natural sciences
-and other fields such as computer science, engineering and market research.
-The applications generally fall into two main categories: data reduction and
-object classification.
+\subsection{Motivation}
+\label{sec:part-clus-motivation}
 
-Data reduction is often employed if a dataset is very large and one wishes to
-capture only the essence of the data.  The essence will then be easier to
-display or perform statistical analysis on, for example.  Object
-classification is used in areas such as machine learning where one wishes to
-give labels to newly observed instances based on some training data.
+Broadly speaking, the applications of partitional clustering fall into two
+categories: data reduction and object classification.
 
-The following subsections first look at criteria which are used for judging
-the suitability of a partition and then look at the complexity issues
-associated with finding optimal clusterings according to one of these
-criteria.  Finally we look at actual methods which are in use to perform
-partitional clustering.
+Data reduction may be desirable when a dataset is large and it is deemed that
+only an essence of the data is necessary for the statistical precision
+required.  If the data is to be displayed graphically to a user then an
+overwhelmingly large dataset may not be desirable.  One real-world application
+of data reduction in the latter category is the display of geographical data
+on an electronic map.  By applying clustering, nearby elements can be grouped
+to reduce clutter on the map.
+
+Object classification finds applications in many fields including the natural
+sciences, marketing and economics, computer science and engineering.  Given a
+dataset obtained by market research one may wish to find different classes of
+consumers in order to observe their habits and predict future behaviour.
+Document clustering is an important area concerned with clustering on datasets
+consisting of objects written in a natural language.  Search engines such as
+those found on the World Wide Web use clustering to suggest ``similar''
+documents to the one the user is currently interested in, amongst other things
+\citep[see][]{steinbach2000comparison}.
+
+\subsection{Complexity Issues}
+\label{sec:complexity-issues}
+
+
 
 \subsection{Criteria}
 \label{sec:criteria}
