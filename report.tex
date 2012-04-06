@@ -74,6 +74,7 @@
 \DeclareMathOperator{\dens}{dens}
 \DeclareMathOperator{\symdif}{\bigtriangleup}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\tr}{tr}
 
 \newcommand{\dset}{\mathcal{D}}
 \newcommand{\clus}{\mathcal{C}}
@@ -565,19 +566,29 @@ partitional clustering.
 \subsection{Criteria}
 \label{sec:criteria}
 
-Judging the suitability of a particular partition is often a highly subjective
-task but, nevertheless, many objective criteria have been devised for the
-purpose of clustering.  In general, a partition is considered to be good if
-the clusters are both homogeneous, meaning elements belonging to the same
-cluster are similar, and well-separated, meaning elements belonging to
-different clusters are dissimilar.  Given a criterion, the problem of
-clustering then becomes attempting to find the partition which minimises or
-maximises that criterion.
+Informally, a good partition of a dataset is one where the clusters are
+homogeneous---meaning objects belonging to the same cluster are similar---and
+well-separated---meaning objects belonging to different clusters are
+dissimilar.
 
-Let $\clus = \{C_1,C_2,\dotsc,C_k\}$ be a partition of dataset $\dset$ with a
-dissimilarity measure $d$.  The following criteria measure the homogeneity of
-a particular cluster, $C_i$.  The diameter is the maximum dissimilarity
-between two members of the cluster:
+The task of judging a particular cluster based on these informal standards is
+often a highly subjective one but, nevertheless, many objective criteria have
+been devised for the purposes of automatic clustering.  It is the job of a
+partitional clustering algorithm to find the globally optimal solution, which
+means either the minimum or maximum according to a particular criterion.
+
+We begin with a non-exhaustive list (from \citep{hansen1997mathprog}) of the
+most general of criteria---those which only require a matrix if
+dissimilarities between pairs of elements to compute them.  Let $\dset =
+\{x_1,x_2,\dotsc,x_n\}$ be a dataset, $\clus = \{C_1,C_2,\dotsc,C_k\}$ be a
+partition of $\dset$ and $d$ a dissimilarity measure on the elements of
+$\dset$.  For the following criteria we do not need to know the values of the
+elements of $\dset$, or how $d$ is computed, we only need the $n \times n$
+dissimilarity matrix constructed by $d$.
+
+The following criteria measure the homogeneity of a particular cluster,
+$C_i$.  The diameter is the maximum dissimilarity between two members of the
+cluster:
 \begin{equation*}
   \max_{x,y \in C_i} d(x,y).
 \end{equation*}
@@ -586,10 +597,10 @@ and another member of the cluster:
 \begin{equation*}
   \min_{x \in C_i} \max_{y \in C_i} d(x,y).
 \end{equation*}
-The star is the minimum of the sums of dissimilarities between each member and
-every other member of the cluster:
+The star is the minimum of the sums of dissimilarities between each member
+and every other member of the cluster:
 \begin{equation*}
-  \min_{c \in C_i} \sum_{x \in C_i} d(c,x).
+  \min_{c \in C_i} \sum_{x \in C_i} d(x,c).
 \end{equation*}
 The clique is the sum of dissimilarities between each pair of members of the
 cluster:
@@ -597,9 +608,9 @@ cluster:
   \sum_{x,y \in C_i} d(x,y).
 \end{equation*}
 
-The following criteria measure the separation of a cluster, $C_i$.  The split
-is the minimum dissimilarity between a member of the cluster and an element
-outside of the cluster:
+The following criteria measure the separation of a cluster, $C_i$, from every
+other cluster.  The split is the maximum dissimilarity between a member of the
+cluster and an element outside of the cluster:
 \begin{equation*}
   \min_{x \in C_i, y \in \dset \setminus C_i} d(x,y).
 \end{equation*}
@@ -609,42 +620,162 @@ all elements outside of the cluster:
   \sum_{x \in C_i} \sum_{y \in \dset \setminus C_i} d(x,y).
 \end{equation*}
 
-To form criteria for partitions we simply sum one of these over all clusters
-in the partition and we have criteria called sum-of-diameters, sum-of-radii,
-sum-of-stars and so on.
+Criteria for whole partitions could then be simply the sum over all partitions
+of one of these criteria.  We call them sum-of-diameters, sum-of-radii,
+sum-of-stars and so on.  Alternatively one could simply take the maximum or
+minimum value, as appropriate, over the clusters which we would call
+max-diameter, max-radius, min-cut and so on.  Clearly one would wish to
+minimise the criteria for homogeneity and maximise those for separation.
 
-If our dataset is actually a subset of some larger metric space, for example,
-$p$-dimensional Euclidean space, then we can generalise sum-of-stars by
-allowing the centre element to be outside of the dataset.  Let $M$ be a metric
-space, $d$ a metric and $\dset \subseteq M$.  We then have the criteria
+Some criteria for homogeneity are equivalent to criteria for separation.  Most
+notably, minimising sum-of-cliques is equivalent to maximising sum-of-cuts.
+Such a criterion is therefore a criterion for both homogeneity and separation.
+
+If the dataset is actually embedded in $m$-dimensional Euclidean space then
+the following criteria based on the scatter or dispersion matrix of
+\citet{wilks60} are possible.  The total scatter matrix for $\dset$ is a $m
+\times m$ matrix defined
+as:
 \begin{equation*}
-  \sum_{x \in C_i} d(x,c_i),
+  \mathbf{T} = \sum_{i=1}^{k} (x_i - \bar{x})(x_i - \bar{x})^{\mathrm{T}}
 \end{equation*}
-where
+where $\bar{x}$ is the mean value of $\dset$.  Two further matrices are
+the within-cluster scatter matrix, $\mathbf{W} = \sum_{i=1}^{k} \mathbf{W}_i$,
+where $\mathbf{W}_i$ is the scatter matrix for cluster $C_i$, and between
+cluster scatter matrix
 \begin{equation*}
-  c_i = \min_{c \in M} \sum_{x \in C_i} d(x,c).
+  \mathbf{B} =
+  \sum_{i=1}^{k} |C_i| (c_i - \bar{x}) (c_i - \bar{x})^{\mathrm{T}}
 \end{equation*}
-The element $c_i$ is called the centroid of $C_i$.  If the dissimilarity
-measure $d$ is actually the Euclidean distance squared, then this criteria is
-known as sum-of-squares.  However, as we will see, this name is ambiguous, so
-we refer to it as centroid-distance.
+where $c_i$ is the mean of cluster $C_i$.  These matrices are related by the
+equality
+\begin{equation*}
+  \mathbf{T} = \mathbf{W} + \mathbf{B}.
+\end{equation*}
 
-When $d$ is the Euclidean distance squared, centroid-distance is also
-equivalent to a criterion for separation.  This equivalence will be discussed
-further in chapter~\ref{cha:sum-squar-clust}.
+One possible criterion is the minimisation of the trace of $\mathbf{W}$.  This
+is equivalent to minimising the trace of $\mathbf{B}$ since
+\begin{equation*}
+  \tr(\mathbf{T}) = \tr(\mathbf{W}) + \tr(\mathbf{B})
+\end{equation*}
+and $\mathbf{T}$ is a constant.  This criterion is actually equivalent to
+minimising the sum over all clusters of the sum of Euclidean distances squared
+between each member of the cluster and its centroid:
+\begin{equation}
+  \label{eq:tr(W)}
+  \tr(\mathbf{W}) = \sum_{i=1}^{k} \sum_{x \in C_i} d^2(x,c_i),
+\end{equation}
+where $d$ is the Euclidean distance.  This can be seen easily by examining the
+main diagonal of each $\mathbf{W}_i$:
+\begin{multline*}
+  \mathbf{W}_i = \\
+  \sum_{x \in C_i}
+  \begin{bmatrix}
+    (x_1-c_{i1})^2 & (x_1-c_{i1})(x_2-c_{i2}) & \cdots &
+    (x_1-c_{i1})(x_m-c_{im}) \\
+    (x_2-c_{i2})(x_1-c_{i1}) & (x_2-c_{i2})^2 & \cdots &
+    (x_2-c_{i2})(x_m-c_{im}) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    (x_m-c_{im})(x_1-c_{i1}) & (x_m-c_{im})(x_2-c_{i2}) & \cdots &
+    (x_m-c_{im})^2
+  \end{bmatrix}
+\end{multline*}
+where $x_j$, $c_{ij}$ mean the $j$th component of $x,c_{i}$ respectively.
 
-Some other criteria for homogeneity are also equivalent to criteria for
-separation.  Most notably, minimising sum-of-cliques is equivalent to
-maximising sum-of-cuts.  Unlike centroid-distance, this equivalence is
-independent of the choice of dissimilarity measure.
+Similarly, maximising $\tr(\mathbf{B})$ is equivalent to maximising the sum of
+Euclidean distances squares between each cluster centroid and $\bar{x}$,
+multiplied by the cluster's cardinality:
+\begin{equation}
+  \label{eq:tr(B)}
+  \tr(\mathbf{B}) = \sum_{i=1}^{k} |C_i| d^2(c_i,x).
+\end{equation}
+For this reason, this criterion is often called ``sum-of-squares'', although
+this name is ambiguous since any criterion utilising sums of distances squared
+could have this name.  We therefore call it centroid-distance, due to
+measuring the distances between elements and centroids, and in general call
+any criterion using sums of distances squared a sum-of-squares criterion.
+Note that when centroid-distance is calculated using
+equation~\eqref{eq:tr(W)}, we can use any metric for $d$.  If it is calculated
+using the scatter matrix then it is implicitly using the Euclidean metric.
 
-So far, all criteria apart from centroid-distance are defined using a
-dissimilarity measure.  Since we are concerned with metric spaces, the
-dissimilarity measure could simply be the metric, and could also be the metric
-squared.  In general we call criteria using the metric squared a
-sum-of-squares criterion.  Chapter~\ref{cha:sum-squar-clust} is dedicated to
-discussing and comparing two such sum-of-squares criteria: centroid-distance,
-and all-squares, which is sum-of-cliques with the metric squared.
+The relationship between equations~\eqref{eq:tr(W)} and \eqref{eq:tr(B)} can
+also be shown by the Huygens-Steiner, or parallel-axis, theorem, which states
+that
+\begin{equation}
+  \label{eq:huygens}
+  \sum_{x \in C_i} d^2(x,s) = d^2(c_i,s) \dot |C_i| + \sum_{x \in C_i} d^2(x,c_i)
+\end{equation}
+where $s$ and the members of $C_i$ are in Euclidean space and $d$ is the
+Euclidean distance.
+
+We can also use this theorem to show a relationship between centroid-distance
+and sum-of-cliques.  Beginning with equation~\eqref{eq:huygens} we assign some
+$y \in C_i$ to $s$ and sum over all $y \in C_i$:
+\begin{equation*}
+  \sum_{x,y \in C_i} d^2(x,y) = \sum_{y \in C_i} d^2(c_i,y) \dot |C_i|
+                           + \sum_{x \in C_i} d^2(x,c_i) \dot |C_i|
+\end{equation*}
+and, since $d$ is symmetric,
+\begin{equation}
+  \label{eq:cd-as-equivalence}
+  \frac{\displaystyle \sum_{x,y \in C_i} d^2(x,y)}
+       {|C_i|}
+  = 2 \sum_{x \in C_i} d^2(x,c_i).
+\end{equation}
+So when we use Euclidean distance squared as dissimilarity measure,
+centroid-distance for each cluster is equivalent to sum-of-cliques over twice
+the cardinality of the cluster.  Since $d$ is symmetric this is the same as
+only counting pairwise distances once each.
+
+As mentioned, we generally call any criterion involving a metric squared a
+sum-of-squares criterion.  We call the numerator of the left-hand side of
+equation~\eqref{eq:cd-as-equivalence} all-squares, since we sum over all pairs
+of distances.  Since sum-of-cliques can generally be used with any
+dissimilarity measure we generally count each pair of elements twice, once in
+each direction, but for a metric this is obviously redundant.
+
+Two other criteria based on the scatter matrix, which were suggested in
+\citet{friedman1967criteria}, are the minimisation of the determinant of
+$\mathbf{W}$, sometimes called generalised variance, and the maximisation of
+the trace of $\mathbf{BW}^{-1}$.  These criteria tend to produce clusters of
+similar shape and size as centroid-distance with the Euclidean metric
+\citep{marriott1982optimization}.
+
+A further four criteria based on the scatter matrix are discussed in
+\citep{marriott1982optimization}, these are
+$\prod_{i=1}^{k}|\mathbf{W}_i|^{|C_i|}$, which is a generalisation of
+$|\mathbf{W}|$ that allows cluster of different shapes,
+$\sum_{i=1}^{k}|\mathbf{W}_i|^{\frac{1}{m}}$, introduced in
+\citep{maronna1974}, $n \log{|\mathbf{W}|} - 2\sum_{i=1}^{k} |C_i|
+\log{|C_i|}$ and $\sum_{i=1}^{k} (|C_i| \log{|\mathbf{W}_i|} -
+2|C_i|\log{|C_i|})$.
+
+All of the criteria based on the scatter matrix tend to produce ellipsoidal
+clusters; clusters with other shapes will either not be found or be divided
+into small clusters \citep{marriott1982optimization}.  Most of the criteria
+also tend to produce clusters which are linearly-separable---meaning they are
+separated by hyperplanes.
+
+Some criteria are based on similarities instead of dissimilarities.  One such
+example is the average entity stability of \citep{Rubin67optimal}.  This
+criterion considers an object to be stable if it is more attracted to the rest
+of the cluster it is currently in than to any other cluster.  Attraction to a
+cluster is the average similarity between the object and the members of that
+cluster.  The criterion is to maximise the average entity stability over the
+whole dataset.
+
+Criteria based on information theory are also possible.
+\citet{wallace1968information} contains a clustering program called SNOB which
+attempts to optimise one such information measure.
+
+We finish our discussion on criteria with two further definitions.  The
+partition which is the global minimum or maximum solution, whichever is
+appropriate, for a particular criterion is called the optimal partition, for
+example, we will later refer to the centroid-distance optimal partition,
+all-squares optimal partition and so on.  The problem of finding an optimal
+partition according to any criterion we will refer to simply as clustering,
+and when we speak of a particular criterion we will say centroid-distance
+clustering, all-squares clustering and so on.
 
 \subsection{Methods}
 \label{sec:methods}
