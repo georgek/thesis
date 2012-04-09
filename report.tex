@@ -575,11 +575,6 @@ those found on the World Wide Web use clustering to suggest ``similar''
 documents to the one the user is currently interested in, amongst other things
 \citep{steinbach2000comparison}.
 
-\subsection{Complexity Issues}
-\label{sec:complexity-issues}
-
-
-
 \subsection{Criteria}
 \label{sec:criteria}
 
@@ -647,6 +642,10 @@ minimise the criteria for homogeneity and maximise those for separation.
 Some criteria for homogeneity are equivalent to criteria for separation.  Most
 notably, minimising sum-of-cliques is equivalent to maximising sum-of-cuts.
 Such a criterion is therefore a criterion for both homogeneity and separation.
+For those criteria which only measure one or the other, like min-split and
+max-diameter, one could consider a criterion for homogeneity and a criterion
+for separation simultaneously.  This is called a bicriterion
+\citep{delattre1980bicriterion}.
 
 If the dataset is actually embedded in $m$-dimensional Euclidean space then
 the following criteria based on the scatter or dispersion matrix of
@@ -744,6 +743,10 @@ centroid-distance for each cluster is equivalent to sum-of-cliques over twice
 the cardinality of the cluster.  Since $d$ is symmetric this is the same as
 only counting pairwise distances once each.
 
+It should be noted that centroid-distance is, in fact, simply a more general
+version of sum-of-stars where the centre need not be a member of the dataset
+but is a member of the underlying metric space.
+
 As mentioned, we generally call any criterion involving a metric squared a
 sum-of-squares criterion.  We call the numerator of the left-hand side of
 equation~\eqref{eq:cd-as-equivalence} all-squares, since we sum over all pairs
@@ -793,6 +796,11 @@ all-squares optimal partition and so on.  The problem of finding an optimal
 partition according to any criterion we will refer to simply as clustering,
 and when we speak of a particular criterion we will say centroid-distance
 clustering, all-squares clustering and so on.
+
+\subsection{Computational complexity}
+\label{sec:complexity-issues}
+
+
 
 \subsection{Methods}
 \label{sec:methods}
