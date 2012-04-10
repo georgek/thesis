@@ -598,53 +598,59 @@ $\dset$.  For the following criteria we do not need to know the values of the
 elements of $\dset$, or how $d$ is computed, we only need the $n \times n$
 dissimilarity matrix constructed by $d$.
 
-The following criteria measure the homogeneity of a particular cluster,
-$C_i$.  The diameter is the maximum dissimilarity between two members of the
+The following criteria measure the homogeneity of a particular cluster, $C_i$.
+The \textit{diameter} is the maximum dissimilarity between two members of the
 cluster:
 \begin{equation*}
   \max_{x,y \in C_i} d(x,y).
 \end{equation*}
-The radius is the minimum of the maximum dissimilarities between each member
-and another member of the cluster:
+The \textit{radius} is the minimum of the maximum dissimilarities between each
+member and another member of the cluster:
 \begin{equation*}
   \min_{x \in C_i} \max_{y \in C_i} d(x,y).
 \end{equation*}
-The star is the minimum of the sums of dissimilarities between each member
-and every other member of the cluster:
+The \textit{star} is the minimum of the sums of dissimilarities between each
+member and every other member of the cluster:
 \begin{equation*}
   \min_{c \in C_i} \sum_{x \in C_i} d(x,c).
 \end{equation*}
-The clique is the sum of dissimilarities between each pair of members of the
-cluster:
+The \textit{clique} is the sum of dissimilarities between each pair of members
+of the cluster:
 \begin{equation*}
   \sum_{x,y \in C_i} d(x,y).
 \end{equation*}
 
 The following criteria measure the separation of a cluster, $C_i$, from every
-other cluster.  The split is the maximum dissimilarity between a member of the
-cluster and an element outside of the cluster:
+other cluster.  The \textit{split} is the maximum dissimilarity between a
+member of the cluster and an element outside of the cluster:
 \begin{equation*}
   \min_{x \in C_i, y \in \dset \setminus C_i} d(x,y).
 \end{equation*}
-The cut is the sum of dissimilarities between all members of the cluster and
-all elements outside of the cluster:
+The \textit{cut} is the sum of dissimilarities between all members of the
+cluster and all elements outside of the cluster:
 \begin{equation*}
   \sum_{x \in C_i} \sum_{y \in \dset \setminus C_i} d(x,y).
 \end{equation*}
 
 Criteria for whole partitions could then be simply the sum over all partitions
-of one of these criteria.  We call them sum-of-diameters, sum-of-radii,
-sum-of-stars and so on.  Alternatively one could simply take the maximum or
-minimum value, as appropriate, over the clusters which we would call
-max-diameter, max-radius, min-cut and so on.  Clearly one would wish to
-minimise the criteria for homogeneity and maximise those for separation.
+of one of these criteria.  We call them \textit{sum-of-diameters},
+\textit{sum-of-radii}, \textit{sum-of-stars} and so on.  Alternatively one
+could simply take the maximum or minimum value, as appropriate, over the
+clusters which we would call \textit{max-diameter}, \textit{max-radius},
+\textit{min-cut} and so on.  Clearly one would wish to minimise the criteria
+for homogeneity and maximise those for separation.
 
 Some criteria for homogeneity are equivalent to criteria for separation.  Most
 notably, minimising sum-of-cliques is equivalent to maximising sum-of-cuts.
 Such a criterion is therefore a criterion for both homogeneity and separation.
-For those criteria which only measure one or the other, like min-split and
-max-diameter, one could consider a criterion for homogeneity and a criterion
-for separation simultaneously.  This is called a bicriterion
+
+Those criteria which only measure one or the other, like min-split and
+max-diameter, are often conflicting.  For example, maximising min-split
+produces in clusters with poor homogeneity, called the chaining effect, and
+minimising max-diameter results in clusters with poor separation, called the
+dissection effect.  Such criteria are therefore not so useful on their own,
+but one could consider a criterion for homogeneity and a criterion for
+separation simultaneously.  This is called a bicriterion
 \citep{delattre1980bicriterion}.
 
 If the dataset is actually embedded in $m$-dimensional Euclidean space then
@@ -707,7 +713,7 @@ multiplied by the cluster's cardinality:
 \end{equation}
 For this reason, this criterion is often called ``sum-of-squares'', although
 this name is ambiguous since any criterion utilising sums of distances squared
-could have this name.  We therefore call it centroid-distance, due to
+could have this name.  We therefore call it \textit{centroid-distance}, due to
 measuring the distances between elements and centroids, and in general call
 any criterion using sums of distances squared a sum-of-squares criterion.
 Note that when centroid-distance is calculated using
@@ -749,8 +755,8 @@ but is a member of the underlying metric space.
 
 As mentioned, we generally call any criterion involving a metric squared a
 sum-of-squares criterion.  We call the numerator of the left-hand side of
-equation~\eqref{eq:cd-as-equivalence} all-squares, since we sum over all pairs
-of distances.  Since sum-of-cliques can generally be used with any
+equation~\eqref{eq:cd-as-equivalence} \textit{all-squares}, since we sum over
+all pairs of distances.  Since sum-of-cliques can generally be used with any
 dissimilarity measure we generally count each pair of elements twice, once in
 each direction, but for a metric this is obviously redundant.
 
@@ -800,7 +806,83 @@ clustering, all-squares clustering and so on.
 \subsection{Computational complexity}
 \label{sec:complexity-issues}
 
+Given the huge space of possible partitions of a dataset, partitional
+clustering is intuitively a hard problem.  In fact, it has been shown that
+many partitional clustering problems are NP-complete.
 
+Max-diameter clustering was originally shown to be NP-complete by
+\citet{brucker1978complexity}.  The problem remains NP-complete even for $k=3$
+and when all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.  In fact
+this is directly deducible from the earlier results of \citet{sahni1976p}.
+The problem is, however, solvable in polynomial time for $k=2$.
+
+A number of partitional clustering problems were shown to be in NP-complete by
+\citet{brucker1978complexity}.  Among these was max-diameter clustering, a
+result which is directly deducible from the earlier results of
+\citet{sahni1976p}.  Max-diameter clustering remains NP-complete for $k=3$ and
+when all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.  Other
+problems shown to be NP-complete are sum-of-diameters and sum-of-cliques.
+
+It was shown in \citet{gonzalez1985clustering} that max-diameter clustering is
+NP-complete when the dataset is in 2-dimensional Euclidean space and the
+Euclidean metric is used.  It is also shown that for a general dissimilarity
+function, even finding an approximate solution to within some known degree of
+the optimal is NP-complete.
+
+For a dataset in 1-dimensional Euclidean space the problem is solvable in
+polynomial time.  Further, whenever the dissimilarity measure satisfies the
+triangle inequality it possible to find an approximate solution efficiently.
+\citet{brucker1978complexity} provides an algorithm for finding solutions with
+a max-diameter within two times the max-diameter of the optimal solution.
+
+\citet{bern1996approximation} show that, under the Euclidean metric, it is
+NP-complete to find approximate solutions with a max-diameter within 1.969
+times the max-diameter of the optimal, and with a max-radius within 1.822
+times the max-radius of the optimal.
+
+Another result of \citet{brucker1978complexity} is that sum-of-diameters
+clustering is NP-complete for $k \geq 3$.  In \citet{hansen87sumofdiameters}
+it is shown that the problem when $k=2$ is solvable in $O(n^2 \log n)$ time.
+It is also shown that minimising any function of the diameters can be done in
+$O(n^5)$ time when $k=2$.
+
+In \citet{garey82quant} it is shown that the quantization problem is
+NP-complete for $k \geq 2$.  This problem is stated as follows:
+
+\begin{quote}
+  A source produces one sample of a random variable $X$ with equiprobable
+  values in $\{1,2,\dotsc,n\}$.  The encoder (quantizer) maps $X$ into a
+  variable $Y$ with values in $\{1,2,\dotsc,k\}$. The decoder maps $Y$ into a
+  decision variable $Z$ with values in $\{1,2,\dotsc,m\}$. If $X = i$ and $Z =
+  j$ the resulting distortion is $d_{ij}$.  All entries in the $n \times m$
+  matrix $[d_{ij}]$ are zeros or ones. The goal is to find an encoder
+  function, $f \colon X \to Y$, and a decoder function, $g \colon Y \to Z$,
+  such that the average distortion
+  \begin{equation*}
+    \frac{1}{n} \sum_{i=1}^{n} d_{ig(f(i))}
+  \end{equation*}
+  is as small as possible.
+\end{quote}
+
+It it easy to see that this problem is equivalent to a specific case of
+sum-of-stars clustering where all dissimilarities are in $\{0,1\}$.
+
+The above complexity results, especially the last one for sum-of-stars, has
+led many authors to believe that centroid-distance clustering in Euclidean
+space is also NP-complete.  In fact this was proved only relatively recently.
+It is in fact NP-complete even when $k=2$ \citep{aloise09exact} and for
+general $k$ in 2-dimensional Euclidean space \citep{mahajan09}.  If both $k$
+and $s$, the number of dimensions, are fixed, then the problem is exactly
+solvable in $O(n^{sk+1} \log n)$ time \citep{inaba94weightedvoronoi}.
+
+Not all criteria are hard to optimise.  Min-split is one criterion for which
+optimal clusterings can be found efficiently.  This can be done using the
+single-link hierarchical clustering algorithm of
+\citet{johnson67hierarchical}.  The runtime of this algorithm is $O(n^2)$
+\citep{delattre1980bicriterion}.  However, this criterion does suffer from the
+previously mentioned chaining effect and for this reason it is often paired
+with a criterion for homogeneity in a bicriterion.  It is unlikely that any
+criteria exist which produce good solutions and can be optimised efficiently.
 
 \subsection{Methods}
 \label{sec:methods}
