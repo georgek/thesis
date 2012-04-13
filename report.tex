@@ -74,6 +74,7 @@
 \DeclareMathOperator{\dens}{dens}
 \DeclareMathOperator{\symdif}{\bigtriangleup}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\tr}{tr}
 
 \newcommand{\dset}{\mathcal{D}}
@@ -91,6 +92,10 @@
 {\par\addvspace{\topsep}}
 \newcommand{\instance}[1]{\textsc{Instance:} #1\\}
 \newcommand{\question}[1]{\textsc{Question:} #1}
+
+% algorithmic stuff
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
 
 \title{\reporttitle}
 \author{\reportauthor}
@@ -621,7 +626,7 @@ of the cluster:
 \end{equation*}
 
 The following criteria measure the separation of a cluster, $C_i$, from every
-other cluster.  The \textit{split} is the maximum dissimilarity between a
+other cluster.  The \textit{split} is the minimum dissimilarity between a
 member of the cluster and an element outside of the cluster:
 \begin{equation*}
   \min_{x \in C_i, y \in \dset \setminus C_i} d(x,y).
@@ -887,6 +892,91 @@ criteria exist which produce good solutions and can be optimised efficiently.
 \subsection{Methods}
 \label{sec:methods}
 
+\begin{algorithm}
+  \caption{Kennard-Stone initial centres algorithm.}
+  \label{alg:kennard-stone}
+
+  \begin{algorithmic}
+    \Require Number of centres desired, $k \geq 2$, and a dataset, $\dset =
+             \{x_1,x_2,\dotsc,x_n\}$ with $n \geq k$, with distance function
+             $d \colon \dset \times \dset \to \mathbb{R}^+$.
+    \Ensure Centres $\{c_1,c_2,\dotsc,c_k\} \subseteq \dset$.
+
+    \State $\displaystyle (c_1,c_2) \gets
+            \argmax_{(c,c') \in \dset \times \dset} d(c,c')$
+    \State $S \gets \{c_1,c_2\}$
+    \State $m \gets 2$
+
+    \While{$m < k$}
+       \State $\displaystyle c_{m+1} \gets
+               \argmax_{c \in \dset \setminus C}
+               \min_{\raisebox{-.2em}{$\scriptstyle c' \in C$}} d(c,c')$
+       \State $S \gets S \cup \{c_{m+1}\}$
+       \State $m \gets m+1$
+    \EndWhile
+
+    \State \Return $S$.
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Yuan-Meng-Zhang-Dong initial centres algorithm.}
+  \label{alg:yuan-meng}
+
+  \begin{algorithmic}
+    \Require Number of centres desired, $k > 0$, $0 < \alpha \leq 1$, and a
+             dataset $\dset = \{x_1,x_2,\dotsc,c_k\}$, with $n \geq k$,
+             embedded in a metric space $(M,d)$.
+    \Ensure Centres $\{c_1,c_2,\dotsc,c_k\} \subseteq \dset$.
+
+    \State $m \gets 1$
+    \While{$m<k$}
+       \State $\displaystyle (x_i,x_j) \gets
+               \argmin_{(x,x') \in \dset \times \dset} d(x,x')$
+       \State $C_m \gets \{x_i,x_j\}$
+       \State $\dset \gets \dset \setminus \{x_i,x_j\}$
+       \While{$\displaystyle |C_m| < \alpha \cdot \frac{n}{k}$}
+          \State $\displaystyle x_i \gets
+                  \argmin_{x \in \dset} \min_{x' \in C_m} d(x,x')$
+          \State $C_m \gets C_m \cup \{x_i\}$
+          \State $\dset \gets \dset \setminus \{x_i\}$
+       \EndWhile
+    \EndWhile
+
+    \ForAll{$1 \leq i \leq k$}
+       \State $\displaystyle c_i \gets
+               \argmin_{c \in M} \sum_{x \in C_i} d^2(x,c)$
+    \EndFor
+
+    \State \Return $\{c_1,c_2,\dotsc,c_k\}$.
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{$k$-means++.}
+  \label{alg:kmeans++}
+
+  \begin{algorithmic}
+    \Require Number of centres desired, $k > 0$, dataset $\dset =
+             \{x_1,x_2,\dotsc,x_n\}$, with $n \geq k$, and distance function
+             $d \colon \dset \times \dset \to \mathbb{R}^+$.
+    \Ensure Centres $\{c_1,c_2,\dotsc,\c_k\}$.
+
+    \State $S \gets \{\text{element chosen at random from $\dset$}\}$
+    \State $m \gets 2$
+    \While{$m < k$}
+       \State $\displaystyle S \gets S \cup
+               \left\{\text{an element $x' \in \dset$ chosen with probability
+                            $\frac{\displaystyle \min_{c \in S} d^2(x',c)}
+                             {\displaystyle
+                              \sum_{x \in \dset} \min_{c \in S} d^2(x,c)}$
+                            }\right\}$
+    \EndWhile
+
+    \State \Return $S$.
+  \end{algorithmic}
+\end{algorithm}
+
 Finding optimal clusterings according to any criteria is intuitively a hard
 problem.  The problem of finding a centroid-distance optimal clustering was
 assumed to be NP-complete for decades, although this was proved only
@@ -901,6 +991,8 @@ the clustering problem, a vast amount of literature has been generated on the
 subject and a large number of different algorithms have been devised.  The
 vast majority of clustering algorithms use heuristics with only a small
 handful producing exact solutions.
+
+
 
 \begin{algorithm}
   \caption{H-means, Lloyd's algorithm.}
@@ -962,7 +1054,7 @@ converge on a solution, even in the Euclidean plane
 \citep{vattani2009exponential}.
 
 \begin{algorithm}
-  \caption{$k$-means algorithm}
+  \caption{$k$-means.}
   \label{alg:k-means}
 
   \begin{algorithmic}
