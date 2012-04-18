@@ -846,10 +846,16 @@ times the max-diameter of the optimal, and with a max-radius within 1.822
 times the max-radius of the optimal.
 
 Another result of \citet{brucker1978complexity} is that sum-of-diameters
-clustering is NP-complete for $k \geq 3$.  In \citet{hansen87sumofdiameters}
-it is shown that the problem when $k=2$ is solvable in $O(n^2 \log n)$ time.
-It is also shown that minimising any function of the diameters can be done in
-$O(n^5)$ time when $k=2$.
+clustering is NP-complete for $k \geq 3$.  \citet{doddi2000approximation} show
+that approximate solutions with a sum-of-diameters within two times the
+optimal can be found efficiently, but only when the dissimilarity satisfies
+the triangle inequality.  If the triangle inequality is not satisfied then it
+shown that, if $P \neq NP$, no efficient approximation algorithm is possible,
+even for $k=3$.
+
+In \citet{hansen87sumofdiameters} it is shown that the problem when $k=2$ is
+solvable in $O(n^2 \log n)$ time.  It is also shown that minimising any
+function of the diameters can be done in $O(n^5)$ time when $k=2$.
 
 In \citet{garey82quant} it is shown that the quantization problem is
 NP-complete for $k \geq 2$.  This problem is stated as follows:
