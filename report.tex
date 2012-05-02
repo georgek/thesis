@@ -81,6 +81,9 @@
 \newcommand{\clus}{\mathcal{C}}
 \newcommand{\NP}{\text{NP}}
 
+% works nicely for fraction indices
+\newcommand{\prettyfrac}[2]{^#1\!/\!_#2}
+
 % theorems
 \newtheorem{thm}{Theorem}
 \newtheorem{lem}{Lemma}
@@ -121,57 +124,335 @@
 \section{Datasets and metric spaces}
 \label{sec:datas-metr-spac}
 
-Let $M$ be a set and $d \colon M \times M \to \mathcal{R}$ a function where,
-for all $x,y \in M$, the following conditions hold
-\begin{enumerate}
-\item $d(x,y) \geq 0$,
-\item $d(x,y) = d(y,x)$,
-\item
-  \begin{enumerate}
-  \item $d(x,x) = 0$.
-  \end{enumerate}
-\end{enumerate}
-Such a function is called a distance and can be used to measure the similarity
-between elements of $M$: closer elements are more similar and distant elements
-less similar.  If we add two more conditions, namely, for all $x,y,z \in M$,
-\begin{enumerate}[start=3]
-\item
-  \begin{enumerate}[start=2]
-  \item $d(x,y) = 0$ only if $x=y$,
-  \end{enumerate}
+A dataset, in the most general terms, is simply a collection of $n$ objects.
+Often these objects are $m$-dimensional vectors with each object representing
+some observation made during an experiment.  in general, though, we consider
+the objects to be of an abstract type about which we know nothing.  For now we
+will consider the collection to be a set, but later we will look at some
+generalisations.
 
-\item $d(x,y) + d(y,x) \geq d(x,z)$,
-\end{enumerate}
-then $d$ is also a \textit{metric} and the ordered pair $(M,d)$ is called a
-\textit{metric space}.
+Let $\dset$ be a dataset and $x,y,z \in \dset$ be objects in the dataset.  If
+we wish to learn something about the dataset, one of the first questions we
+may ask is, how similar are the objects $x,y$ and $z$?  For this purpose we
+have a function $d \colon \dset \times \dset \to \mathbb{R}^+$ where
+$d(x,y)>d(x,z)$ means ``$x$ and $y$ are more similar than $x$ and $z$''.  Such
+a function is called a \textit{dissimilarity}.
 
-A metric is the most intuitive type of dissimilarity measure for human use.
-In a metric space, for example, if we know that some object $a$ is distant
-from some object $b$, and we know that another object $c$ is close to $b$,
-then it is natural for us to make the deduction that $c$ is also distant from
-$a$.  This deduction would be incorrect in a general distance space.
+Some dissimilarities are more useful than others.  One would generally expect
+such a function to be symmetric, meaning $d(x,y)=d(y,x)$ for all $x,y \in
+\dset$.  One would also expect that no two distinct elements can be more
+similar than identical elements, so $d(x,x)=0$ for all $x \in \dset$.  A
+dissimilarity which satisfies these two properties is called a
+\textit{distance}.  When we use a distance, elements are usually said to be
+close or distant, instead of similar or dissimilar.
 
-A dataset is simply a collection of data.  These data usually arise as the
-result of an experiment, for example the classic iris dataset arose from
-measuring parts of certain flowers.  One of the first things one might wish to
-do with such a dataset is compare its elements.
+Given a distance, one may also expect that distinct elements are always closer
+than identical elements, so $d(x,y)=0$ if \textit{and only if} $x=y$, for all
+$x,y \in \dset$.  This is called the identity of indiscernibles.  Further, we
+may expect that distances satisfy the triangle inequality, that is
+$d(x,y)+d(y,z) \geq d(x,z)$ for all $x,y,z \in \dset$.  A distance which
+satisfies these two further requirements is called a \textit{metric}.
 
-One way to do this is to invent a metric for the dataset.  If the elements are
-of a common type, such as real valued vectors, then an existing metric can be
-used, for example the well known Euclidean metric.
+Given a set $M$ and a metric $d \colon M \times M \to \mathbb{R}^+$, we call
+the ordered pair $(M,d)$ a \textit{metric space}.  If the objects in the
+dataset exist in some larger metric space, for example real valued vectors
+exist in Euclidean space, then we say the dataset is embedded in a metric
+space.
 
-It is tempting to think of the dataset and some metric as a metric space, but
-this is not strictly correct.  The reason is that, contrary to the name, a
-dataset if not generally a set, but a multiset.  In other words, identical
-elements can appear more than once.  We therefore define a dataset to be a
-multiset $(\dset, \mu_{\dset})$ where $\dset$ is called the underlying set and
-$\mu_{\dset} \colon \dset \to \mathbb{Z}^+$ is called the membership function
-and maps each element of $\dset$ to its multiplicity.  If $d$ is a metric
-defined for all elements in $\dset$, then $(\dset, d)$ is a metric space.
+A metric is the most intuitive type of dissimilarity for human use.  Having a
+metric allows one to make several deductions quickly and effortlessly.  For
+example, if we know that some object $a$ is distant to some other object $b$,
+and that a third object $c$ is close to $b$, we would expect that $c$ is also
+distant to $a$.  This deduction is correct in a metric space but not correct
+in general.
 
-For the purposes of discussion we will only explicitly treat a dataset as a
-multiset when it is necessary.  Normally we will just work on $\dset$ directly
-and assume that $\mu_{\dset}(x) = 1$ for all $x \in \dset$.
+Sometimes when we wish to compare elements of a particular dataset it is
+necessary to invent a dissimilarity.  Usually a metric is most desirable.  But
+often the objects in the dataset will be of a common type, such as real valued
+vectors, for which there are many dissimilarities already defined.  We will
+look at some examples of existing dissimilarities now.  Since we are most
+interested in metrics, we will only briefly mention some non-metrics.
+
+Dissimilarities which are not distances include Bregman divergences, which are
+generalisations of Euclidean distance squared for objects in Euclidean space
+\citep{banerjee2005clustering}, and the Kullback-Leibler divergence for
+probability distributions \citep{kullback68information}.  Distances which are
+not metrics include the Bhattacharyya distance \citep{bhattacharyya43distance}
+and in a general positive edge-weighted graph, the length of the shortest path
+between two vertices.
+
+We now look at metrics, beginning with Euclidean space.  Let $M$ be
+$m$-dimensional Euclidean space and $x=(x_1,x_2,\dotsc,x_m),
+y=(y_1,y_2,\dotsc,y_m) \in M$ be any two elements.  Metrics include the
+familiar Euclidean distance:
+\begin{equation*}
+  d_E(x,y) = \sqrt{\sum_{i=1}^{m} (x_i - y_i)^2},
+\end{equation*}
+the Manhattan distance:
+\begin{equation*}
+  d_{M}(x,y) = \sum_{i=1}^{m} |x_i - y_i|
+\end{equation*}
+and the Chebyshev distance:
+\begin{equation*}
+  d_C(x,y) = \max_{1 \leq i \leq m} |x_i - y_i|,
+\end{equation*}
+which are all three special cases of the Minkowski distance,
+\begin{equation*}
+  d_{I}(x,y) = \left(\sum_{i=1}^{m} |x_i - y_i|^{p}\right)^{\prettyfrac{1}{p}}
+\end{equation*}
+where $p$ is the order; order 1 being Manhattan, 2 Euclidean and $\lim_{p \to
+  \inf}$ Chebyshev.
+
+The Mahalanobis distance \citep{mahalanobis30distance} is a metric which is
+equivalent to Euclidean distance on scaled principle components of the
+dataset.  Given a dataset, $\dset$, of $n$ elements, embedded in
+$m$-dimensional Euclidean space, the covariance of components (also known as
+features or fields) $i$ and $j$ is defined as
+\begin{equation*}
+  S_{ij} = \frac{1}{n-1} \sum_{k=1}^{n} (x_{ki}-\bar{x}_i)(x_{kj}-\bar{x}_j),
+\end{equation*}
+where $x_{ki}$ means the $i$th component of the $k$th element and $\bar{x}_i$
+means the mean of component $i$ in the dataset.  The covariance matrix is then
+the symmetric $m \times m$ matrix $S = [S_{ij}]$.  The Mahalanobis distance is
+then defined as
+\begin{equation*}
+  d_{P}(x,y) = \sqrt{(x-y)S^{-1}(x-y)^T}.
+\end{equation*}
+
+Leaving Euclidean space now, a well known metric on strings of equal length is
+the Hamming distance \citep{hamming50errorcodes} which is equal to the number
+of positions at which the two strings differ.
+
+For purely categorical data, a simple metric is the overlap metric, or $0/1$
+metric:
+\begin{equation*}
+  d_O(x,y) =
+  \begin{cases}
+    0 & \text{if $x=y$,} \\
+    1 & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+A frequently occurring type of data is mixed data, that is vectors with both
+numerical and categorical components.  The heterogeneous Euclidean-overlap
+metric uses normalised Euclidean distance on the numerical components and the
+overlap metric on categorical components.  It is defined as:
+\begin{equation*}
+  d_{H}(x,y) = \sqrt{\sum_{i=1}^{m} d_{Hi}^2(x_i,y_i)},
+\end{equation*}
+where
+\begin{equation*}
+  d_{Hi}(x_i,y_i) =
+  \begin{cases}
+    d_O(x_i,y_i) & \text{if $i$ is a categorical component,} \\
+    \displaystyle \frac{|x_i-y_i|}{range_i} & \text{otherwise,}
+  \end{cases}
+\end{equation*}
+where $range_i$ is the difference between maximum and minimum observed values
+for component $i$.
+
+Metrics are also possible on more complex structures.  Let $S$ be a set of
+arbitrary elements and $X,Y \in 2^{S}$ be any two subsets.  The cardinality of
+the symmetric difference is a metric on $2^{S}$:
+\begin{equation*}
+  \delta_{\symdif}(X,Y) = |X \symdif Y|.
+\end{equation*}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    % circles
+    \draw (90:1) circle (1.5);
+    \draw (210:1) circle (1.5);
+    \draw (330:1) circle (1.5);
+
+    % labels
+    \node at (90:2.8) {$X$};
+    \node at (330:2.8) {$Y$};
+    \node at (210:2.8) {$Z$};
+    
+    \node at (90:1.5) {$a$};
+    \node at (330:1.5) {$b$};
+    \node at (210:1.5) {$c$};
+    \node at (30:.9) {$d$};
+    \node at (270:.9) {$e$};
+    \node at (150:.9) {$f$};
+    \node at (0:0) {$g$};
+  \end{tikzpicture}
+  \caption{Partition of $X \cup Y \cup Z$}
+  \label{fig:partition}
+\end{figure}
+
+\begin{proof}
+  It is obvious from the definition that the function is non-negative,
+  symmetric and that $\delta_{\symdif}(X,Y)=0$ if and only if $X=Y$ for all
+  $X,Y \in 2^{S}$.  We will show that the triangle inequality holds for all
+  $X,Y,Z \in 2^{S}$:
+  \begin{equation*}
+    |X \symdif Y| + |Y \symdif Z| \geq |X \symdif Z|.
+  \end{equation*}
+
+  We partition $X \cup Y \cup Z$ into disjoint subsets as shown in
+  Figure~\ref{fig:partition} and let
+  \begin{align*}
+    a &= |A \setminus (B \cup C)|\\
+    b &= |B \setminus (A \cup C)|\\
+    c &= |C \setminus (A \cup B)|\\
+    d &= |(A \cap B) \setminus C|\\
+    e &= |(B \cap C) \setminus A|\\
+    f &= |(C \cap A) \setminus B|\\
+    g &= |A \cap B \cap C|
+  \end{align*}
+
+  We can now write the above inequality as:
+  \begin{equation*}
+    a+2b+c+d+e+2f \geq a+c+d+e,
+  \end{equation*}
+  so,
+  \begin{equation*}
+    2b+2f \geq 0.
+  \end{equation*}
+\end{proof}
+
+The normalised symmetric difference is also a metric on $2^{S}$:
+\begin{equation*}
+  \delta_{\symdif_n}(X,Y) =
+  \begin{cases}
+    \displaystyle \frac{|X \symdif Y|}{|X \cup Y|} & \text{if $A \cup B \neq
+      \emptyset$} \\
+    0 & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+\begin{proof}
+  The proof shown here is from \citep{yianilos91}, with some corrections.
+  Again, it is easy to see the function is non-negative, symmetric and that
+  $\delta_{\symdif_n}(X,Y)=0$ if and only if $X=Y$ for all $X,Y \in 2^{\dset}$
+  so we will show that the triangle inequality holds which is:
+  \begin{equation*}
+    \frac{|X \symdif Y|}{|X \cup Y|} + \frac{|Y \symdif Z|}{|Y \cup Z|} \geq
+    \frac{|X \symdif Z|}{|X \cup Y|}
+  \end{equation*}
+  or, equivalently:
+  \begin{equation}
+    \label{eq:tri-inequality}
+    1 - \frac{|X \cap Y|}{|X \cup Y|} +
+    1 - \frac{|Y \cap Z|}{|Y \cup Z|} \geq
+    1 - \frac{|X \cap Z|}{|X \cup Z|}.
+  \end{equation}
+
+  We partition $X \cup Y \cup Z$ in the same way as in
+  Figure~\ref{fig:partition} and with $a,b,c,d,e,f,g$ defined as in the
+  previous proof and also we define
+  \begin{equation*}
+    \xi  = |X \cup Y \cup Z|.
+  \end{equation*}
+
+  We can now write equation~(\ref{eq:tri-inequality}) as
+  \begin{equation*}
+    1 - \frac{d+g}{\xi -c} + 1 - \frac{e+g}{\xi -a} \geq 1 - \frac{f+g}{\xi -b}
+  \end{equation*}
+  which can be rewritten as
+  \begin{equation*}
+    \frac{d+g}{\xi -c} + \frac{e+g}{\xi -a} \leq \frac{f+g}{\xi -b} + 1.
+  \end{equation*}
+
+  Removing $b$ from the denominators on the LHS can only make the LHS
+  greater, so it is sufficient to show that
+  \begin{equation*}
+    \frac{d+g}{\xi -b-c} + \frac{e+g}{\xi -a-b} \leq \frac{f+g}{\xi -b} + 1.
+  \end{equation*}
+
+  Now if we replace $1$ with $\frac{\xi -a-b-c}{\xi -a-b-c}$ on the RHS and add
+  the fractions on the LHS we get
+  \begin{multline*}
+    \frac{(\xi -a-b)(d+g)+(\xi -b-c)(e+g)}{(\xi -b-c)(\xi -a-b)}\\
+    \leq \frac{(\xi -a-b-c)(\xi -b)+(\xi -a-b-c)(f+g)}{(\xi -b)(\xi -a-b-c)}
+  \end{multline*}
+  which when we expand the denominators becomes
+  \begin{multline*}
+    \frac{(\xi -a-b)(d+g)+(\xi -b-c)(e+g)}{\xi ^2-\xi a-2\xi b-\xi c+ab+bc+b^2+ac}\\
+    \leq \frac{(\xi -a-b-c)(\xi -b)+(\xi -a-b-c)(f+g)}{\xi ^2-\xi a-2\xi b-\xi c+ab+bc+b^2}.
+  \end{multline*}
+  Notice that the denominator on the LHS is equal to the denominator on the
+  RHS with the addition of $ac$ so it cannot be less.  It is therefore
+  sufficient to show that
+  \begin{multline*}
+    (\xi -a-b)(d+g)+(\xi -b-c)(e+g)\\
+    \leq (\xi -a-b-c)(\xi -b)+(\xi -a-b-c)(f+g).
+  \end{multline*}
+
+  Starting with the LHS we have
+  \begin{align*}
+    &(\xi -a-b)(d+g)+(\xi -c-b)(e+g)\\
+    &= (\xi -a-b-c)(d+g)+c(d+g)+(\xi -a-b-c)(e+g)+a(e+g)\\
+    &\leq (\xi -a-b-c)(d+g)+c(\xi -a-b-c)\\
+    &\qquad\qquad+(\xi -a-b-c)(e+g)+a(\xi -a-b-c)\\
+    &= c(\xi -a-b-c)+(\xi -a-b-c)(d+e+g)\\
+    &\qquad\qquad+g(\xi -a-b-c)+a(\xi -a-b-c)\\
+    &\leq c(\xi -a-b-c)+(\xi -a-b-c)^2+g(\xi -a-b-c)+a(\xi -a-b-c)\\
+    &= (\xi -a-b-c)(\xi -b)+g(\xi -a-b-c)\\
+    &\leq (\xi -a-b-c)(\xi -b) + (f+g)(\xi -a-b-c).
+  \end{align*}
+\end{proof}
+
+If the sets are nonempty subsets of a metric space, $(M,d)$ then the
+underlying metric space can be used to define metrics on the sets.  The
+Haussdorf metric is a metric on $2^{M}$ \citep{braun2003geometry}:
+\begin{equation*}
+  \delta_{H}(X,Y) = \max(\max_{x \in X} \min_{y \in Y} d(x,y),
+                        \max_{y \in Y} \min_{x \in X} d(x,y)).
+\end{equation*}
+In Chapter~\ref{cha:assignment-metric} we present another metric which can be
+used for this purpose.
+
+As an aside, it should be noted that
+\begin{equation*}
+  \delta(X,Y) = \min_{x \in X, y \in Y} d(x,y)
+\end{equation*}
+is a simple and intuitive distance between sets, but is not generally a
+metric.
+
+Many other metrics exist including the Hellinger distance and Jensen-Shannon
+divergence squared \citep{endres03metric} for probability distributions.
+There exist generalised Mahalanobis distances for mixed data
+\citep{leon2005generalized}.  In Section~\ref{sec:comparing-partitions} we
+look at metrics (and general dissimilarities) on partitions and in
+Chapter~\ref{cha:assignment-metric} we introduce our own metric.
+
+It is also possible in some cases to transform a general dissimilarity into a
+metric, for example see \citet[chap. 2.5]{everitt80}.
+
+It is tempting to think of a dataset and a metric defined on its elements as a
+metric space, but this is not necessarily correct.  The reason is that,
+contrary to the name, a dataset is not a set but a multiset.  Consider a
+dataset consisting of only the heights of some population of humans.
+Depending on the precision of the measurements taken, it would generally be
+expected that multiple people will share the same height.  In order to have
+these observations in a set, some unique integer---an experiment number,
+say---would need to be attached to each observation.  But then the metric
+condition that $d(x,y)=0$ only if $x=y$ would be violated---in fact we would
+have only a pseudometric.  We can get a proper metric if we define an
+equivalence relation $x \sim y$ if $d(x,y)=0$.  Then $(\dset/\sim,d)$ is a
+metric space.
+
+Most of the time we do not need to worry about this.  From now on a dataset,
+$\dset$, will implicitly mean $\dset/\sim$ as defined above unless stated
+otherwise.  Occasionally. though, it will be useful or necessary to consider
+the multiset $(\dset,\mu_{\dset})$ where $\dset$ is the underlying set, and
+$\mu_{\dset} \colon \dset \to \mathbb{N}_1$---a map from $\dset$ to the
+(nonzero) natural numbers---is called the membership function and tells us how
+many times an element appears in the multiset.
+
+A further generalisation is then possible: we can relax the definition of the
+membership function to $\mu_{\dset} \colon \dset \to \mathbb{R}_1$---a map
+from $\dset$ to the positive real numbers.  The dataset is then a fuzzy
+multiset.  Such datasets have been used in document clustering applications,
+for example in \citep{miyamoto2003information}, where objects can appear
+multiple times with a certain probability attached.  If the membership
+function if $\mu_{\dset} \colon \dset \to \mathbb{R}_1 \cap [0,1]$ then
+$(\dset,\mu_{\dset})$ is called a fuzzy set
+\citep{zadeh1965fuzzy,gottwald2010fuzzy}.
 
 \section{Partitions}
 \label{sec:partitions}
