@@ -81,6 +81,12 @@
 \newcommand{\clus}{\mathcal{C}}
 \newcommand{\NP}{\text{NP}}
 
+% for functions between two partitions C_1 and C_2
+\newcommand{\partcompare}[1]{\Delta_{\mathcal{#1}}(\clus_1,\clus_2)}
+% for functions between two partitions C and C' and C and C''
+\newcommand{\partcomparep}[1]{\Delta_{\mathcal{#1}}(\clus,\clus')}
+\newcommand{\partcomparepp}[1]{\Delta_{\mathcal{#1}}(\clus,\clus'')}
+
 % works nicely for fraction indices
 \newcommand{\prettyfrac}[2]{^#1\!/\!_#2}
 
@@ -463,12 +469,11 @@ can compare partitions and how we can find partitions.
 \subsection{The space of partitions}
 \label{sec:space-partitions}
 
-A partition of a (multiset) dataset, $(\dset,\mu_{\dset})$, is a set of $k$
-multisets, $\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}$ where $C_1 \cup
-C_2 \cup \dotsb \cup C_k = \dset$, for all $i = 1,\dotsc,k, \sum_{x \in \dset}
-\mu_i(x) > 0$ and, for all $x \in \dset$, $\sum_{i=1}^{k} \mu_i(x) =
-\mu_{\dset}(x)$.  In other words, it is a set of nonempty, nonoverlapping
-subsets.  These subsets are called clusters.
+A partition of a dataset, $\dset$, is a set of $k$ sets, $C_1C_2,\dotsc,C_k$
+where $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for
+all $1 \leq i \leq k$ and $C_i \cap C_j = \emptyset$ for all $1 \leq i < j
+\leq k$.  In other words, it is a set of nonempty, nonoverlapping subsets.
+These subsets are called clusters.
 
 \begin{figure}
   \centering
@@ -536,9 +541,26 @@ subsets.  These subsets are called clusters.
   \label{fig:lattice}
 \end{figure}
 
+\begin{table}
+  \centering
+  \begin{tabular}{rr}
+    \toprule
+    $n$ & $B_n$ \\
+    \midrule
+    5 & 52 \\
+    10 & 115,975 \\
+    15 & 1,382,958,545 \\
+    20 & $5.17 \times 10^{13}$ \\
+    25 & $4.64 \times 10^{18}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Growth of the Bell number}
+  \label{tab:bell-number}
+\end{table}
+
 Let $\mathcal{P}_{\dset}$ be the set of all partitions of $\dset$.  The
 natural way to represent the set $\mathcal{P}_{\dset}$ is as a graph called
-the lattice of partitions.  Such a graph is shown in figure~\ref{fig:lattice}.
+the lattice of partitions.  Such a graph is shown in Figure~\ref{fig:lattice}.
 The top of the graph contains a single node containing $\hat{1} = \{\dset\}$
 which is the partition with one cluster and the bottom is a single node
 containing $\hat{0} = \{\{D_1\},\{D_2\},\dotsc,\{D_n\}\}$ the partition
@@ -548,7 +570,7 @@ A partition, $\clus'$, which is obtained by splitting one or more clusters in
 $\clus$ is said to be a refinement of $\clus$.  Every edge in the lattice
 represents a refinement, with the coarser partition at the top.
 
-As can be seen from figure~\ref{fig:lattice}, the number of possible
+As can be seen from Figure~\ref{fig:lattice}, the number of possible
 partitions for a 4 element dataset is already quite large; for a 20 element
 dataset the number is more than 51 trillion.  In general the number of
 possible partitions of an $n$ element dataset is equivalent to the $n$th Bell
@@ -564,267 +586,385 @@ or using Dobinski's formula:
   B_n = \frac{1}{e} \sum_{k=0}^{\inf} \frac{k^n}{k!}.
 \end{equation*}
 
+Partitions can be generalised to fuzzy partitions by allowing elements to be
+in more than one cluster.  A fuzzy partition is therefore a set of fuzzy sets
+$\{(C_i,\mu_i),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}$ where $C_1 \cup C_2 \cup
+\dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $1 \leq i \leq k$ and
+$\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.
+
 \subsection{Comparing partitions}
 \label{sec:comparing-partitions}
 
-Since the space of possible partitions for any given dataset is very large, it
-becomes useful to speak of similarity between different partitions.  It is
-highly likely that different clustering algorithms will produce different
-partitions given the same dataset, and some algorithms are non-deterministic,
-for example $k$-means is often ``seeded'' with random clusters.  Such a
-(dis)similarity measure could therefore be used to compare algorithms, or
-assess the ability of a non-deterministic algorithm to consistently find good
-solutions for hard problems.
+An attractive way to find partitions of a dataset is by means of a partitional
+clustering method.  Many methods exist---we will review some in
+Section~\ref{sec:part-clust-algor}---and each method tends to produce
+a different partition.  Some methods are non-deterministic and produce
+different partitions each time.
 
-It is quite easy to devise dissimilarity measures for partitions, but those
-that are generally found most useful are distances, meaning they satisfy
-conditions 1--3 of the metric definition.  If a dissimilarity measure further
-satisfies condition~4 then it is also a metric.  A metric is the most
-intuitive type of measure for human use.  In a metric space, for example, if
-we know that some object $a$ is distant from some object $b$, and we know that
-another object $c$ is close to $b$, then it is natural for us to make the
-deduction that $c$ is also distant from $a$.  This deduction would be
-incorrect in a general distance space.
-
-We would argue that metrics are therefore the most desirable type of
-dissimilarity measure.  Many metrics have been devised, and many more measures
-that are not metrics or not even distances.  Existing measures fall into four
-main categories which will each be discussed in the following subsections.
-Briefly, these are:
+It is therefore useful, for comparing and assessing clustering methods, to be
+able to compare partitions.  Such a comparison measure is also used in
+ensemble clustering, where multiple methods are used and partitions are voted
+on.  Many measures have been devised for this purpose, including similarity
+measures and dissimilarity measures, of which some are metrics.  Existing
+methods fall into four main categories, these are:
 \begin{description}
-\item[Pair counting] which counts pairs of data points to measure the
-  ``agreement'' and ``disagreement'' between two clusterings,
-\item[Set matching] which matches clusters in one clustering to clusters in
-  the other and measures the difference between these matched pairs,
-\item[Information theoretic measures] which use information theory to
-  describe the mutual information between two clusterings,
-\item[Density profile based measures] which takes into account the attributes
-  of the data set when determining similarity between clusterings.
+\item[Pair counting] which measures the agreement and disagreement between
+  partitions by means of counting pairs of element in the dataset,
+\item[Set matching] which ``matches'' clusters in one partition with clusters
+  in the other and measures the similarity between matched sets,
+\item[Information theoretic] which uses information theory to measure the
+  information and mutual information contained in two partitions,
+\item[Density profile] which takes into account the values of the data when
+  computing the measure.
 \end{description}
 
-As usual, let $\mathcal{D} = \{D_1,D_2,\dotsc,D_n\}$ be our data set and $P_1
-= \{C_{11},C_{12},\dotsc,C_{1k}\}$ and $P_2 =
-\{C_{21},C_{22},\dotsc,C_{2k'}\}$ be two partitions of $\mathcal{D}$.  The
-contingency matrix of $P_1$ and $P_2$ is a $k \times k'$ matrix where the
-$ij$-th element is $n_{ij} = |C_{1i} \cap C_{2j}|$.
+As usual, let $\dset = \{x_1,x_2,\dotsc,x_n\}$ be a dataset and $\clus_1 =
+\{C_{11},C_{12},\dotsc,C_{1k}\},\clus_2 = \{C_{21},C_{22},\dotsc,C_{2k'}\}$ be
+a $k$ and $k'$ partition of $\dset$, respectively.
+
+The confusion matrix of $\clus_1$ and $\clus_2$ is the $k \times k'$ matrix
+$[n_{ij}]$ where $n_{ij} = |C_{i1} \cap C_{2j}|$.  The confusion matrix is
+used for the calculation of both pair counting and set matching measures.
 
 \subsubsection{Pair counting}
 \label{sec:pair-counting}
 
-There are $\binom{n}{2}$ distinct pairs of objects in $\mathcal{D}$, and these
-can be divided into four types:
-\begin{description}
-\item[$N_{11}$]: objects which are in the same cluster in $P_1$ and in the
-  same cluster in $P_2$,
-\item[$N_{00}$]: objects which are in different clusters in $P_1$ and in
-  different clusters in $P_2$,
-\item[$N_{10}$]: objects which are in the same cluster in $P_1$ but in
-  different clusters in $P_2$,
-\item[$N_{01}$]: objects which are in different clusters in $P_1$ but in the
-  same cluster in $P_2$.
-\end{description}
+There are $\binom{n}{2}$ distinct pairs of elements in $\dset$, let $S$ be the
+set of all distinct pairs.  Each pair, $(a,b) \in S$ is in one of the
+following categories:
+\begin{itemize}
+\item $a,b$ are in the same cluster in $\clus_1$ and the same cluster in
+  $\clus_2$,
+\item $a,b$ are in different clusters in $\clus_1$ and different clusters in
+  $\clus_2$,
+\item $a,b$ are in the same cluster in $\clus_1$ but in different clusters in
+  $\clus_2$,
+\item $a,b$ are in different clusters in $\clus_1$ but in the same cluster in
+  $\clus_2$.
+\end{itemize}
 
-$N_{11}$ and $N_{00}$ are considered to be ``agreements'' and $N_{10}$ and
-$N_{01}$ are ``disagreements''.  Clearly $N_{11} + N_{00} + N_{10} + N_{01} =
-\binom{n}{2}$ is always satisfied.  The four counts can be obtained from the
-confusion matrix \citep{fowlkes-mallows-1983}.
+Counting the number of element in each category gives us four counts which are
+defined formerly as:
+\begin{align*}
+  N_{11} &= |\{(a,b) \in S \colon
+              a \in C_{1i},b \in C_{1i},a \in C_{2j},b \in C_{2j}
+            \}|, \\
+  N_{00} &= |\{(a,b) \in S \colon
+              a \in C_{1i},b \notin C_{1i},a \in C_{2j},b \notin C_{2j}
+            \}|, \\
+  N_{10} &= |\{(a,b) \in S \colon
+              a \in C_{1i},b \in C_{1i},a \in C_{2j},b \notin C_{2j}
+            \}|, \\
+  N_{01} &= |\{(a,b) \in S \colon
+              a \in C_{1i},b \notin C_{1i},a \in C_{2j},b \in C_{2j}
+            \}|,
+\end{align*}
+where $i \in \{1,\dotsc,k\}, j \in \{1,\dotsc,k'\}$ in each case.
 
-There are a number of different criteria that have been used in the literature
-that are based on these counts.  The simplest of these are
-$\mathcal{R}(P_1,P_2) = (N_{11}+N_{00})/\binom{n}{2}$ used by
-\citet{rand-1971}; $(N_{10}+N_{01})/\binom{n}{2}$ used by Johnson, Mirkin,
-Arabie and Boorman; and $(N_{11}+N_{00}-N_{10}-N_{01})/\binom{n}{2}$ used by
-Hubert \citep{hubert-arabie-1985}.  The first of these, known as the Rand
-index, is widely used and often cited in the literature.
+The size of $N_{11}$ and $N_{00}$ are considered to be measurements of the
+agreement between the partitions, while $N_{10}$ and $N_{01}$ are considered
+measurements of the disagreement.  The measures based on pair counting can all
+be expressed in terms of these four counts.  Clearly
+$N_{11}+N_{00}+N_{10}+N_{01}$ is always satisfied.  The counts can all be
+obtained from the confusion matrix in polynomial time
+\citep{hubert-arabie-1985}.
 
-\citet{fowlkes-mallows-1983} present a measure which they call $B_k$ for
-comparing two hierarchical clusterings.  \citet{wallace-1983} later showed
-that this measure could be stated in terms of two asymmetric measures
+One of the simplest pair counting measures is the widely-used \textit{Rand
+  index} \citep{rand-1971}:
 \begin{equation*}
-  \mathcal{W}_{I}(P_1,P_2) = \frac{N_{11}}{\sum_{i=1}^{k}
-    |C_{1i}|(|C_{1i}|-1)/2}
+\partcompare{R} = \frac{(N_{11}+N_{00})}{\binom{n}{2}}.
+\end{equation*}
+which is a similarity measure.  \citet{hubert-arabie-1985} use a variation of
+this: $(N_{11}+N_{00}+N_{10}+N_{01})/\binom{n}{2}$.
+
+\citet{wallace-1983} introduced two asymmetric measures, $\mathcal{W}_{I}$ and
+$\mathcal{W}_{II}$ defined as:
+\begin{equation*}
+  \mathcal{W}_{I} = \frac{N_{11}}{\sum_{i=1}^{k} |C_{i1}|(|C_{1i}|-1)/2},
 \end{equation*}
 and
 \begin{equation*}
-  \mathcal{W}_{II}(P_1,P_2) = \frac{N_{11}}{\sum_{j=1}^{k'}
-    |C_{2j}|(|C_{2j}|-1)/2},
+  \mathcal{W}_{II} = \frac{N_{11}}{\sum_{j=1}^{k'} |C_{2j}|(|C_{2j}|-1)/2}.
 \end{equation*}
-which represent the probabilities that a pair of points which are in the same
-cluster in $P_1$ and $P_2$ respectively, are also in the same cluster in the
-other partition.  It was shown that Fowlkes and Mallows's original symmetric
-measure is then simply the geometric mean of these two asymmetric measures
-\citep{wallace-1983}
+$\mathcal{W}_{I}$ and $\mathcal{W}_{II}$ represent the probabilities that a
+pair of points that are in the same cluster in $\clus_1$ and $\clus_2$,
+respectively, are in the same cluster in the other partition.  A symmetric
+similarity measure can be obtained by taking the geometric mean:
 \begin{equation*}
-  \mathcal{F}(P_1,P_2) = \sqrt{\mathcal{W}_{I}(P_1,P_2)\mathcal{W}_{II}(P_1,P_2)}.
+  \partcompare{F} = \sqrt{\mathcal{W}_{I}(\clus_1,\clus_2)
+                          \mathcal{W}_{II}(\clus_1,\clus_2)}.
+\end{equation*}
+This is equivalent to a measure introduced independently by
+\citet{fowlkes-mallows-1983}.
+
+The Jaccard coefficient is another widely-used similarity measure and is
+defined as
+\begin{equation*}
+  \partcompare{J} = \frac{N_{11}}{N_{10}+N_{01}+N_{11}}.
 \end{equation*}
 
-The Jaccard coefficient \citep{ben-hur-2001} is an improved version of the
-Rand index which is also well known and widely used
+So far all measures have been similarity measures.  There is one dissimilarity
+measure, which is also a metric, called the \textit{Merkin metric},
+$\partcompare{M}$ \citep{mirkin1996mathematical}.  It was originally defined
+using the confusion matrix as
 \begin{equation*}
-  \mathcal{J}(P_1,P_2) = \frac{N_{11}}{N_{01}+N_{10}+N_{11}}.
+  \partcompare{M} = \sum_{i=1}^{k} |C_{1i}|^2 +
+                    \sum_{j=1}^{k'} |C_{1j}|^2 +
+                    2\sum_{i=1}^{k}\sum_{j=1}^{k'} n_{ij}^2,
 \end{equation*}
+which is equivalent to simply $2(N_{10}+N_{01})$.  A similar measure,
+$(N_{10}+N_{01})/\binom{n}{2}$, which is also a metric, was used in
+\citet{mirkin1970measurement} and \citet{arabie1973multidimensional}.
 
-So far, none of the measures listed are claimed to be metrics.  The Rand index
-is clearly not a metric as it takes the value of $1$ for identical
-clusterings.  In fact, the value of $N_{11}$ can always take a nonzero value
-for identical clusterings.  Therefore both $\mathcal{F}$ and $\mathcal{J}$ are
-not metrics as they are based on normalising the value of $N_{11}$.
+\begin{table}
+  \centering
+  \begin{tabular}{lr}
+    \toprule
+    Name & Measure \\
+    \midrule
+    Rand index          & $\partcompare{R} \approx 0.694$ \\
+    Wallace measures    & $\mathcal{W}_{I}(\clus_1,\clus_2) \approx 0.222$ \\
+                        & $\mathcal{W}_{II}(\clus_1,\clus_2) \approx 0.333$ \\
+    Fowlkes \& Mallows  & $\partcompare{F} \approx 0.272$ \\
+    Jaccard coefficient & $\partcompare{J} \approx 0.154$ \\
+    Merkin metric       & $\partcompare{M} = 22.00$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Various pair counting based measures applied to $\clus_1$ and $\clus_2$.}
+  \label{tab:pair-counting-comparison}
+\end{table}
 
-One measure based on pair counting which is a metric is the Mirkin metric
-\citep{mirkin-1996}
-\begin{equation*}
-  \mathcal{M}(P_1,P_2) = \sum_{i=1}^{k} |C_{1i}|^2 + \sum_{j=1}^{k'} |C_{2j}|^2
-  - 2 \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2.
-\end{equation*}
-This can also be written as
-\begin{equation*}
-  \mathcal{M}(P_1,P_2) = 2(N_{01} + N_{10}) = n(n-1)(1-\mathcal{R}(P_1,P_2))
-\end{equation*}
-and is therefore an adjusted form of the Rand index \citep{meila-2007}.  In
-fact, it turns out that the Rand index has been independently rediscovered in
-different forms by many different authors \citep{hubert-arabie-1985}.
+The values of the pair counting measures when applied to our example
+partitions are given in Table~\ref{tab:pair-counting-comparison}.
 
 \subsubsection{Set matching}
 \label{sec:set-matching}
 
-These measures are based on the cardinality of the intersect of ``matched''
-clusters.  \citet{meila-2001} present a method which finds a matching using a
-heuristic: the greatest value in the contingency table, $n_{ab}$, is taken as
-the first match, then the greatest value not in either row $a$ or column $b$
-is the second match, and so on.  The function $match(i)$ gives the index of
-the cluster in $P_2$ which matches cluster $C_{1i}$ by this heuristic.  The
-measure is then
-\begin{equation*}
-  \mathcal{H}(P_1,P_2) = \frac{1}{n} \sum_{j=match(i)} n_{ij}.
-\end{equation*}
-A second measure used by \citet{larsen-aone-1999} is
-\begin{equation*}
-  \mathcal{L}(P_1,P_2) = \frac{1}{k} \sum_{i=1}^{k} \max_{j}
-  \frac{2n_{ij}}{|C_{1i}|+|C_{2j}|}.
-\end{equation*}
-Neither of these are metrics.
+These measures make comparisons between the clusters belonging to each
+partition.  The cardinality of the intersect is used as a similarity measure
+between clusters; this is given by the confusion matrix.  For each measure, a
+``matching'' is found in some way between the clusters of one partition and
+the clusters of the other.  The similarity between each matched pair of
+clusters is then used to compute the measure between the partitions.
 
-The following was introduced by \citet{van-dongen-2000} and is a metric
+Formerly, a ``matching'' is a function mapping $\{1,\dotsc,k\}$ to
+$\{1,\dotsc,k'\}$, or vice versa.  For the rest of the subsection we will
+assume, without loss of generality, that $k' \geq k$.  The measures differ in
+the way the function is found and the way they are summed to produce the
+measure.
+
+\begin{figure}
+  \Centering
+  \begin{tikzpicture}[
+    >=stealth,
+    clus/.style={circle,draw=black,inner sep=0,minimum size=5mm},
+    dist/.style={->,shorten >=2pt},
+    faint/.style={dist,gray!50},
+    match/.style={dist,black}
+    ]
+
+    \node [clus] (c11) at (0,1) {$C_{11}$};
+    \node [clus] (c12) at (0,0) {$C_{12}$};
+    \node [clus] (c13) at (0,-1) {$C_{13}$};
+
+    \node [clus] (c21) at (2,1.5) {$C_{21}$};
+    \node [clus] (c22) at (2,.5) {$C_{22}$};
+    \node [clus] (c23) at (2,-.5) {$C_{23}$};
+    \node [clus] (c24) at (2,-1.5) {$C_{24}$};
+
+    % join them all
+    \foreach \x in {1,2,3} {
+      \foreach \y in {1,2,3,4} {
+        \draw [faint] (c1\x) to (c2\y);
+      }
+    }
+
+    % matches
+    \draw [match] (c11) to (c22);
+    \draw [match] (c12) to (c23);
+    \draw [match] (c13) to (c21);
+  \end{tikzpicture}
+  \caption{An injection, $\sigma$, is sought among all possible injections
+    $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$ where $k' \geq k$.
+    This is used to ``match'' pairs of clusters.}
+  \label{fig:matching}
+\end{figure}
+
+The first is a similarity measure due to \citet{meila-2001} that finds a
+match for $k$ clusters using a heuristic: the greatest value in the confusion
+matrix, $n_{ab}$ say, gives us the first match---between clusters $C_{1a}$ and
+$C_{2b}$.  The next match is then given by the greatest value not in row $a$
+or column $b$, and so on until $k$ matches are found.  Thus we find an
+injection, $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.  This is
+illustrated in Figure~\ref{fig:matching}.  Given an injection, $\sigma$, found
+as described, the measure is then:
 \begin{equation*}
-  \mathcal{D}(P_1,P_2) = 2n - \sum_{i=1}^{k} \max_{j} n_{ij} - \sum_{j=1}^{k'}
-  \max_{i} n_{ij}.
+  \partcompare{H} = \frac{1}{n} \sum_{i=1}^{k} n_{i \sigma(i)}.
 \end{equation*}
 
-\citet{meila-2005} introduces another metric called classification error which
-they define as
+A second similarity measure, introduce by \citet{larsen-aone-1999}, makes
+locally maximal matchings for each cluster:
 \begin{equation*}
-  d_{CE}(P_1,P_2) = 1 - \frac{1}{n} \max_{\sigma} \sum_{i=1}^{K} n_{i\sigma(i)}
+  \partcompare{L} = \frac{1}{k} \sum_{i=1}^{k} \max_{1 \leq j \leq k'}
+                                             \frac{2n_{ij}}{|C_{1i}|+|C_{2j}|}.
 \end{equation*}
-where $K = \min(k,k')$.  Calculation of this metric requires finding a maximum
-matching which can be done in polynomial time.  This metric is bounded by
-$[0,1]$ but it ignores $k-k'$ clusters whenever $k>k'$ and vice versa.  The
-proof that it is a metric is not provided in the paper.
 
-\citet{meila-2007} points out that all of these measures suffer from the
-so-called ``problem of matching''.  Given a clustering $P_1$ we can obtain a
-second clustering $P_2$ by moving a fraction $f$ of the objects from each
-cluster $C_i$ to $C_{(i+1)\bmod k}$.  We then obtain a third clustering $P_3$
-from $P_1$ by reassigning the same fraction $f$ of objects from each cluster
-evenly among the other clusters.  It is claimed that $P_3$ is intuitively a
-less disrupted version of $P_1$ than $P_2$ is, but $\mathcal{H}(P_1,P_2) =
-\mathcal{H}(P_1,P_3) = \mathcal{L}(P_1,P_2) = \mathcal{L}(P_1,P_3) =
-\mathcal{D}(P_1,P_2) = \mathcal{D}(P_1,P_3)$ whenever $f < \frac{1}{2}$.
+A dissimilarity measure, which is a metric, was introduced by
+\citet{van-dongen-2000}.  This measure computes two matching functions and,
+again, makes locally maximal matchings:
+\begin{equation*}
+  \partcompare{V} = 2n - \sum_{i=1}^{k} \max_{1 \leq j \leq k'} n_{ij}
+                         \sum_{j=1}^{k'} \max_{1 \leq i \leq k} n_{ij}.
+\end{equation*}
 
-A similar problem is pointed out in \citet{bae-2010}.  However, it appears
-that utilising the underlying metric space of the data would alleviate this
-problem, but this is not discussed in the literature.
+A second metric is due to \citet{meila-2005} and is know as
+\textit{classification error}.  Here, a globally maximal injection $\sigma
+\colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$ is found out of all possible
+injections, $S_k$; the measure is then:
+\begin{equation*}
+  \partcompare{CE} = 1 - \frac{1}{n} \max_{\sigma \in S_k}
+                                     \sum_{i=1}^{k} n_{i \sigma(i)}.
+\end{equation*}
+The injection, $\sigma$, can be found in polynomial time as the solution to a
+linear program.  This metric has the additional property that it has an upper
+bound of $1$.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lr}
+    \toprule
+    Name & Measure \\
+    \midrule
+    Meilă \& Heckerman   & $\partcompare{H} \approx 0.556$ \\
+    Larsen \& Aone       & $\partcompare{L} \approx 0.622$ \\
+    Van Dongen metric    & $\partcompare{V} = 7.000$ \\
+    Classification Error & $\partcompare{CE} \approx 0.445$ \\
+    
+    \bottomrule
+  \end{tabular}
+  \caption{Various set matching based measures applied to $\clus_1$ and $\clus_2$.}
+  \label{tab:set-matching-comparison}
+\end{table}
+
+The values of the set matching measures when applied to our example partitions
+are given in Table~\ref{tab:set-matching-comparison}.
+
+\citet{meila-2007} and \citet{bae2010comparison} point out that all of these
+measures suffer from the so-called ``problem of matching'' which we will now
+illustrate.  Given a partition, $\clus$, with $k$ equally sized clusters we
+can obtain a second partition, $\clus'$, by moving a fraction, $f$, of the
+objects from each cluster, $C_{i}$, to $C_{(i+1) \mod k}$.  We can obtain a
+third partition, $\clus''$, from $\clus$ by taking the same fraction from each
+cluster and distributing the objects evenly among all other clusters.  Our
+intuition would be that the similarity between $\clus$ and $\clus'$ is not the
+same as the similarity between $\clus$ and $\clus''$.  However,
+$\partcomparep{H} = \partcomparepp{H}, \partcomparep{L}
+= \partcomparepp{L}, \partcomparep{V} = \partcomparepp{V}$ and
+$\partcomparep{CE} = \partcomparepp{CE}$ whenever $f < 1/2$.
+
+To give a numerical example, let
+\begin{equation*}
+  \clus = \{\{1,2,3,4,5\},\{6,7,8,9,10\},\{11,12,13,14,15\}\}
+\end{equation*}
+and $f = 2/5$.  Our other partitions are therefore
+\begin{equation*}
+\clus' = \{\{1,2,3,14,15\},\{6,7,8,4,5\},\{11,12,13,9,10\}\}
+\end{equation*}
+and
+\begin{equation*}
+\clus'' = \{\{1,2,3,9,14\},\{6,7,8,4,15\},\{11,12,13,5,10\}\}.
+\end{equation*}
+In this case we have
+\begin{align*}
+  \partcomparep{H} &= \partcomparepp{H} = 3/5,\\
+  \partcomparep{L} &= \partcomparepp{L} = 3/5,\\
+  \partcomparep{V} &= \partcomparepp{V} = 12,\\
+  \partcomparep{CE} &= \partcomparepp{CE} = 2/5.
+\end{align*}
+
 
 \subsubsection{Information theoretic}
 \label{sec:inform-theor}
 
-Two measures which use information theory are Normalized Mutual Information
-(NMI) \citep{fred-jain-2003} and Variation of Information (VI)
-\citep{meila-2007}.  These measures essentially show how much information one
-clustering contains about the other \citep{bae-2010}.
+Two measures which use information theory are \textit{Normalized Mutual
+  Information} \citep{fred-jain-2003} and \textit{Variation of Information}
+\citep{meila-2007}.  We will look at the latter measure now.
 
-\citet{meila-2005} compares some of these methods by viewing all possible
-partitions of a data set as a lattice.  Five axioms are introduced which are
-satisfied by VI.  Other methods are shown to satisfy some of these axioms.
-A distance measure is said to ``align'' with the lattice if the distances can
-be expressed in terms of a sum of distances along the edges of the lattice.
-VI is shown to align with the lattice while classification error is shown to
-be not aligned.
-
-The variation of information is based on both how much information is
-contained in each clustering and how much information one clustering contains
-about the other.  The entropy associated with a clustering $P_1$ is defined as
+Variation of Information is based on both how much information is contained in
+each partition and how much information one partition contains about the other
+(their mutual information).  The first part is measured by
 \begin{equation*}
-  H(P_1) = - \sum_{i=1}^{k} P_1(i) \log P_1(i)
+  H(\clus_1) = -\sum_{i=1}^{k} P_1(i) \log_b P_1(i),
 \end{equation*}
 where
 \begin{equation*}
-  P_1(i) = \frac{|C_{1i}|}{k} \quad \text{for $i = 1, \dotsc, k$}
+  P_1(i) = \frac{|C_{i1}|}{k}, \qquad \text{for $i = 1,\dotsc,k$}.
 \end{equation*}
-which is the probability that an object picked randomly from $\mathcal{D}$
-belongs to cluster $C_{1i}$.  The entropy tells us the uncertainty about which
-cluster an object in $\mathcal{D}$ belongs to.
+This is the probability that an object picked randomly from $\dset$ is in
+cluster $C_{1i}$.  This measure is sometimes called the \textit{entropy}.  The
+base of the logarithm determines the unit of information---$b=2$ gives the
+information in \textit{bits}, $b=e$ gives \textit{nits} and $b=10$ gives
+\textit{Hartleys} \citep{kullback68information}.
 
-The mutual information between two clusterings, $P_1$ and $P_2$, is defined as
+The mutual information is given by
 \begin{equation*}
-  I(P_1,P_2) = \sum_{i=1}^{k} \sum_{j=1}^{k'} P_{12}(i,j)
-  \log \frac{P_{12}(i,j)}{P_{1}(i) P_{2}(j)}
+  I(\clus_1,\clus_2) = \sum_{i=1}^{k} \sum_{i=1}^{k'}
+                      P_{12}(i,j) \log_b \frac{P_{12}(i,j)}{P_1(i)P_2(j)},
 \end{equation*}
 where
 \begin{equation*}
-  P_{12}(i,j) = \frac{|C_{1i} \cap C_{2j}|}{n}
+  P_{12}(i,j) = \frac{|C_{1i} \cap C_{2j}|}{n}, \qquad \text{for $i =
+    1,\dotsc,k,j = 1,\dotsc,k'$}.
 \end{equation*}
-which is the probability that an object picked randomly from $\mathcal{D}$ is
-in both $C_{1i}$ in $P_1$ and $C_{2j}$ in $P_2$.
+This is the probability that an object picked randomly from $\dset$ is in
+both $C_{1i}$ and $C_{2j}$.
 
-Variation of information is then defined as
+Variation of Information, $\partcompare{VI}$, is then defined as
 \begin{equation*}
-  VI(P_1,P_2) = H(P_1) + H(P_2) - 2I(P_1,P_2).
+  \partcompare{VI} = H(\clus_1) + H(\clus_2) - 2I(\clus_1,\clus_2).
 \end{equation*}
-This is a metric \citep{meila-2007}.  It is also $n$-invariant which means it
-depends only on the relative sizes of the clusters, not on the number of
-objects in $\mathcal{D}$.
+This is a metric with some nice properties.  First is $n$-invariant, meaning
+its value depends only on the relative sizes of the clusters and not on the
+number of elements in $\dset$.  Secondly, it is bounded for all $n$ by
+\begin{equation*}
+  \partcompare{VI} \leq \log_b n.
+\end{equation*}
+Further, if $\max(k,k') \leq k^*$ where $k^* \leq \sqrt{n}$ then the following
+bound holds
+\begin{equation*}
+  \partcompare{VI} \leq 2 \log_b k^*.
+\end{equation*}
 
-The metric is bounded for all $n$ by
-\begin{equation*}
-  VI(P_1,P_2) \leq \log n.
-\end{equation*}
-Also, if the number of clusters in each partition is at most $k^{*}$, where
-$k^{*} \leq \sqrt{n}$ then the following bound is attained
-\begin{equation*}
-  VI(P_1,P_2) \leq 2 \log k^{*}.
-\end{equation*}
+\begin{table}
+  \centering
+  \begin{tabular}{lr}
+    \toprule
+    Name & Measure \\
+    \midrule
+    Information & $H(\clus_1) \approx 1.585$ \\
+                & $H(\clus_2) \approx 1.975$ \\
+    Mutual information & $I(\clus_1,\clus_2) \approx 0.834$ \\
+    Variation of Information & $\partcompare{VI} \approx 1.891$
+    \\
+    \bottomrule
+  \end{tabular}
+  \caption{Variation of Information and its components applied to $\clus_1$
+    and $\clus_2$ using base 2 for the logarithms.}
+  \label{tab:vi-comparison}
+\end{table}
+
+The values of Variation of Information and its components applied to our
+example partitions are given in Table~\ref{tab:vi-comparison}.
 
 \subsubsection{Density based}
 \label{sec:density-based}
 
-So far none of the measures we have seen have taken into account the
-attributes of the data set, or that the data set itself is a metric space.
-The Attribute Distribution Clustering Orthogonality (ADCO) measure uses
-density profiles based on the attributes of the data set to measure the
-similarity between clusterings \citep{bae-2010}.  This solves a few problems
-with other techniques including the ``problem of matching'' mentioned in
-section~\ref{sec:set-matching}.
-
-To compute the measure, first each attribute of the data set is split into the
-same number of bins.  Then a density profile vector is created for each
-clustering based on the number of objects in each bin belonging to each
-cluster.  The measure then takes the dot-product of one vector and a
-transformation of the other vector.  The transformation is performed by a
-maximum assignment function which is computed using the Hungarian algorithm in
-$O(K_{\min}^3)$ time, where $K_{\min} = \min(k,k')$ \citep{bae-2010}.
-
-The $\ADCO$ function itself is a non-negative similarity measure which takes a
-higher value when clusterings are more similar.  This can be converted into a
-distance measure defined as
-\begin{equation*}
-  D_{\ADCO}(P_1,P_2) =
-  \begin{cases}
-    2 - \ADCO(P_1,P_2) & \qquad \text{if $P_1 \neq P_2$},\\
-    0 & \qquad \text{otherwise}.
-  \end{cases}
-\end{equation*}
-The first case is true whenever the density profile vectors of each clustering
-are not equal.  $D_{\ADCO}$ is a metric \citep{bae-2010}.
+The last category contains a metric called \textit{ADCO} which we will
+describe briefly.  None of the measures so far take into account the values of
+the data contained within the objects.  ADCO assumes that the data are
+real-valued vectors and uses the components of the vectors to calculate
+distances \citep{bae2010comparison}.  The problem with ignoring distances is
+discussed, and a new solution given, in Chapter~\ref{cha:assignment-metric}.
 
 \section{Partional clustering}
 \label{sec:part-clust-algor}
@@ -945,7 +1085,7 @@ the following criteria based on the scatter or dispersion matrix of
 \times m$ matrix defined
 as:
 \begin{equation*}
-  \mathbf{T} = \sum_{i=1}^{k} (x_i - \bar{x})(x_i - \bar{x})^{\mathrm{T}}
+  \mathbf{T} = \sum_{i=1}^{n} (x_i - \bar{x})(x_i - \bar{x})^{\mathrm{T}}
 \end{equation*}
 where $\bar{x}$ is the mean value of $\dset$.  Two further matrices are
 the within-cluster scatter matrix, $\mathbf{W} = \sum_{i=1}^{k} \mathbf{W}_i$,
@@ -1096,18 +1236,19 @@ Given the huge space of possible partitions of a dataset, partitional
 clustering is intuitively a hard problem.  In fact, it has been shown that
 many partitional clustering problems are NP-complete.
 
-Max-diameter clustering was originally shown to be NP-complete by
-\citet{brucker1978complexity}.  The problem remains NP-complete even for $k=3$
-and when all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.  In fact
-this is directly deducible from the earlier results of \citet{sahni1976p}.
-The problem is, however, solvable in polynomial time for $k=2$.
-
 A number of partitional clustering problems were shown to be in NP-complete by
 \citet{brucker1978complexity}.  Among these was max-diameter clustering, a
 result which is directly deducible from the earlier results of
 \citet{sahni1976p}.  Max-diameter clustering remains NP-complete for $k=3$ and
-when all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.  Other
-problems shown to be NP-complete are sum-of-diameters and sum-of-cliques.
+when all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.
+
+Sum-of-cuts (and therefore sum-of-cliques) is equivalent to the classic
+NP-complete graph problem, MAX CUT
+\citep{karp72twentyone,gonzalez1982computational}.  The problem is NP-complete
+for $k=2$ and even when all dissimilarities are in $\{0,1\}$
+\citep{garey76simplified}.  An approximate solution to sum-of-cuts is possible
+to find in polynomial time, but the approximation problem of sum-of-cliques
+remains NP-complete \citep{sahni1976p}.
 
 It was shown in \citet{gonzalez1985clustering} that max-diameter clustering is
 NP-complete when the dataset is in 2-dimensional Euclidean space and the
@@ -1193,20 +1334,20 @@ Many of the heuristic algorithms happen in two stages:
 \end{enumerate}
 We will first look at some methods for stage~\ref{item:initpart}.
 
-A common way to select an initial partition is to choose $k$ to be initial
-estimates for the ``centre'' of each cluster.  The elements of the dataset are
-then grouped with the centre that is closest.  Sometimes the centres are
-updated each time a new element is grouped with them, for example they could
-become the actual centroid or medoid or that cluster.  The $k$ centres are
-usually selected from the dataset, but they could also be taken from the
-underlying metric space.
+A common way to select an initial partition is to choose $k$ elements to be
+initial estimates for the ``centre'' of each cluster.  The elements of the
+dataset are then grouped with the centre that is closest.  Sometimes the
+centres are updated each time a new element is grouped with them, for example
+they could become the actual centroid or medoid of that cluster.  The $k$
+centres are usually selected from the dataset, but they could also be taken
+from the underlying metric space.
 
 Some simple ways to select $k$ centres are to take the first $k$ elements of
 the dataset \citep{macqueen1967some}, $k$ random elements of the dataset
 \citep{forgy65cluster} or $k$ elements regularly spaced across the dataset
 \citep{beale1969euclidean}.
 
-The Kennard-Stone algorithm (algorithm~\ref{alg:kennard-stone}) finds $k$
+The Kennard-Stone algorithm (Algorithm~\ref{alg:kennard-stone}) finds $k$
 centres that are maximally separated in the metric space.
 
 \begin{algorithm}
@@ -1241,7 +1382,7 @@ outliers and it is suggested that the initial two elements are not necessarily
 maximally separated; they should be distant, but not outliers.
 
 Another method is due to \citet{yuan04initial}
-(algorithm~\ref{alg:yuan-meng}).  The authors suggest a value of 0.75 for the
+(Algorithm~\ref{alg:yuan-meng}).  The authors suggest a value of 0.75 for the
 parameter $\alpha$.
 
 \begin{algorithm}
@@ -1279,7 +1420,7 @@ parameter $\alpha$.
 
 A further method which is commonly used prior to either Lloyd's or Hartigan's
 method for centroid-distance is called $k$-means++
-(algorithm~\ref{alg:kmeans++}).
+(Algorithm~\ref{alg:kmeans++}).
 
 \begin{algorithm}
   \caption{$k$-means++ initial centres algorithm.}
@@ -1511,16 +1652,28 @@ by taking the layer of the hierarchy with the desired number of clusters.
 
 
 
+\chapter{The Assignment Metric}
+\label{cha:assignment-metric}
+
+\section{Summary}
+\label{sec:asgn-met-summary}
+
+In this chapter we present the assignment metric and show how it can be used
+as a metric on subsets in a metric space as well as partitions.
+
 \chapter{Sum-of-Squares Clustering}
 \label{cha:sum-squar-clust}
 
 \section{Summary}
 \label{sec:summary-sum-squar}
 
-This chapter is basically the paper I did with Vic.
+In this chapter we examine two sum-of-squares criteria for clustering in a
+metric space and compare their performance.
 
 \chapter{Tree Stuff}
 \label{cha:tree-stuff}
+
+
 
 \chapter{Further Work}
 \label{cha:further-work}
@@ -1528,6 +1681,6 @@ This chapter is basically the paper I did with Vic.
 
 
 \bibliographystyle{plainnat}
-\bibliography{../comp-clustering.bib,../clustering.bib}
+\bibliography{../metrics.bib,../comp-clustering.bib,../clustering.bib}
 
 \end{document}
