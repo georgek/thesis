@@ -2,6 +2,8 @@
 \documentclass[a4paper]{report}
 
 \usepackage[utf8]{inputenc}
+\usepackage[T2A,OT1]{fontenc}
+\usepackage[english]{babel}
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{booktabs}
@@ -77,7 +79,9 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\tr}{tr}
 
-\newcommand{\dset}{\mathcal{D}}
+% -------------------- convenience things --------------------
+
+\newcommand{\dset}{D}
 \newcommand{\clus}{\mathcal{C}}
 \newcommand{\NP}{\text{NP}}
 
@@ -87,8 +91,17 @@
 \newcommand{\partcomparep}[1]{\Delta_{\mathcal{#1}}(\clus,\clus')}
 \newcommand{\partcomparepp}[1]{\Delta_{\mathcal{#1}}(\clus,\clus'')}
 
+% -------------------- pretty things --------------------
+
 % works nicely for fraction indices
 \newcommand{\prettyfrac}[2]{^#1\!/\!_#2}
+
+% use this for functions on powersets
+\newcommand{\psettimes}{\! \times}
+% and this for functions on powersets of powersets
+\newcommand{\pspsettimes}{\! \! \times}
+
+% -------------------- environments --------------------
 
 % theorems
 \newtheorem{thm}{Theorem}
@@ -139,10 +152,10 @@ generalisations.
 
 Let $\dset$ be a dataset and $x,y,z \in \dset$ be objects in the dataset.  If
 we wish to learn something about the dataset, one of the first questions we
-may ask is, how similar are the objects $x,y$ and $z$?  For this purpose we
+may ask is: how similar are the objects $x,y$ and $z$?  For this purpose we
 have a function $d \colon \dset \times \dset \to \mathbb{R}^+$ where
-$d(x,y)>d(x,z)$ means ``$x$ and $y$ are more similar than $x$ and $z$''.  Such
-a function is called a \textit{dissimilarity}.
+$d(x,y)>d(x,z)$ means ``$x$ and $y$ are more dissimilar (or less similar) than
+$x$ and $z$''.  Such a function is called a \textit{dissimilarity}.
 
 Some dissimilarities are more useful than others.  One would generally expect
 such a function to be symmetric, meaning $d(x,y)=d(y,x)$ for all $x,y \in
@@ -202,32 +215,37 @@ and the Chebyshev distance:
 \begin{equation*}
   d_C(x,y) = \max_{1 \leq i \leq m} |x_i - y_i|,
 \end{equation*}
-which are all three special cases of the Minkowski distance,
+which are all three special cases of the Minkowski distance:
 \begin{equation*}
   d_{I}(x,y) = \left(\sum_{i=1}^{m} |x_i - y_i|^{p}\right)^{\prettyfrac{1}{p}}
 \end{equation*}
-where $p$ is the order; order 1 being Manhattan, 2 Euclidean and $\lim_{p \to
-  \inf}$ Chebyshev.
+where $p$ is the order; order 1 being Manhattan, 2 being Euclidean and
+$\lim_{p \to \infty}$ being Chebyshev.
 
 The Mahalanobis distance \citep{mahalanobis30distance} is a metric which is
 equivalent to Euclidean distance on scaled principle components of the
-dataset.  Given a dataset, $\dset$, of $n$ elements, embedded in
-$m$-dimensional Euclidean space, the covariance of components (also known as
-features or fields) $i$ and $j$ is defined as
+dataset.  Given a dataset, $\dset$, of $n$ elements embedded in
+$m$-dimensional Euclidean space, the covariance of components $i$ and $j$ is
+defined as
 \begin{equation*}
   S_{ij} = \frac{1}{n-1} \sum_{k=1}^{n} (x_{ki}-\bar{x}_i)(x_{kj}-\bar{x}_j),
 \end{equation*}
 where $x_{ki}$ means the $i$th component of the $k$th element and $\bar{x}_i$
-means the mean of component $i$ in the dataset.  The covariance matrix is then
-the symmetric $m \times m$ matrix $S = [S_{ij}]$.  The Mahalanobis distance is
-then defined as
+means the mean of component $i$ in the dataset.  In this context, components
+are often called \textit{features} or \textit{fields}.  The covariance matrix
+is then the symmetric $m \times m$ matrix $S = [S_{ij}]$.  The Mahalanobis
+distance is then defined as
 \begin{equation*}
   d_{P}(x,y) = \sqrt{(x-y)S^{-1}(x-y)^T}.
 \end{equation*}
 
-Leaving Euclidean space now, a well known metric on strings of equal length is
-the Hamming distance \citep{hamming50errorcodes} which is equal to the number
-of positions at which the two strings differ.
+Departing from Euclidean space now, a well known metric on strings of equal
+length is the Hamming distance \citep{hamming50errorcodes} which is equal to
+the minimum number of substitutions required to transform one string into the
+other.  Another well known metric on strings of arbitrary length is the
+Levenshtein distance \citep{levenshtein1965distance} which is equal to the
+minimum number of insertions, deletions and substitutions required to
+transform one string into the other.
 
 For purely categorical data, a simple metric is the overlap metric, or $0/1$
 metric:
@@ -257,9 +275,19 @@ where
 where $range_i$ is the difference between maximum and minimum observed values
 for component $i$.
 
-Metrics are also possible on more complex structures.  Let $S$ be a set of
-arbitrary elements and $X,Y \in 2^{S}$ be any two subsets.  The cardinality of
-the symmetric difference is a metric on $2^{S}$:
+Metrics are also possible on more complex structures, like sets.  Throughout
+this thesis we will use the following convention for naming dissimilarity
+functions: $d$ will be used for dissimilarities on the objects contained in a
+dataset, so $d \colon \dset \times \dset$.  For dissimilarities on sets of
+those objects we will use $\delta$, so $\delta \colon 2^{\dset} \psettimes
+2^{\dset}$.  For dissimilarities on sets of those sets we will use $\Delta$,
+so $\Delta \colon 2^{2^{\dset}} \pspsettimes 2^{2^{\dset}}$.  We will look at
+some examples of dissimilarities on sets next and in
+Section~\ref{sec:comparing-partitions} we will look at some examples of
+dissimilarities on sets of sets.
+
+Let $S$ be a set of arbitrary elements and $X,Y \in 2^{S}$ be any two subsets.
+The cardinality of the symmetric difference is a metric on $2^{S}$:
 \begin{equation*}
   \delta_{\symdif}(X,Y) = |X \symdif Y|.
 \end{equation*}
@@ -469,11 +497,11 @@ can compare partitions and how we can find partitions.
 \subsection{The space of partitions}
 \label{sec:space-partitions}
 
-A partition of a dataset, $\dset$, is a set of $k$ sets, $C_1C_2,\dotsc,C_k$
-where $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for
-all $1 \leq i \leq k$ and $C_i \cap C_j = \emptyset$ for all $1 \leq i < j
-\leq k$.  In other words, it is a set of nonempty, nonoverlapping subsets.
-These subsets are called clusters.
+Given a set, $\dset$, a \textit{$k$-partition of $\dset$}, is a set of $k$
+non-empty, non-overlapping subsets that cover $\dset$; so $C_1 \cup C_2 \cup
+\dotsb \cup C_k = D$, $C_i \neq \emptyset$ for all $1 \leq i \leq k$ and $C_i
+\cap C_j = \emptyset$ for all $1 \leq i < j \leq k$.  Following common
+practice, we will refer to the subsets as \textit{clusters}.
 
 \begin{figure}
   \centering
@@ -541,6 +569,33 @@ These subsets are called clusters.
   \label{fig:lattice}
 \end{figure}
 
+Let $\mathcal{P}_{D}$ be the set of all partitions of $\dset$.  The natural
+way to represent $\mathcal{P}_{D}$ is as a graph called the \textit{lattice of
+  partitions}.  $\mathcal{P}_{D}$ is the vertex set of the graph and the edge
+set consists of edges $\{\clus_1,\clus_2\}$ such that $\clus_2$ can be
+obtained from $\clus_1$ by splitting a cluster into two parts: so $|\clus_2| =
+|\clus_1| + 1$ and $C_{1i} = C_{2h} \cup C_{2j}$ for some $C_{1i} \in \clus_1$
+and $C_{2h},C_{2j} \in \clus_2$.  In general, if a partition, $\clus_2$, can
+be obtained from another partition, $\clus_1$, by splitting one or more
+clusters, $\clus_2$ is called a \textit{refinement} of $\clus_1$.
+
+The lattice of partitions of a four element set is shown in
+Figure~\ref{fig:lattice}.  The partition at the top if the partition that is
+not a refinement of any partition---$k=1$.  The partition at the bottom is the
+partition that is a refinement of every other partition---$k=n$.
+
+The number of possible partitions of an $n$ element set is equivalent to the
+$n$th Bell number, $B_n$ \citep{bell1934exponential,stanley2000enumerative}.
+The sequence of Bell numbers begins with $B_0 = 1$; the rest of the sequence
+can be generated in a few ways including by a recursive formula:
+\begin{equation*}
+  B_n = \sum_{l=0}^{n-1} B_l \binom{n-1}{l},
+\end{equation*}
+and Dobinski's formula \citep{dobinski1877summation}:
+\begin{equation*}
+  B_n = \frac{1}{e} \sum_{l=0}^{\infty} \frac{l^n}{l!}.
+\end{equation*}
+
 \begin{table}
   \centering
   \begin{tabular}{rr}
@@ -554,37 +609,16 @@ These subsets are called clusters.
     25 & $4.64 \times 10^{18}$ \\
     \bottomrule
   \end{tabular}
-  \caption{Growth of the Bell number}
+  \caption{The $n$th Bell number, $B_n$, is the number of possible partitions
+    of an $n$ element set.  The growth of the Bell numbers is
+    superexponential.}
   \label{tab:bell-number}
 \end{table}
 
-Let $\mathcal{P}_{\dset}$ be the set of all partitions of $\dset$.  The
-natural way to represent the set $\mathcal{P}_{\dset}$ is as a graph called
-the lattice of partitions.  Such a graph is shown in Figure~\ref{fig:lattice}.
-The top of the graph contains a single node containing $\hat{1} = \{\dset\}$
-which is the partition with one cluster and the bottom is a single node
-containing $\hat{0} = \{\{D_1\},\{D_2\},\dotsc,\{D_n\}\}$ the partition
-containing $n$ clusters.
-
-A partition, $\clus'$, which is obtained by splitting one or more clusters in
-$\clus$ is said to be a refinement of $\clus$.  Every edge in the lattice
-represents a refinement, with the coarser partition at the top.
-
-As can be seen from Figure~\ref{fig:lattice}, the number of possible
-partitions for a 4 element dataset is already quite large; for a 20 element
-dataset the number is more than 51 trillion.  In general the number of
-possible partitions of an $n$ element dataset is equivalent to the $n$th Bell
-number, $B_n$~\citep{bell1934exponential}.  The sequence of Bell numbers
-begins with $B_0 = 1$ and its growth is then superexponential in $n$.  The
-rest of sequence can be generated in a few ways including by a recursive
-formula:
-\begin{equation*}
-  B_n = \sum_{k=0}^{n-1} B_k {n-1 \choose k},
-\end{equation*}
-or using Dobinski's formula:
-\begin{equation*}
-  B_n = \frac{1}{e} \sum_{k=0}^{\inf} \frac{k^n}{k!}.
-\end{equation*}
+As can be seen in Figure~\ref{fig:lattice}, the number of partitions of a four
+element set is already quite large.  In fact, the growth of the Bell numbers
+is superexponential.  The values of some Bell numbers is given in
+Table~\ref{tab:bell-number}.
 
 Partitions can be generalised to fuzzy partitions by allowing elements to be
 in more than one cluster.  A fuzzy partition is therefore a set of fuzzy sets
@@ -1113,7 +1147,7 @@ between each member of the cluster and its centroid:
   \label{eq:tr(W)}
   \tr(\mathbf{W}) = \sum_{i=1}^{k} \sum_{x \in C_i} d^2(x,c_i),
 \end{equation}
-where $d$ is the Euclidean distance.  This can be seen easily by examining the
+where $d$ is Euclidean distance.  This can be seen easily by examining the
 main diagonal of each $\mathbf{W}_i$:
 \begin{multline*}
   \mathbf{W}_i = \\
@@ -1151,28 +1185,29 @@ also be shown by the Huygens-Steiner, or parallel-axis, theorem, which states
 that
 \begin{equation}
   \label{eq:huygens}
-  \sum_{x \in C_i} d^2(x,s) = d^2(c_i,s) \dot |C_i| + \sum_{x \in C_i} d^2(x,c_i)
+  \sum_{x \in C_i} d_E^2(x,s) = d_E^2(c_i,s) \dot |C_i| +
+                             \sum_{x \in C_i} d_E^2(x,c_i)
 \end{equation}
-where $s$ and the members of $C_i$ are in Euclidean space and $d$ is the
+where $s$ and the members of $C_i$ are in Euclidean space and $d_E$ is
 Euclidean distance.
 
 We can also use this theorem to show a relationship between centroid-distance
 and sum-of-cliques.  Beginning with equation~\eqref{eq:huygens} we assign some
 $y \in C_i$ to $s$ and sum over all $y \in C_i$:
 \begin{equation*}
-  \sum_{x,y \in C_i} d^2(x,y) = \sum_{y \in C_i} d^2(c_i,y) \dot |C_i|
-                           + \sum_{x \in C_i} d^2(x,c_i) \dot |C_i|
+  \sum_{x,y \in C_i} d_E^2(x,y) = \sum_{y \in C_i} d_E^2(c_i,y) \dot |C_i|
+                           + \sum_{x \in C_i} d_E^2(x,c_i) \dot |C_i|
 \end{equation*}
-and, since $d$ is symmetric,
+and, since $d_E$ is symmetric,
 \begin{equation}
   \label{eq:cd-as-equivalence}
-  \frac{\displaystyle \sum_{x,y \in C_i} d^2(x,y)}
+  \frac{\displaystyle \sum_{x,y \in C_i} d_E^2(x,y)}
        {|C_i|}
-  = 2 \sum_{x \in C_i} d^2(x,c_i).
+  = 2 \sum_{x \in C_i} d_E^2(x,c_i).
 \end{equation}
 So when we use Euclidean distance squared as dissimilarity measure,
 centroid-distance for each cluster is equivalent to sum-of-cliques over twice
-the cardinality of the cluster.  Since $d$ is symmetric this is the same as
+the cardinality of the cluster.  Since $d_E$ is symmetric this is the same as
 only counting pairwise distances once each.
 
 It should be noted that centroid-distance is, in fact, simply a more general
@@ -1222,12 +1257,12 @@ attempts to optimise one such information measure.
 
 We finish our discussion on criteria with two further definitions.  The
 partition which is the global minimum or maximum solution, whichever is
-appropriate, for a particular criterion is called the optimal partition, for
-example, we will later refer to the centroid-distance optimal partition,
-all-squares optimal partition and so on.  The problem of finding an optimal
-partition according to any criterion we will refer to simply as clustering,
-and when we speak of a particular criterion we will say centroid-distance
-clustering, all-squares clustering and so on.
+appropriate, for a particular criterion is called the \textit{optimal
+  partition}, for example, we will later refer to the centroid-distance
+optimal partition, all-squares optimal partition and so on.  The problem of
+finding an optimal partition according to any criterion we will refer to
+simply as \textit{clustering}, and when we speak of a particular criterion we
+will say centroid-distance clustering, all-squares clustering and so on.
 
 \subsection{Computational complexity}
 \label{sec:complexity-issues}
