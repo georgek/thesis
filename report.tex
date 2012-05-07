@@ -51,6 +51,12 @@
   decorations.pathreplacing,decorations.pathmorphing,shapes,%
   matrix,shapes.symbols}
 
+\tikzstyle{dot}=[circle,fill,inner sep=0,minimum size=1.2mm]
+\tikzstyle{dist}=[>=stealth,->,shorten >=2pt]
+\tikzstyle{symdist}=[>=stealth,<->,shorten <=2pt,shorten >=2pt]
+\tikzstyle{faint}=[gray!50]
+\tikzstyle{clus}=[circle,draw,inner sep=0,minimum size=5mm]
+
 % --- End TikZ stuff ---
 
 
@@ -257,10 +263,11 @@ metric:
   \end{cases}
 \end{equation*}
 
-A frequently occurring type of data is mixed data, that is vectors with both
-numerical and categorical components.  The heterogeneous Euclidean-overlap
-metric uses normalised Euclidean distance on the numerical components and the
-overlap metric on categorical components.  It is defined as:
+A frequently occurring type of data is mixed data, that is to say we have
+vectors with both numerical and categorical components.  The heterogeneous
+Euclidean-overlap metric uses normalised Euclidean distance on the numerical
+components and the overlap metric on categorical components.  It is defined
+as:
 \begin{equation*}
   d_{H}(x,y) = \sqrt{\sum_{i=1}^{m} d_{Hi}^2(x_i,y_i)},
 \end{equation*}
@@ -313,7 +320,8 @@ The cardinality of the symmetric difference is a metric on $2^{S}$:
     \node at (150:.9) {$f$};
     \node at (0:0) {$g$};
   \end{tikzpicture}
-  \caption{Partition of $X \cup Y \cup Z$}
+  \caption{Partition of $X \cup Y \cup Z$.  The quantities $a,b,c,d,e,f,g$
+    represent the cardinalities of each disjoint set as shown.}
   \label{fig:partition}
 \end{figure}
 
@@ -329,13 +337,13 @@ The cardinality of the symmetric difference is a metric on $2^{S}$:
   We partition $X \cup Y \cup Z$ into disjoint subsets as shown in
   Figure~\ref{fig:partition} and let
   \begin{align*}
-    a &= |A \setminus (B \cup C)|\\
-    b &= |B \setminus (A \cup C)|\\
-    c &= |C \setminus (A \cup B)|\\
-    d &= |(A \cap B) \setminus C|\\
-    e &= |(B \cap C) \setminus A|\\
-    f &= |(C \cap A) \setminus B|\\
-    g &= |A \cap B \cap C|
+    a &= |X \setminus (Y \cup Z)|\\
+    b &= |Y \setminus (X \cup Z)|\\
+    c &= |Z \setminus (X \cup Y)|\\
+    d &= |(X \cap Y) \setminus Z|\\
+    e &= |(Y \cap Z) \setminus X|\\
+    f &= |(Z \cap X) \setminus Y|\\
+    g &= |X \cap Y \cap Z|
   \end{align*}
 
   We can now write the above inequality as:
@@ -352,7 +360,7 @@ The normalised symmetric difference is also a metric on $2^{S}$:
 \begin{equation*}
   \delta_{\symdif_n}(X,Y) =
   \begin{cases}
-    \displaystyle \frac{|X \symdif Y|}{|X \cup Y|} & \text{if $A \cup B \neq
+    \displaystyle \frac{|X \symdif Y|}{|X \cup Y|} & \text{if $X \cup Y \neq
       \emptyset$} \\
     0 & \text{otherwise.}
   \end{cases}
@@ -430,14 +438,66 @@ The normalised symmetric difference is also a metric on $2^{S}$:
   \end{align*}
 \end{proof}
 
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[
+    node1/.style={dot,regular polygon,regular polygon sides=3,
+      minimum size=2mm,fill=black},
+    node2/.style={dot,regular polygon,regular polygon sides=3,
+      minimum size=2mm,fill=black,rotate=180}
+    ]
+
+    \draw [dashed,faint] (-2.8em,0) ellipse (4em and 5em);
+    \draw [dashed,faint] (2.8em,0) ellipse (5em and 4em);
+
+    % set 1 primary markers
+    \begin{scope}[xshift=-2.8em,scale=0.85]
+      \foreach \theta in {0,30,...,330} {
+        \pgfmathparse{(4*5)/sqrt((5*cos(\theta))^2+(4*sin(\theta))^2)}
+        \node [node1] (1set\theta) at (\theta:\pgfmathresult em) {};
+      }
+    \end{scope}
+    % set 2 markers
+    \begin{scope}[xshift=-2.8em,scale=0.85]
+      \foreach \theta in {0,30,330} {
+        \pgfmathparse{(4*5)/sqrt((5*cos(\theta))^2+(4*sin(\theta))^2)}
+        \node [node2] at (\theta:\pgfmathresult em) {};
+      }
+    \end{scope}
+
+    % set 2 primary markers
+    \begin{scope}[xshift=2.8em,scale=0.85]
+      \foreach \theta in {0,30,...,330} {
+        \pgfmathparse{(5*4)/sqrt((4*cos(\theta))^2+(5*sin(\theta))^2)}
+        \node [node2] (2set\theta) at (\theta:\pgfmathresult em) {};
+      }
+    \end{scope}
+    % set 1 markers
+    \begin{scope}[xshift=2.8em,scale=0.85]
+      \foreach \theta in {150,180,210} {
+        \pgfmathparse{(5*4)/sqrt((4*cos(\theta))^2+(5*sin(\theta))^2)}
+        \node [node1] at (\theta:\pgfmathresult em) {};
+      }
+    \end{scope}
+
+    \draw [symdist] (2set0) -- (1set0);
+  \end{tikzpicture}
+  \caption{The Haussdorf distance between two subsets of a metric space is,
+    informally, the greatest distance one must travel if starting from a point
+    in one set and travelling to the closest point in the other set.  This
+    distance is marked in the diagram.}
+  \label{fig:haussdorf}
+\end{figure}
+
 If the sets are nonempty subsets of a metric space, $(M,d)$ then the
 underlying metric space can be used to define metrics on the sets.  The
 Haussdorf metric is a metric on $2^{M}$ \citep{braun2003geometry}:
 \begin{equation*}
-  \delta_{H}(X,Y) = \max(\max_{x \in X} \min_{y \in Y} d(x,y),
-                        \max_{y \in Y} \min_{x \in X} d(x,y)).
+  \delta_{H}(X,Y) = \max\left(\max_{x \in X} \min_{y \in Y} d(x,y),
+                             \max_{y \in Y} \min_{x \in X} d(x,y)\right).
 \end{equation*}
-In Chapter~\ref{cha:assignment-metric} we present another metric which can be
+This distance is illustrated in Figure~\ref{fig:haussdorf}.  In
+Chapter~\ref{cha:assignment-metric} we present another metric which can be
 used for this purpose.
 
 As an aside, it should be noted that
@@ -660,6 +720,24 @@ The confusion matrix of $\clus_1$ and $\clus_2$ is the $k \times k'$ matrix
 $[n_{ij}]$ where $n_{ij} = |C_{i1} \cap C_{2j}|$.  The confusion matrix is
 used for the calculation of both pair counting and set matching measures.
 
+Throughout this section we will use two example partitions and calculate the
+similarity or dissimilarity between them according to each measure presented,
+for purposes of comparison.  The example partitions we use are:
+\begin{align*}
+  \clus_1 &= \{\{1,2,3\},\{4,5,6\},\{7,8,9\}\}, \\
+  \clus_2 &= \{\{1,4\},\{2,3,6\},\{5,8\},\{7,9\}\}.
+\end{align*}
+The confusion matrix between these two partitions is:
+\begin{equation*}
+  \left[
+  \begin{matrix}
+    1 & 2 & 0 & 0 \\
+    1 & 1 & 1 & 0 \\
+    0 & 0 & 1 & 2
+  \end{matrix}
+  \right]
+\end{equation*}
+
 \subsubsection{Pair counting}
 \label{sec:pair-counting}
 
@@ -700,8 +778,25 @@ agreement between the partitions, while $N_{10}$ and $N_{01}$ are considered
 measurements of the disagreement.  The measures based on pair counting can all
 be expressed in terms of these four counts.  Clearly
 $N_{11}+N_{00}+N_{10}+N_{01}$ is always satisfied.  The counts can all be
-obtained from the confusion matrix in polynomial time
-\citep{hubert-arabie-1985}.
+obtained from the confusion matrix using the following formul\ae
+\citep{hubert-arabie-1985}:
+\begin{align*}
+  N_{11} &= \frac{1}{2} \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}(n_{ij}-1),\\
+  N_{00} &= \frac{1}{2} \left(n^2 + \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
+                             - \sum_{i=1}^{k}
+                                \left(\sum_{j=1}^{k'} n_{ij} \right)^2
+                             - \sum_{j=1}^{k'}
+                                \left(\sum_{i=1}^{k} n_{ij} \right)^2
+                       \right),\\
+  N_{10} &= \frac{1}{2} \left(\sum_{i=1}^{k}
+                              \left(\sum_{j=1}^{k'} n_{ij} \right)^2
+                             - \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
+                       \right),\\
+  N_{01} &= \frac{1}{2} \left(\sum_{j=1}^{k'}
+                              \left(\sum_{i=1}^{k} n_{ij} \right)^2
+                             - \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
+                       \right).
+\end{align*}
 
 One of the simplest pair counting measures is the widely-used \textit{Rand
   index} \citep{rand-1971}:
@@ -709,7 +804,7 @@ One of the simplest pair counting measures is the widely-used \textit{Rand
 \partcompare{R} = \frac{(N_{11}+N_{00})}{\binom{n}{2}}.
 \end{equation*}
 which is a similarity measure.  \citet{hubert-arabie-1985} use a variation of
-this: $(N_{11}+N_{00}+N_{10}+N_{01})/\binom{n}{2}$.
+this: $(N_{11}+N_{00}-N_{10}-N_{01})/\binom{n}{2}$.
 
 \citet{wallace-1983} introduced two asymmetric measures, $\mathcal{W}_{I}$ and
 $\mathcal{W}_{II}$ defined as:
@@ -768,6 +863,13 @@ $(N_{10}+N_{01})/\binom{n}{2}$, which is also a metric, was used in
   \label{tab:pair-counting-comparison}
 \end{table}
 
+The four counts for our example partitions are:
+\begin{align*}
+  N_{11} &= 2,\\
+  N_{00} &= 23,\\
+  N_{10} &= 7,\\
+  N_{01} &= 4.
+\end{align*}
 The values of the pair counting measures when applied to our example
 partitions are given in Table~\ref{tab:pair-counting-comparison}.
 
@@ -790,10 +892,11 @@ measure.
 \begin{figure}
   \Centering
   \begin{tikzpicture}[
-    >=stealth,
-    clus/.style={circle,draw=black,inner sep=0,minimum size=5mm},
-    dist/.style={->,shorten >=2pt},
-    faint/.style={dist,gray!50},
+    % >=stealth,
+    % clus/.style={circle,draw=black,inner sep=0,minimum size=5mm},
+    % dist/.style={->,shorten >=2pt},
+    % faint/.style={dist,gray!50},
+    nonmatch/.style={dist,faint},
     match/.style={dist,black}
     ]
 
@@ -809,7 +912,7 @@ measure.
     % join them all
     \foreach \x in {1,2,3} {
       \foreach \y in {1,2,3,4} {
-        \draw [faint] (c1\x) to (c2\y);
+        \draw [nonmatch] (c1\x) to (c2\y);
       }
     }
 
@@ -818,9 +921,9 @@ measure.
     \draw [match] (c12) to (c23);
     \draw [match] (c13) to (c21);
   \end{tikzpicture}
-  \caption{An injection, $\sigma$, is sought among all possible injections
-    $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$ where $k' \geq k$.
-    This is used to ``match'' pairs of clusters.}
+  \caption{For set matching measures, an injection, $\sigma$, is sought among
+    all possible injections $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$
+    where $k' \geq k$.  The ``matched'' sets themselves are then compared.}
   \label{fig:matching}
 \end{figure}
 
