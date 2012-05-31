@@ -89,10 +89,12 @@
 
 \newcommand{\dset}{D}
 \newcommand{\clus}{\mathcal{C}}
+\newcommand{\parts}{\mathcal{P}}
 \newcommand{\NP}{\text{NP}}
 
 % for functions between two partitions C_1 and C_2
 \newcommand{\partcompare}[1]{\Delta_{\mathcal{#1}}(\clus_1,\clus_2)}
+\newcommand{\partcomparest}[1]{\Delta_{\mathcal{#1}}(\clus^*_1,\clus^*_2)}
 % for functions between two partitions C and C' and C and C''
 \newcommand{\partcomparep}[1]{\Delta_{\mathcal{#1}}(\clus,\clus')}
 \newcommand{\partcomparepp}[1]{\Delta_{\mathcal{#1}}(\clus,\clus'')}
@@ -117,7 +119,7 @@
 
 % problem template
 \newenvironment{problem}[1]{\par\addvspace{\topsep}\noindent\textsc{#1}\\}
-{\par\addvspace{\topsep}}
+{\par\addvspace{\topsep}\noindent}
 \newcommand{\instance}[1]{\textsc{Instance:} #1\\}
 \newcommand{\question}[1]{\textsc{Question:} #1}
 
@@ -149,51 +151,46 @@
 \section{Datasets and metric spaces}
 \label{sec:datas-metr-spac}
 
-A dataset, in the most general terms, is simply a collection of $n$ objects.
-Often these objects are $m$-dimensional vectors with each object representing
-some observation made during an experiment.  in general, though, we consider
-the objects to be of an abstract type about which we know nothing.  For now we
-will consider the collection to be a set, but later we will look at some
-generalisations.
+A dataset, in the most general sense, is simply a collection of objects.  For
+now we will consider the collection to be a set, but later we will look at
+some generalisations.
 
-Let $\dset$ be a dataset and $x,y,z \in \dset$ be objects in the dataset.  If
-we wish to learn something about the dataset, one of the first questions we
-may ask is: how similar are the objects $x,y$ and $z$?  For this purpose we
-have a function $d \colon \dset \times \dset \to \mathbb{R}^+$ where
-$d(x,y)>d(x,z)$ means ``$x$ and $y$ are more dissimilar (or less similar) than
-$x$ and $z$''.  Such a function is called a \textit{dissimilarity}.
+Let $\dset$ be a set with some $x,y,z \in \dset$.  It is important for many
+applications to be able to compare objects in a set.  For this purpose we can
+define a function:
+\begin{equation*}
+  d \colon \dset \times \dset \to \mathbb{R}^{\geq 0}.
+\end{equation*}
+Such a function is called a \textit{dissimilarity on $\dset$}.  Whenever we
+have $d(x,y)>d(x,z)$ this is interpreted as ``$x,y$ are more dissimilar than
+$x,z$''.
 
 Some dissimilarities are more useful than others.  One would generally expect
-such a function to be symmetric, meaning $d(x,y)=d(y,x)$ for all $x,y \in
-\dset$.  One would also expect that no two distinct elements can be more
-similar than identical elements, so $d(x,x)=0$ for all $x \in \dset$.  A
-dissimilarity which satisfies these two properties is called a
-\textit{distance}.  When we use a distance, elements are usually said to be
-close or distant, instead of similar or dissimilar.
+the function to have the following two properties for all $x,y \in \dset$:
+\begin{enumerate}
+\item $d(x,y) = d(y,x)$,
+\item \label{item:distinct} $d(x,x) = 0$.
+\end{enumerate}
+Informally, this means the function is symmetrical, and that no two distinct
+elements can be more similar than identical elements.  A dissimilarity on
+$\dset$ which satisfies these two properties is called a \textit{distance on
+  $\dset$}.  When we use a distance, objects are usually said to be close or
+distant, instead of similar or dissimilar.
 
-Given a distance, one may also expect that distinct elements are always closer
-than identical elements, so $d(x,y)=0$ if \textit{and only if} $x=y$, for all
-$x,y \in \dset$.  This is called the identity of indiscernibles.  Further, we
-may expect that distances satisfy the triangle inequality, that is
-$d(x,y)+d(y,z) \geq d(x,z)$ for all $x,y,z \in \dset$.  A distance which
-satisfies these two further requirements is called a \textit{metric}.
-
-Given a set $M$ and a metric $d \colon M \times M \to \mathbb{R}^+$, we call
-the ordered pair $(M,d)$ a \textit{metric space}.  If the objects in the
-dataset exist in some larger metric space, for example real valued vectors
-exist in Euclidean space, then we say the dataset is embedded in a metric
-space.
-
-A metric is the most intuitive type of dissimilarity for human use.  Having a
-metric allows one to make several deductions quickly and effortlessly.  For
-example, if we know that some object $a$ is distant to some other object $b$,
-and that a third object $c$ is close to $b$, we would expect that $c$ is also
-distant to $a$.  This deduction is correct in a metric space but not correct
-in general.
+Two further properties that may be expected are, for all $x,y,z \in \dset$:
+\begin{enumerate}[resume]
+\item \label{item:identity} $d(x,y) = 0$ only if $x=y$,
+\item \label{item:tri-ineq} $d(x,y)+d(y,z) \geq d(x,z)$.
+\end{enumerate}
+Properties~\ref{item:distinct} and \ref{item:identity} together are called the
+\textit{identity of indiscernibles}.  Property~\ref{item:tri-ineq} is called
+the \textit{triangle inequality}.  A distance on $\dset$ which satisfies all
+four properties is called a \textit{metric on $\dset$}.  If $d$ is a metric on
+$\dset$, then $(\dset,d)$ is called a \textit{metric space}.
 
 Sometimes when we wish to compare elements of a particular dataset it is
 necessary to invent a dissimilarity.  Usually a metric is most desirable.  But
-often the objects in the dataset will be of a common type, such as real valued
+often the objects in the dataset will be of a common type, such as Euclidean
 vectors, for which there are many dissimilarities already defined.  We will
 look at some examples of existing dissimilarities now.  Since we are most
 interested in metrics, we will only briefly mention some non-metrics.
@@ -206,8 +203,10 @@ not metrics include the Bhattacharyya distance \citep{bhattacharyya43distance}
 and in a general positive edge-weighted graph, the length of the shortest path
 between two vertices.
 
-We now look at metrics, beginning with Euclidean space.  Let $M$ be
-$m$-dimensional Euclidean space and $x=(x_1,x_2,\dotsc,x_m),
+\subsection{Euclidean space metrics}
+\label{sec:eucl-space-metr}
+
+Let $M$ be $m$-dimensional Euclidean space and $x=(x_1,x_2,\dotsc,x_m),
 y=(y_1,y_2,\dotsc,y_m) \in M$ be any two elements.  Metrics include the
 familiar Euclidean distance:
 \begin{equation*}
@@ -245,15 +244,29 @@ distance is then defined as
   d_{P}(x,y) = \sqrt{(x-y)S^{-1}(x-y)^T}.
 \end{equation*}
 
-Departing from Euclidean space now, a well known metric on strings of equal
-length is the Hamming distance \citep{hamming50errorcodes} which is equal to
-the minimum number of substitutions required to transform one string into the
-other.  Another well known metric on strings of arbitrary length is the
+\subsection{Sequence space metrics}
+\label{sec:sequ-space-metr}
+
+Sequences are a frequently occurring type of object found in many areas such
+as genetics and natural language analysis.
+
+A well known metric on sequences of equal length is the Hamming distance
+\citep{hamming50errorcodes} which is equal to the minimum number of
+substitutions required to transform one sequence into the other.
+
+Another well known metric, this time on sequences of arbitrary length, is the
 Levenshtein distance \citep{levenshtein1965distance} which is equal to the
 minimum number of insertions, deletions and substitutions required to
-transform one string into the other.
+transform one sequence into the other.
 
-For purely categorical data, a simple metric is the overlap metric, or $0/1$
+\subsection{Mixed data metrics}
+\label{sec:mixed-data-metrics}
+
+Euclidean space consists of $m$-tuples of real numbers.  This is often called
+numerical data.  Another type of data is categorical data, where the value of
+each object is one of a fixed, usually small, number of categories.
+
+The simplest metric for categorical data is the overlap metric, or $0/1$
 metric:
 \begin{equation*}
   d_O(x,y) =
@@ -263,8 +276,8 @@ metric:
   \end{cases}
 \end{equation*}
 
-A frequently occurring type of data is mixed data, that is to say we have
-vectors with both numerical and categorical components.  The heterogeneous
+A frequently occurring type of data is mixed data, which consists of
+$m$-tuples with both numerical and categorical components.  The heterogeneous
 Euclidean-overlap metric uses normalised Euclidean distance on the numerical
 components and the overlap metric on categorical components.  It is defined
 as:
@@ -282,6 +295,9 @@ where
 where $range_i$ is the difference between maximum and minimum observed values
 for component $i$.
 
+\subsection{Set metrics}
+\label{sec:set-metric}
+
 Metrics are also possible on more complex structures, like sets.  Throughout
 this thesis we will use the following convention for naming dissimilarity
 functions: $d$ will be used for dissimilarities on the objects contained in a
@@ -294,7 +310,7 @@ Section~\ref{sec:comparing-partitions} we will look at some examples of
 dissimilarities on sets of sets.
 
 Let $S$ be a set of arbitrary elements and $X,Y \in 2^{S}$ be any two subsets.
-The cardinality of the symmetric difference is a metric on $2^{S}$:
+The cardinality of the symmetric difference is a well known metric on $2^{S}$:
 \begin{equation*}
   \delta_{\symdif}(X,Y) = |X \symdif Y|.
 \end{equation*}
@@ -325,37 +341,6 @@ The cardinality of the symmetric difference is a metric on $2^{S}$:
   \label{fig:partition}
 \end{figure}
 
-\begin{proof}
-  It is obvious from the definition that the function is non-negative,
-  symmetric and that $\delta_{\symdif}(X,Y)=0$ if and only if $X=Y$ for all
-  $X,Y \in 2^{S}$.  We will show that the triangle inequality holds for all
-  $X,Y,Z \in 2^{S}$:
-  \begin{equation*}
-    |X \symdif Y| + |Y \symdif Z| \geq |X \symdif Z|.
-  \end{equation*}
-
-  We partition $X \cup Y \cup Z$ into disjoint subsets as shown in
-  Figure~\ref{fig:partition} and let
-  \begin{align*}
-    a &= |X \setminus (Y \cup Z)|\\
-    b &= |Y \setminus (X \cup Z)|\\
-    c &= |Z \setminus (X \cup Y)|\\
-    d &= |(X \cap Y) \setminus Z|\\
-    e &= |(Y \cap Z) \setminus X|\\
-    f &= |(Z \cap X) \setminus Y|\\
-    g &= |X \cap Y \cap Z|
-  \end{align*}
-
-  We can now write the above inequality as:
-  \begin{equation*}
-    a+2b+c+d+e+2f \geq a+c+d+e,
-  \end{equation*}
-  so,
-  \begin{equation*}
-    2b+2f \geq 0.
-  \end{equation*}
-\end{proof}
-
 The normalised symmetric difference is also a metric on $2^{S}$:
 \begin{equation*}
   \delta_{\symdif_n}(X,Y) =
@@ -383,9 +368,18 @@ The normalised symmetric difference is also a metric on $2^{S}$:
     1 - \frac{|X \cap Z|}{|X \cup Z|}.
   \end{equation}
 
-  We partition $X \cup Y \cup Z$ in the same way as in
-  Figure~\ref{fig:partition} and with $a,b,c,d,e,f,g$ defined as in the
-  previous proof and also we define
+  We partition $X \cup Y \cup Z$ into disjoint subsets as shown in
+  Figure~\ref{fig:partition} and let
+  \begin{align*}
+    a &= |X \setminus (Y \cup Z)|\\
+    b &= |Y \setminus (X \cup Z)|\\
+    c &= |Z \setminus (X \cup Y)|\\
+    d &= |(X \cap Y) \setminus Z|\\
+    e &= |(Y \cap Z) \setminus X|\\
+    f &= |(Z \cap X) \setminus Y|\\
+    g &= |X \cap Y \cap Z|
+  \end{align*}
+  and for convenience we let
   \begin{equation*}
     \xi  = |X \cup Y \cup Z|.
   \end{equation*}
@@ -482,14 +476,14 @@ The normalised symmetric difference is also a metric on $2^{S}$:
 
     \draw [symdist] (2set0) -- (1set0);
   \end{tikzpicture}
-  \caption{The Haussdorf distance between two subsets of a metric space is,
-    informally, the greatest distance one must travel if starting from a point
-    in one set and travelling to the closest point in the other set.  This
-    distance is marked in the diagram.}
+  \caption{The Haussdorf distance between two subsets of a metric space can be
+    described informally as the greatest distance one must travel if starting
+    from a point in one set and travelling to the closest point in the other
+    set.  This distance is marked in the diagram.}
   \label{fig:haussdorf}
 \end{figure}
 
-If the sets are nonempty subsets of a metric space, $(M,d)$ then the
+If the sets are nonempty subsets of a metric space, $(M,d)$, then the
 underlying metric space can be used to define metrics on the sets.  The
 Haussdorf metric is a metric on $2^{M}$ \citep{braun2003geometry}:
 \begin{equation*}
@@ -500,12 +494,19 @@ This distance is illustrated in Figure~\ref{fig:haussdorf}.  In
 Chapter~\ref{cha:assignment-metric} we present another metric which can be
 used for this purpose.
 
-As an aside, it should be noted that
+As an aside, it should be noted that linkage functions, which are used in
+hierarchical clustering, the topic of Section~\ref{sec:hierarchies}, are not
+generally metrics.  The \textit{single-linkage distance}:
 \begin{equation*}
   \delta(X,Y) = \min_{x \in X, y \in Y} d(x,y)
 \end{equation*}
-is a simple and intuitive distance between sets, but is not generally a
-metric.
+is a simple and intuitive distance between sets, but is not a metric since
+distinct sets can have a distance of zero.  \textit{Complete-linkage} and
+\textit{average-linkage} are, in fact, not even distances.  These measures
+will be discussed in Section~\ref{sec:hierarchies}.
+
+\subsection{Other metrics}
+\label{sec:other-metrics}
 
 Many other metrics exist including the Hellinger distance and Jensen-Shannon
 divergence squared \citep{endres03metric} for probability distributions.
@@ -517,18 +518,20 @@ Chapter~\ref{cha:assignment-metric} we introduce our own metric.
 It is also possible in some cases to transform a general dissimilarity into a
 metric, for example see \citet[chap. 2.5]{everitt80}.
 
+\subsection{Multiset datasets}
+\label{sec:multiset-datasets}
+
 It is tempting to think of a dataset and a metric defined on its elements as a
 metric space, but this is not necessarily correct.  The reason is that,
-contrary to the name, a dataset is not a set but a multiset.  Consider a
-dataset consisting of only the heights of some population of humans.
+contrary to the name, a dataset is not usually a set but a multiset.  Consider
+a dataset consisting of only the heights of some population of humans.
 Depending on the precision of the measurements taken, it would generally be
-expected that multiple people will share the same height.  In order to have
-these observations in a set, some unique integer---an experiment number,
-say---would need to be attached to each observation.  But then the metric
-condition that $d(x,y)=0$ only if $x=y$ would be violated---in fact we would
-have only a pseudometric.  We can get a proper metric if we define an
-equivalence relation $x \sim y$ if $d(x,y)=0$.  Then $(\dset/\sim,d)$ is a
-metric space.
+expected that multiple subjects share the same height.  In order to have these
+observations in a set, some unique integer---an experiment number, say---would
+need to be attached to each observation.  But then the metric condition that
+$d(x,y)=0$ only if $x=y$ would be violated---in fact we would have only a
+\textit{pseudometric}.  We can get a proper metric if we define an equivalence
+relation $x \sim y$ if $d(x,y)=0$.  Then $(\dset/\sim,d)$ is a metric space.
 
 Most of the time we do not need to worry about this.  From now on a dataset,
 $\dset$, will implicitly mean $\dset/\sim$ as defined above unless stated
@@ -551,17 +554,17 @@ $(\dset,\mu_{\dset})$ is called a fuzzy set
 \section{Partitions}
 \label{sec:partitions}
 
-In this section we look at the properties of partitions of datasets, how we
-can compare partitions and how we can find partitions.
+In this section we look at the properties of partitions of sets, how we can
+compare partitions and how we can find partitions.
 
 \subsection{The space of partitions}
 \label{sec:space-partitions}
 
-Given a set, $\dset$, a \textit{$k$-partition of $\dset$}, is a set of $k$
-non-empty, non-overlapping subsets that cover $\dset$; so $C_1 \cup C_2 \cup
-\dotsb \cup C_k = D$, $C_i \neq \emptyset$ for all $1 \leq i \leq k$ and $C_i
-\cap C_j = \emptyset$ for all $1 \leq i < j \leq k$.  Following common
-practice, we will refer to the subsets as \textit{clusters}.
+A $k$-partition, $\clus = \{C_1,C_2,\dotsc,C_k\}$, of an $n$ element set,
+$\dset$, is a set of $k \in \{1,2,\dotsc,n\}$ non-empty, pairwise disjoint
+subsets such that $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$.  Following
+common practice, we will refer to the elements of $\clus$ as
+\textit{clusters}.
 
 \begin{figure}
   \centering
@@ -625,36 +628,40 @@ practice, we will refer to the subsets as \textit{clusters}.
     \draw (24) to (3);
     \draw (25) to (3);
   \end{tikzpicture}
-  \caption{The lattice of partitions of dataset $\{a,b,c,d\}$ \citep{meila-2005}.}
+  \caption{The Hasse diagram of the lattice of partitions of a set,
+    $\dset=\{a,b,c,d\}$ \citep{meila-2005}.  Each vertex in the graph is a
+    partition $\{C_1,\dotsc,C_k\}$ of $\dset$ which we denote by
+    $C_1,\dotsc,C_k$ for clarity.}
   \label{fig:lattice}
 \end{figure}
 
-Let $\mathcal{P}_{D}$ be the set of all partitions of $\dset$.  The natural
-way to represent $\mathcal{P}_{D}$ is as a graph called the \textit{lattice of
-  partitions}.  $\mathcal{P}_{D}$ is the vertex set of the graph and the edge
-set consists of edges $\{\clus_1,\clus_2\}$ such that $\clus_2$ can be
-obtained from $\clus_1$ by splitting a cluster into two parts: so $|\clus_2| =
-|\clus_1| + 1$ and $C_{1i} = C_{2h} \cup C_{2j}$ for some $C_{1i} \in \clus_1$
-and $C_{2h},C_{2j} \in \clus_2$.  In general, if a partition, $\clus_2$, can
-be obtained from another partition, $\clus_1$, by splitting one or more
-clusters, $\clus_2$ is called a \textit{refinement} of $\clus_1$.
+The set, $\parts_{\dset}$, of all partitions of $\dset$ forms a lattice called
+the \textit{lattice of partitions}.  A lattice can be represented as a graph
+called a \textit{Hasse diagram} with vertex set $\parts_{\dset}$ and edge set
+consisting of edges $(\clus_1,\clus_2) \in \parts_{\dset}
+\times \parts_{\dset}$ such that a cluster in $\clus_1$ is the union of two
+clusters in $\clus_2$.  In general, we call $\clus_2$ a \textit{refinement} of
+$\clus_1$.
 
-The lattice of partitions of a four element set is shown in
-Figure~\ref{fig:lattice}.  The partition at the top if the partition that is
-not a refinement of any partition---$k=1$.  The partition at the bottom is the
-partition that is a refinement of every other partition---$k=n$.
+The Hasse diagram of a four element set is shown in Figure~\ref{fig:lattice}.
+The partition at the top is the partition that is not a refinement of any
+partition ($k=1$).  The partition at the bottom is the partition that is a
+refinement of every other partition ($k=n$).
 
-The number of possible partitions of an $n$ element set is equivalent to the
-$n$th Bell number, $B_n$ \citep{bell1934exponential,stanley2000enumerative}.
-The sequence of Bell numbers begins with $B_0 = 1$; the rest of the sequence
-can be generated in a few ways including by a recursive formula:
+As this example suggests, a set can support a large number of possible
+partitions.  We can count the number of possible partitions of an $n$ element
+set using the \textit{Bell number}, $B_n$
+\citep{bell1934exponential,stanley2000enumerative}, which is defined by $B_0 =
+1$ and the recursive formula:
 \begin{equation*}
-  B_n = \sum_{l=0}^{n-1} B_l \binom{n-1}{l},
+  B_n = \sum_{l=0}^{n-1} B_l \binom{n-1}{l} \qquad \text{for $n \geq 1$},
 \end{equation*}
-and Dobinski's formula \citep{dobinski1877summation}:
+and, alternatively, Dobinski's formula \citep{dobinski1877summation}:
 \begin{equation*}
-  B_n = \frac{1}{e} \sum_{l=0}^{\infty} \frac{l^n}{l!}.
+  B_n = \frac{1}{e} \sum_{l=0}^{\infty} \frac{l^n}{l!} \qquad \text{for $n
+    \geq 0$}.
 \end{equation*}
+We illustrate the growth of the Bell numbers in Table~\ref{tab:bell-number}.
 
 \begin{table}
   \centering
@@ -669,67 +676,96 @@ and Dobinski's formula \citep{dobinski1877summation}:
     25 & $4.64 \times 10^{18}$ \\
     \bottomrule
   \end{tabular}
-  \caption{The $n$th Bell number, $B_n$, is the number of possible partitions
-    of an $n$ element set.  The growth of the Bell numbers is
-    superexponential.}
+  \caption{The value of the Bell number, $B_n$, for some selected values of
+    $n$.}
   \label{tab:bell-number}
 \end{table}
 
-As can be seen in Figure~\ref{fig:lattice}, the number of partitions of a four
-element set is already quite large.  In fact, the growth of the Bell numbers
-is superexponential.  The values of some Bell numbers is given in
-Table~\ref{tab:bell-number}.
+\subsubsection{Fuzzy partitions}
+\label{sec:fuzzy-partitions}
 
-Partitions can be generalised to fuzzy partitions by allowing elements to be
-in more than one cluster.  A fuzzy partition is therefore a set of fuzzy sets
-$\{(C_i,\mu_i),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}$ where $C_1 \cup C_2 \cup
+Partitions can be generalised to fuzzy partitions by letting the clusters be
+fuzzy sets.  Fuzzy sets are collections of objects where each member of a
+collection has a grade of membership associated to it \citep{zadeh1965fuzzy}.
+Sets are a special case where the grades of membership are binary---objects
+are either members of a set or they are not.  Fuzzy sets and partitions have
+many applications including classification of data in the natural sciences
+where membership is not precisely defined.
+
+A fuzzy set is an ordered pair, $(C,\mu_{C})$, consisting of an underlying
+set, $C$, and a membership function $\mu_{C} \colon C \to (0,1]$.  Note that
+in our definition, all members of the underlying set are members to some
+extent of the fuzzy set since the grade of membership cannot be zero.
+
+A \textit{$k$-fuzzy-partition} of an $n$ element set, $\dset$, is a set of $k
+\in \{1,2,\dotsc,n\}$ fuzzy sets,
+$\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}$, where $C_1 \cup C_2 \cup
 \dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $1 \leq i \leq k$ and
-$\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.
+$\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.  For convenience we
+denote each membership function $\mu_{C_i}$ as simply $\mu_i$.  The underlying
+sets of the clusters are not necessarily pairwise disjoint, so elements can
+belong to more than one cluster.
 
 \subsection{Comparing partitions}
 \label{sec:comparing-partitions}
 
-An attractive way to find partitions of a dataset is by means of a partitional
+An attractive way to find partitions of a set is by means of a partitional
 clustering method.  Many methods exist---we will review some in
-Section~\ref{sec:part-clust-algor}---and each method tends to produce
-a different partition.  Some methods are non-deterministic and produce
-different partitions each time.
+Section~\ref{sec:part-clust-algor}---and, depending on their respective
+approach to the problem, they all tend to produce different partitions.  To
+further complicate matters, some methods are non-deterministic and produce
+different partitions each time they are used.
 
-It is therefore useful, for comparing and assessing clustering methods, to be
-able to compare partitions.  Such a comparison measure is also used in
-ensemble clustering, where multiple methods are used and partitions are voted
-on.  Many measures have been devised for this purpose, including similarity
-measures and dissimilarity measures, of which some are metrics.  Existing
-methods fall into four main categories, these are:
+For the purposes of comparing and assessing clustering methods it is therefore
+useful to be able to compare partitions.  Many measures have been devised for
+this purpose, including similarity measures and dissimilarity measures, of
+which some are metrics.  Existing methods fall into four main categories; for
+two partitions, $\clus_1$ and $\clus_2$, of a set $\dset$, these are:
 \begin{description}
 \item[Pair counting] which measures the agreement and disagreement between
-  partitions by means of counting pairs of element in the dataset,
-\item[Set matching] which ``matches'' clusters in one partition with clusters
-  in the other and measures the similarity between matched sets,
+  $\clus_1$ and $\clus_2$ by means of counting pairs of element in the set,
+\item[Set matching] which ``matches'' clusters in $\clus_1$ with clusters in
+  $\clus_2$ and measures the similarity between matched sets,
 \item[Information theoretic] which uses information theory to measure the
-  information and mutual information contained in two partitions,
+  information and mutual information contained in $\clus_1$ and $\clus_2$,
 \item[Density profile] which takes into account the values of the data when
   computing the measure.
 \end{description}
 
-As usual, let $\dset = \{x_1,x_2,\dotsc,x_n\}$ be a dataset and $\clus_1 =
-\{C_{11},C_{12},\dotsc,C_{1k}\},\clus_2 = \{C_{21},C_{22},\dotsc,C_{2k'}\}$ be
-a $k$ and $k'$ partition of $\dset$, respectively.
+We will review measures belonging to the first three categories in this
+section.  The fourth category consists of a single measure called ADCO which
+we will analyse in Chapter~\ref{cha:assignment-metric}.
 
-The confusion matrix of $\clus_1$ and $\clus_2$ is the $k \times k'$ matrix
-$[n_{ij}]$ where $n_{ij} = |C_{i1} \cap C_{2j}|$.  The confusion matrix is
-used for the calculation of both pair counting and set matching measures.
+To be able to describe the measures in detail, we need to introduce some more
+terminology.  As before, let $\dset = \{x_1,x_2,\dotsc,x_n\}$ be a set of $n
+\geq 2$ elements and $\clus_1 = \{C_{11},C_{12},\dotsc,C_{1k}\}$ and $\clus_2
+= \{C_{21},C_{22},\dotsc,C_{2k'}\}$ be two partitions of $\dset$ with $k$ and
+$k'$ clusters respectively.
 
-Throughout this section we will use two example partitions and calculate the
-similarity or dissimilarity between them according to each measure presented,
-for purposes of comparison.  The example partitions we use are:
+We denote, for some $x \in \dset$, and a partition, $\clus$, of $\dset$, the
+cluster in $\clus$ that contains $x$ by $\clus(x)$.
+
+The \textit{confusion matrix} of two partitions, $\clus_1$ and $\clus_2$, is
+the $k \times k'$ matrix $[n_{ij}]$ where $n_{ij} = |C_{i1} \cap C_{2j}|$.
+The confusion matrix is used for the calculation of both pair counting and set
+matching measures.
+
+To illustrate these definitions and the comparison measures we will use two
+example partitions, $\clus^*_1$ and $\clus^*_2$, on a set, $\dset^* =
+\{1,2,\dotsc,9\}$, throughout this section:
 \begin{align*}
-  \clus_1 &= \{\{1,2,3\},\{4,5,6\},\{7,8,9\}\}, \\
-  \clus_2 &= \{\{1,4\},\{2,3,6\},\{5,8\},\{7,9\}\}.
+  \clus^*_1 &= \{C^*_{11},C^*_{12},C^*_{13}\}, \\
+  \clus^*_2 &= \{C^*_{21},C^*_{22},C^*_{23},C^*_{24}\}
 \end{align*}
-The confusion matrix between these two partitions is:
+where
+\begin{align*}
+  C^*_{11}&=\{1,2,3\},C^*_{12}=\{4,5,6\},C^*_{13}\{7,8,9\}, \\
+  C^*_{21}&=\{1,4\},C^*_{22}=\{2,3,6\},C^*_{23}=\{5,8\},C^*_{24}\{7,9\}.
+\end{align*}
+Then, for example, we have $\clus^*_1(3) = C^*_{11}$.  The confusion matrix
+associated with $\clus^*_1$ and $\clus^*_2$ is:
 \begin{equation*}
-  \left[
+  [n_{ij}]^*=\left[
   \begin{matrix}
     1 & 2 & 0 & 0 \\
     1 & 1 & 1 & 0 \\
@@ -741,9 +777,8 @@ The confusion matrix between these two partitions is:
 \subsubsection{Pair counting}
 \label{sec:pair-counting}
 
-There are $\binom{n}{2}$ distinct pairs of elements in $\dset$, let $S$ be the
-set of all distinct pairs.  Each pair, $(a,b) \in S$ is in one of the
-following categories:
+There are $\binom{n}{2}$ distinct pairs of elements in $\dset$.  For each
+distinct pair $(a,b) \in \dset \times \dset$ one of the following is true:
 \begin{itemize}
 \item $a,b$ are in the same cluster in $\clus_1$ and the same cluster in
   $\clus_2$,
@@ -756,29 +791,28 @@ following categories:
 \end{itemize}
 
 Counting the number of element in each category gives us four counts which are
-defined formerly as:
+defined formally as:
 \begin{align*}
-  N_{11} &= |\{(a,b) \in S \colon
-              a \in C_{1i},b \in C_{1i},a \in C_{2j},b \in C_{2j}
+  N_{11} &= |\{(a,b) \in \dset \times \dset \colon
+              \clus_1(a)=\clus_1(b) \text{ and } \clus_2(a)=\clus_2(b)
             \}|, \\
-  N_{00} &= |\{(a,b) \in S \colon
-              a \in C_{1i},b \notin C_{1i},a \in C_{2j},b \notin C_{2j}
+  N_{00} &= |\{(a,b) \in \dset \times \dset \colon
+              \clus_1(a)\neq\clus_1(b) \text{ and } \clus_2(a)\neq\clus_2(b)
             \}|, \\
-  N_{10} &= |\{(a,b) \in S \colon
-              a \in C_{1i},b \in C_{1i},a \in C_{2j},b \notin C_{2j}
+  N_{10} &= |\{(a,b) \in \dset \times \dset \colon
+              \clus_1(a)=\clus_1(b) \text{ and } \clus_2(a)\neq\clus_2(b)
             \}|, \\
-  N_{01} &= |\{(a,b) \in S \colon
-              a \in C_{1i},b \notin C_{1i},a \in C_{2j},b \in C_{2j}
-            \}|,
+  N_{01} &= |\{(a,b) \in \dset \times \dset \colon
+              \clus_1(a)\neq\clus_1(b) \text{ and } \clus_2(a)=\clus_2(b)
+            \}|.
 \end{align*}
-where $i \in \{1,\dotsc,k\}, j \in \{1,\dotsc,k'\}$ in each case.
 
 The size of $N_{11}$ and $N_{00}$ are considered to be measurements of the
-agreement between the partitions, while $N_{10}$ and $N_{01}$ are considered
-measurements of the disagreement.  The measures based on pair counting can all
-be expressed in terms of these four counts.  Clearly
-$N_{11}+N_{00}+N_{10}+N_{01}$ is always satisfied.  The counts can all be
-obtained from the confusion matrix using the following formul\ae
+agreement between the $\clus_1$ and $\clus_2$, while $N_{10}$ and $N_{01}$ are
+considered measurements of the disagreement between them.  The measures based
+on pair counting can all be expressed in terms of these four counts.  Clearly
+$N_{11}+N_{00}+N_{10}+N_{01} = \binom{n}{2}$ is always satisfied.  The counts
+can all be obtained from the confusion matrix using the following formul\ae
 \citep{hubert-arabie-1985}:
 \begin{align*}
   N_{11} &= \frac{1}{2} \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}(n_{ij}-1),\\
@@ -798,52 +832,60 @@ obtained from the confusion matrix using the following formul\ae
                        \right).
 \end{align*}
 
-One of the simplest pair counting measures is the widely-used \textit{Rand
-  index} \citep{rand-1971}:
+One of the simplest pair counting measures between two partitions, $\clus_1$
+and $\clus_2$, is the widely-used \textit{Rand index}, $\partcompare{R}$,
+introduced in \citep{rand-1971} and defined as:
 \begin{equation*}
 \partcompare{R} = \frac{(N_{11}+N_{00})}{\binom{n}{2}}.
 \end{equation*}
-which is a similarity measure.  \citet{hubert-arabie-1985} use a variation of
-this: $(N_{11}+N_{00}-N_{10}-N_{01})/\binom{n}{2}$.
+The Rand index is a similarity measure with a lower bound of 0 and an upper
+bound of 1.  \citet{hubert-arabie-1985} use the following variation:
+\[\partcompare{HA} = (N_{11}+N_{00}-N_{10}-N_{01})/\binom{n}{2}\].
 
-\citet{wallace-1983} introduced two asymmetric measures, $\mathcal{W}_{I}$ and
-$\mathcal{W}_{II}$ defined as:
+\citet{wallace-1983} introduced two asymmetric measures,
+$\mathcal{W}_{I}(\clus_1,\clus_2)$ and $\mathcal{W}_{II}(\clus_1,\clus_2)$
+defined as:
 \begin{equation*}
-  \mathcal{W}_{I} = \frac{N_{11}}{\sum_{i=1}^{k} |C_{i1}|(|C_{1i}|-1)/2},
+  \mathcal{W}_{I}(\clus_1,\clus_2) =
+  \frac{N_{11}}{\sum_{i=1}^{k} |C_{i1}|(|C_{1i}|-1)/2},
 \end{equation*}
 and
 \begin{equation*}
-  \mathcal{W}_{II} = \frac{N_{11}}{\sum_{j=1}^{k'} |C_{2j}|(|C_{2j}|-1)/2}.
+  \mathcal{W}_{II}(\clus_1,\clus_2) =
+  \frac{N_{11}}{\sum_{j=1}^{k'} |C_{2j}|(|C_{2j}|-1)/2}.
 \end{equation*}
-$\mathcal{W}_{I}$ and $\mathcal{W}_{II}$ represent the probabilities that a
-pair of points that are in the same cluster in $\clus_1$ and $\clus_2$,
-respectively, are in the same cluster in the other partition.  A symmetric
-similarity measure can be obtained by taking the geometric mean:
+$\mathcal{W}_{I}$ and $\mathcal{W}_{II}$ represent the probabilities that, for
+a pair of elements $(a,b) \in \dset \times \dset$ with
+$\clus_1(a)=\clus_1(b)$, we also have $\clus_2(a)=\clus_2(b)$, and vice versa.
+A symmetric similarity measure can be obtained from Wallace's measures by
+taking their geometric mean:
 \begin{equation*}
   \partcompare{F} = \sqrt{\mathcal{W}_{I}(\clus_1,\clus_2)
                           \mathcal{W}_{II}(\clus_1,\clus_2)}.
 \end{equation*}
-This is equivalent to a measure introduced independently by
-\citet{fowlkes-mallows-1983}.
+This measure was also introduced independently by Fowlkes and Mallows in
+\citep{fowlkes-mallows-1983}.
 
-The Jaccard coefficient is another widely-used similarity measure and is
-defined as
+The Jaccard coefficient, $\partcompare{J}$, is another widely-used similarity
+measure and is defined, for $\clus_1$ and $\clus_2$, as:
 \begin{equation*}
   \partcompare{J} = \frac{N_{11}}{N_{10}+N_{01}+N_{11}}.
 \end{equation*}
 
-So far all measures have been similarity measures.  There is one dissimilarity
-measure, which is also a metric, called the \textit{Merkin metric},
-$\partcompare{M}$ \citep{mirkin1996mathematical}.  It was originally defined
-using the confusion matrix as
+It should be noted that all measures reviewed so far are similarity measures.
+The \textit{Mirkin metric}, $\partcompare{M}$, for measuring dissimilarity
+between two partitions, $\clus_1$ and $\clus_2$, was originally introduced in
+\citep{mirkin1996mathematical} and is defined as
 \begin{equation*}
   \partcompare{M} = \sum_{i=1}^{k} |C_{1i}|^2 +
                     \sum_{j=1}^{k'} |C_{1j}|^2 +
                     2\sum_{i=1}^{k}\sum_{j=1}^{k'} n_{ij}^2,
 \end{equation*}
-which is equivalent to simply $2(N_{10}+N_{01})$.  A similar measure,
-$(N_{10}+N_{01})/\binom{n}{2}$, which is also a metric, was used in
-\citet{mirkin1970measurement} and \citet{arabie1973multidimensional}.
+where $n_{ij}$ again denotes the confusion matrix associated with $\clus_1$
+and $\clus_2$.  As it turns out, $\partcompare{M}=2(N_{10}+N_{01})$.  A
+closely related measure, $\partcompare{AB}=(N_{10}+N_{01})/\binom{n}{2}$, is
+also a metric and was used by \citet{mirkin1970measurement} and
+\citet{arabie1973multidimensional}.
 
 \begin{table}
   \centering
@@ -851,43 +893,45 @@ $(N_{10}+N_{01})/\binom{n}{2}$, which is also a metric, was used in
     \toprule
     Name & Measure \\
     \midrule
-    Rand index          & $\partcompare{R} \approx 0.694$ \\
-    Wallace measures    & $\mathcal{W}_{I}(\clus_1,\clus_2) \approx 0.222$ \\
-                        & $\mathcal{W}_{II}(\clus_1,\clus_2) \approx 0.333$ \\
-    Fowlkes \& Mallows  & $\partcompare{F} \approx 0.272$ \\
-    Jaccard coefficient & $\partcompare{J} \approx 0.154$ \\
-    Merkin metric       & $\partcompare{M} = 22.00$ \\
+    Rand index          & $\partcomparest{R} \approx 0.694$ \\
+    Wallace measures    & $\mathcal{W}_{I}(\clus^*_1,\clus^*_2) \approx 0.222$ \\
+                        & $\mathcal{W}_{II}(\clus^*_1,\clus^*_2) \approx 0.333$ \\
+    Fowlkes \& Mallows  & $\partcomparest{F} \approx 0.272$ \\
+    Jaccard coefficient & $\partcomparest{J} \approx 0.154$ \\
+    Merkin metric       & $\partcomparest{M} = 22.00$ \\
     \bottomrule
   \end{tabular}
-  \caption{Various pair counting based measures applied to $\clus_1$ and $\clus_2$.}
+  \caption{Various pair counting based measures applied to the partitions
+    $\clus_1$ and $\clus_2$.}
   \label{tab:pair-counting-comparison}
 \end{table}
 
-The four counts for our example partitions are:
-\begin{align*}
-  N_{11} &= 2,\\
-  N_{00} &= 23,\\
-  N_{10} &= 7,\\
-  N_{01} &= 4.
-\end{align*}
-The values of the pair counting measures when applied to our example
-partitions are given in Table~\ref{tab:pair-counting-comparison}.
+The four counts for our example partitions, $\clus^*_1$ and $\clus^*_2$, are:
+\begin{equation*}
+  N_{11} = 2,\quad
+  N_{00} = 23,\quad
+  N_{10} = 7,\quad
+  N_{01} = 4.
+\end{equation*}
+The values of the reviewed pair counting measures when applied to $\clus^*_1$
+and $\clus^*_2$ are given in Table~\ref{tab:pair-counting-comparison}.
 
 \subsubsection{Set matching}
 \label{sec:set-matching}
 
-These measures make comparisons between the clusters belonging to each
-partition.  The cardinality of the intersect is used as a similarity measure
-between clusters; this is given by the confusion matrix.  For each measure, a
-``matching'' is found in some way between the clusters of one partition and
-the clusters of the other.  The similarity between each matched pair of
-clusters is then used to compute the measure between the partitions.
+Set matching measures are based on comparisons between matched pairs of
+clusters.  Each pair consists of a cluster from each partition that is being
+compared.  All existing measures use the cardinality of the intersection
+between two clusters as a similarity measure for comparison.  This is given by
+the confusion matrix.  The differences between the measures are essentially
+due to the way that they find the matched pairs for comparison.
 
-Formerly, a ``matching'' is a function mapping $\{1,\dotsc,k\}$ to
-$\{1,\dotsc,k'\}$, or vice versa.  For the rest of the subsection we will
-assume, without loss of generality, that $k' \geq k$.  The measures differ in
-the way the function is found and the way they are summed to produce the
-measure.
+As before, let $\clus_1 = \{C_{11},\dotsc,C_{1k}\}$ and $\clus_2 =
+\{C_{21},\dotsc,C_{1k'}\}$, where $k,k' \geq 1$, be two partitions of an $n$
+element set, $\dset$.  Assume, without loss of generality, that $k' \geq k$.
+Then, a matching between $\clus_1$ and $\clus_2$ is a function $\sigma \colon
+\{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.  A possible matching for a pair of
+partitions is shown in figure~\ref{fig:matching}.
 
 \begin{figure}
   \Centering
@@ -921,50 +965,50 @@ measure.
     \draw [match] (c12) to (c23);
     \draw [match] (c13) to (c21);
   \end{tikzpicture}
-  \caption{For set matching measures, an injection, $\sigma$, is sought among
-    all possible injections $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$
-    where $k' \geq k$.  The ``matched'' sets themselves are then compared.}
+  \caption{One possible matching between partitions $\{C_{11},\dotsc,C_{13}\}$
+    and $\{C_{21},\dotsc,C_{24}\}$.  In this case, the matching is an
+    injection.}
   \label{fig:matching}
 \end{figure}
 
-The first is a similarity measure due to \citet{meila-2001} that finds a
-match for $k$ clusters using a heuristic: the greatest value in the confusion
-matrix, $n_{ab}$ say, gives us the first match---between clusters $C_{1a}$ and
-$C_{2b}$.  The next match is then given by the greatest value not in row $a$
-or column $b$, and so on until $k$ matches are found.  Thus we find an
-injection, $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.  This is
-illustrated in Figure~\ref{fig:matching}.  Given an injection, $\sigma$, found
-as described, the measure is then:
+\citet{meila-2001} introduced a set matching measure for the similarity
+between two partitions.  It finds a matching using the following heuristic:
+let $[n_{ij}]$ be the $k \times k'$ confusion matrix associated with $\clus_1$
+and $\clus_2$.  Compute $n_{ab} = \argmax \{n_{ij} \colon 1 \leq i \leq k, 1
+\leq j \leq k'\}$ and put $\sigma(a) \gets b$.  Repeat the process for the
+$(k-1) \times (k'-1)$ submatrix obtained by deleting row $a$ and column $b$,
+and so on until $k$ matches have been made.  This process give us an injection
+for $\sigma$ and the measure is then defined as:
 \begin{equation*}
   \partcompare{H} = \frac{1}{n} \sum_{i=1}^{k} n_{i \sigma(i)}.
 \end{equation*}
 
-A second similarity measure, introduce by \citet{larsen-aone-1999}, makes
-locally maximal matchings for each cluster:
+A second similarity measure, $\partcompare{L}$, introduced by
+\citet{larsen-aone-1999}, simply computes a maximal matching for each cluster:
 \begin{equation*}
   \partcompare{L} = \frac{1}{k} \sum_{i=1}^{k} \max_{1 \leq j \leq k'}
                                              \frac{2n_{ij}}{|C_{1i}|+|C_{2j}|}.
 \end{equation*}
 
-A dissimilarity measure, which is a metric, was introduced by
-\citet{van-dongen-2000}.  This measure computes two matching functions and,
-again, makes locally maximal matchings:
+A dissimilarity measure, $\partcompare{V}$, which is a metric, was introduced
+by \citet{van-dongen-2000}.  This measure, again, computes maximal matchings
+for each cluster:
 \begin{equation*}
   \partcompare{V} = 2n - \sum_{i=1}^{k} \max_{1 \leq j \leq k'} n_{ij}
                          \sum_{j=1}^{k'} \max_{1 \leq i \leq k} n_{ij}.
 \end{equation*}
 
-A second metric is due to \citet{meila-2005} and is know as
-\textit{classification error}.  Here, a globally maximal injection $\sigma
-\colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$ is found out of all possible
-injections, $S_k$; the measure is then:
+A second metric, $\partcompare{CE}$, is due to \citet{meila-2005} and is know
+as \textit{classification error}.  Like $\partcompare{H}$, this measure
+computes an injection for $\sigma$, but instead of using a heuristic, the
+globally optimal injection is found among all possible injections, $S_k$:
 \begin{equation*}
   \partcompare{CE} = 1 - \frac{1}{n} \max_{\sigma \in S_k}
                                      \sum_{i=1}^{k} n_{i \sigma(i)}.
 \end{equation*}
-The injection, $\sigma$, can be found in polynomial time as the solution to a
-linear program.  This metric has the additional property that it has an upper
-bound of $1$.
+Note that the injection, $\sigma$, can be found in polynomial time.  Also,
+$\partcompare{CE} \leq 1$ for all partitions $\clus_1$ and $\clus_3$ on
+$\dset$.
 
 \begin{table}
   \centering
@@ -990,14 +1034,19 @@ are given in Table~\ref{tab:set-matching-comparison}.
 measures suffer from the so-called ``problem of matching'' which we will now
 illustrate.  Given a partition, $\clus$, with $k$ equally sized clusters we
 can obtain a second partition, $\clus'$, by moving a fraction, $f$, of the
-objects from each cluster, $C_{i}$, to $C_{(i+1) \mod k}$.  We can obtain a
-third partition, $\clus''$, from $\clus$ by taking the same fraction from each
-cluster and distributing the objects evenly among all other clusters.  Our
-intuition would be that the similarity between $\clus$ and $\clus'$ is not the
-same as the similarity between $\clus$ and $\clus''$.  However,
-$\partcomparep{H} = \partcomparepp{H}, \partcomparep{L}
-= \partcomparepp{L}, \partcomparep{V} = \partcomparepp{V}$ and
-$\partcomparep{CE} = \partcomparepp{CE}$ whenever $f < 1/2$.
+objects from each cluster, $C_{i}$, to $C_{i+1}$, with the indices taken $\mod
+k$.  We can obtain a third partition, $\clus''$, from $\clus$ by taking the
+same fraction from each cluster and distributing the objects evenly among all
+other clusters.  Our intuition would be that the similarity between $\clus$
+and $\clus'$ is not the same as the similarity between $\clus$ and $\clus''$.
+However,
+\begin{align*}
+  \partcomparep{H} = \partcomparepp{H},&\quad
+  \partcomparep{L} = \partcomparepp{L},\\
+  \partcomparep{V} = \partcomparepp{V},&\quad
+  \partcomparep{CE} = \partcomparepp{CE}
+\end{align*}
+whenever $f < 1/2$.
 
 To give a numerical example, let
 \begin{equation*}
@@ -1013,12 +1062,11 @@ and
 \end{equation*}
 In this case we have
 \begin{align*}
-  \partcomparep{H} &= \partcomparepp{H} = 3/5,\\
-  \partcomparep{L} &= \partcomparepp{L} = 3/5,\\
-  \partcomparep{V} &= \partcomparepp{V} = 12,\\
-  \partcomparep{CE} &= \partcomparepp{CE} = 2/5.
+  \partcomparep{H} = \partcomparepp{H} = 3/5,&\quad
+  \partcomparep{L} = \partcomparepp{L} = 3/5,\\
+  \partcomparep{V} = \partcomparepp{V} = 12,&\quad
+  \partcomparep{CE} = \partcomparepp{CE} = 2/5.
 \end{align*}
-
 
 \subsubsection{Information theoretic}
 \label{sec:inform-theor}
@@ -1029,7 +1077,10 @@ Two measures which use information theory are \textit{Normalized Mutual
 
 Variation of Information is based on both how much information is contained in
 each partition and how much information one partition contains about the other
-(their mutual information).  The first part is measured by
+(their mutual information).
+
+Let $\clus_1 = \{C_{11},\dotsc,C_{1k}\}$, where $k \geq 1$, be partition of an
+$n$ element set, $\dset$.  The first quantity is measured by
 \begin{equation*}
   H(\clus_1) = -\sum_{i=1}^{k} P_1(i) \log_b P_1(i),
 \end{equation*}
@@ -1037,13 +1088,16 @@ where
 \begin{equation*}
   P_1(i) = \frac{|C_{i1}|}{k}, \qquad \text{for $i = 1,\dotsc,k$}.
 \end{equation*}
-This is the probability that an object picked randomly from $\dset$ is in
-cluster $C_{1i}$.  This measure is sometimes called the \textit{entropy}.  The
-base of the logarithm determines the unit of information---$b=2$ gives the
-information in \textit{bits}, $b=e$ gives \textit{nits} and $b=10$ gives
-\textit{Hartleys} \citep{kullback68information}.
+Informally, $P_1(i)$, is the probability that an object picked randomly from
+$\dset$ is in cluster $C_{1i}$.  This measure is sometimes called the
+\textit{entropy}.  The base of the logarithm determines the unit of
+information; for example, the bases $b=2,b=e$ and $b=10$ give the information
+in so-called \textit{bits}, \textit{nits} and \textit{Hartleys}, respectively
+\citep[see][]{kullback68information}.
 
-The mutual information is given by
+Now, with $\clus_1$ as above and $\clus_2 = \{C_{21},\dotsc,C_{1k'}\}$, where
+$k' \geq 1$, the mutual information, $I(\clus_1,\clus_2)$, between $\clus_1$
+and $\clus_2$ is given by:
 \begin{equation*}
   I(\clus_1,\clus_2) = \sum_{i=1}^{k} \sum_{i=1}^{k'}
                       P_{12}(i,j) \log_b \frac{P_{12}(i,j)}{P_1(i)P_2(j)},
@@ -1053,24 +1107,28 @@ where
   P_{12}(i,j) = \frac{|C_{1i} \cap C_{2j}|}{n}, \qquad \text{for $i =
     1,\dotsc,k,j = 1,\dotsc,k'$}.
 \end{equation*}
-This is the probability that an object picked randomly from $\dset$ is in
-both $C_{1i}$ and $C_{2j}$.
+Informally, $P_{12}(i,j)$ is the probability that an object picked randomly
+from $\dset$ is in both $C_{1i}$ and $C_{2j}$.
 
-Variation of Information, $\partcompare{VI}$, is then defined as
+The Variation of Information, $\partcompare{VI}$, between $\clus_1$ and
+$\clus_2$ is then defined as:
 \begin{equation*}
   \partcompare{VI} = H(\clus_1) + H(\clus_2) - 2I(\clus_1,\clus_2).
 \end{equation*}
-This is a metric with some nice properties.  First is $n$-invariant, meaning
-its value depends only on the relative sizes of the clusters and not on the
-number of elements in $\dset$.  Secondly, it is bounded for all $n$ by
+
+As it turns out, $\Delta_{\mathcal{VI}}$ is a metric on $\parts_{\dset}$, for
+any set $n$ element $\dset$, and has some nice properties.  These include that
+it is $n$-invariant, meaning its value depends only on the relative sizes of
+the clusters and not on the number of elements in $\dset$.  Further, it is
+bounded for all $n$ by
 \begin{equation*}
   \partcompare{VI} \leq \log_b n.
 \end{equation*}
-Further, if $\max(k,k') \leq k^*$ where $k^* \leq \sqrt{n}$ then the following
-bound holds
+Finally, if $\max(k,k') \leq k^*$ where $k^* \leq \sqrt{n}$ then
 \begin{equation*}
-  \partcompare{VI} \leq 2 \log_b k^*.
+  \partcompare{VI} \leq 2 \log_b k^*
 \end{equation*}
+holds.
 
 \begin{table}
   \centering
@@ -1085,57 +1143,44 @@ bound holds
     \\
     \bottomrule
   \end{tabular}
-  \caption{Variation of Information and its components applied to $\clus_1$
-    and $\clus_2$ using base 2 for the logarithms.}
+  \caption{Variation of Information and its components applied to our example
+    partitions  $\clus^*_1$ and $\clus^*_2$ using base 2 for the logarithms.}
   \label{tab:vi-comparison}
 \end{table}
 
 The values of Variation of Information and its components applied to our
-example partitions are given in Table~\ref{tab:vi-comparison}.
-
-\subsubsection{Density based}
-\label{sec:density-based}
-
-The last category contains a metric called \textit{ADCO} which we will
-describe briefly.  None of the measures so far take into account the values of
-the data contained within the objects.  ADCO assumes that the data are
-real-valued vectors and uses the components of the vectors to calculate
-distances \citep{bae2010comparison}.  The problem with ignoring distances is
-discussed, and a new solution given, in Chapter~\ref{cha:assignment-metric}.
+example partitions, $\clus^*_1$ and $\clus^*_2$, are given in
+Table~\ref{tab:vi-comparison}.
+\\\\
+\noindent The final type of measure, density profile based, takes into
+account the values of the data contained within the set, $\dset$.  This is
+unlike any of the measures reviewed in this section, which are all, in one way
+or another, based only on the relative sizes of the clusters.  We will discuss
+this type of measure in Chapter~\ref{cha:assignment-metric}.
 
 \section{Partional clustering}
 \label{sec:part-clust-algor}
 
 The problem of finding meaningful partitions of a dataset is called
-partitional clustering.  In the following subjection we will discuss the
-motivation for clustering and just a few of its many applications.  Then we
-will discuss the problem itself which is broadly divided into two parts: first
-one must decide what a meaningful partition actually is, and for this many
-criteria have been suggested, and then one can attempt to find a good
-partition according to that criterion.
+partitional clustering.  Broadly speaking, the applications of partitional
+clustering fall into two categories: \textit{data reduction} and
+\textit{object classification}.
 
-\subsection{Motivation}
-\label{sec:part-clus-motivation}
+Data reduction may be necessary when a dataset is large and it is deemed that
+only an essence of the data is wanted for a particular application.  For
+example, if geographical data is to be displayed on a map then a large dataset
+may not be desirable due to the visual clutter it would create.  Clustering
+can be used to reduce the dataset into a more visually appealing and usable
+subset.
 
-Broadly speaking, the applications of partitional clustering fall into two
-categories: data reduction and object classification.
-
-Data reduction may be desirable when a dataset is large and it is deemed that
-only an essence of the data is necessary for the statistical precision
-required.  If the data is to be displayed graphically to a user then an
-overwhelmingly large dataset may not be desirable.  One real-world application
-of data reduction in the latter category is the display of geographical data
-on an electronic map.  By applying clustering, nearby elements can be grouped
-to reduce clutter on the map.
-
-Object classification finds applications in many fields including the natural
-sciences, marketing and economics, computer science and engineering.  Given a
-dataset obtained by market research one may wish to find different classes of
-consumers in order to observe their habits and predict future behaviour.
-Document clustering is an important area concerned with clustering on datasets
-consisting of objects written in a natural language.  Search engines such as
-those found on the World Wide Web use clustering to suggest ``similar''
-documents to the one the user is currently interested in, amongst other things
+Object classification is concerned with grouping data into a number of
+classes.  For example, given a dataset obtained by market research one may
+wish to find different classes of consumers in order to observe their habits
+and predict future behaviour.  A further example is document clustering is an
+important area concerned with clustering on datasets consisting of objects
+written in a natural language.  Search engines such as those found on the
+World Wide Web use document clustering to suggest ``similar'' documents to the
+one the user is currently interested in, amongst other things
 \citep{steinbach2000comparison}.
 
 \subsection{Criteria}
@@ -1146,114 +1191,129 @@ homogeneous---meaning objects belonging to the same cluster are similar---and
 well-separated---meaning objects belonging to different clusters are
 dissimilar.
 
-The task of judging a particular cluster based on these informal standards is
-often a highly subjective one but, nevertheless, many objective criteria have
-been devised for the purposes of automatic clustering.  It is the job of a
-partitional clustering algorithm to find the globally optimal solution, which
-means either the minimum or maximum according to a particular criterion.
+The task of judging a particular partition of a set based on these informal
+standards is often a highly subjective one but, nevertheless, many objective
+criteria have been devised for the purposes of automatic clustering.  The aim
+of a partitional clustering algorithm is to find a globally optimal solution,
+that is a partition which has maximum homogeneity or separation or both,
+according to a particular criterion.
 
-We begin with a non-exhaustive list (from \citep{hansen1997mathprog}) of the
-most general of criteria---those which only require a matrix if
-dissimilarities between pairs of elements to compute them.  Let $\dset =
-\{x_1,x_2,\dotsc,x_n\}$ be a dataset, $\clus = \{C_1,C_2,\dotsc,C_k\}$ be a
-partition of $\dset$ and $d$ a dissimilarity measure on the elements of
-$\dset$.  For the following criteria we do not need to know the values of the
-elements of $\dset$, or how $d$ is computed, we only need the $n \times n$
-dissimilarity matrix constructed by $d$.
+\subsubsection{Dissimilairty based criteria}
+\label{sec:diss-based-crit}
 
-The following criteria measure the homogeneity of a particular cluster, $C_i$.
-The \textit{diameter} is the maximum dissimilarity between two members of the
-cluster:
+Let $\dset$ be a nonempty, finite set, $d \colon \dset \times \dset \to
+\mathbb{R}^{\geq 0}$ be a dissimilarity on $\dset$ and $C \in \dset$ be some
+cluster.  The most general criteria for homogeneity and separation are defined
+only using dissimilarities.
+\\\\
+\noindent Criteria that measure the homogeneity of $C$ include the
+\textit{diameter} of $C$, which is defined as the maximum dissimilarity
+between two members of the cluster:
 \begin{equation*}
-  \max_{x,y \in C_i} d(x,y).
+  \max_{x,y \in C} d(x,y),
 \end{equation*}
-The \textit{radius} is the minimum of the maximum dissimilarities between each
-member and another member of the cluster:
+the \textit{radius} of $C$, which is defined as the minimum of the maximum
+dissimilarities between each member and another member of the cluster:
 \begin{equation*}
-  \min_{x \in C_i} \max_{y \in C_i} d(x,y).
+  \min_{x \in C_i} \max_{y \in C} d(x,y)
 \end{equation*}
-The \textit{star} is the minimum of the sums of dissimilarities between each
-member and every other member of the cluster:
+the \textit{star} of $C$, which is defined as the minimum of the sums of
+dissimilarities between each member and every other member of the cluster:
 \begin{equation*}
-  \min_{c \in C_i} \sum_{x \in C_i} d(x,c).
+  \min_{c \in C} \sum_{x \in C} d(x,c),
 \end{equation*}
-The \textit{clique} is the sum of dissimilarities between each pair of members
+and the \textit{clique} of $C$, which is defined as the sum of dissimilarities
+between each pair of members of the cluster:
+\begin{equation*}
+  \sum_{x,y \in C} d(x,y).
+\end{equation*}
+\\\\
+\noindent Criteria that measure the separation of a cluster, $C$, from every
+other cluster include the \textit{split} of $C$, which is defined as the
+minimum dissimilarity between a member of the cluster and an element outside
 of the cluster:
 \begin{equation*}
-  \sum_{x,y \in C_i} d(x,y).
+  \min_{x \in C, y \in \dset \setminus C} d(x,y),
+\end{equation*}
+and the \textit{cut} of $C$, which is defined as the sum of dissimilarities
+between all members of the cluster and all elements outside of the cluster:
+\begin{equation*}
+  \sum_{x \in C} \sum_{y \in \dset \setminus C} d(x,y).
 \end{equation*}
 
-The following criteria measure the separation of a cluster, $C_i$, from every
-other cluster.  The \textit{split} is the minimum dissimilarity between a
-member of the cluster and an element outside of the cluster:
-\begin{equation*}
-  \min_{x \in C_i, y \in \dset \setminus C_i} d(x,y).
-\end{equation*}
-The \textit{cut} is the sum of dissimilarities between all members of the
-cluster and all elements outside of the cluster:
-\begin{equation*}
-  \sum_{x \in C_i} \sum_{y \in \dset \setminus C_i} d(x,y).
-\end{equation*}
-
-Criteria for whole partitions could then be simply the sum over all partitions
-of one of these criteria.  We call them \textit{sum-of-diameters},
-\textit{sum-of-radii}, \textit{sum-of-stars} and so on.  Alternatively one
-could simply take the maximum or minimum value, as appropriate, over the
-clusters which we would call \textit{max-diameter}, \textit{max-radius},
-\textit{min-cut} and so on.  Clearly one would wish to minimise the criteria
-for homogeneity and maximise those for separation.
+Criteria for partitions can then be formed by simply taking the sum over all
+clusters in that partition of one of the above criteria.  We call these
+criteria \textit{sum-of-diameters}, \textit{sum-of-radii},
+\textit{sum-of-stars} and so on.  Alternatively one could simply take the
+maximum or minimum value, as appropriate, over the clusters which we would
+call \textit{max-diameter}, \textit{max-radius}, \textit{min-cut} and so on.
+The aim of the clustering method is then to minimise a criterion for
+homogeneity or maximise a criterion for separation.
 
 Some criteria for homogeneity are equivalent to criteria for separation.  Most
 notably, minimising sum-of-cliques is equivalent to maximising sum-of-cuts.
 Such a criterion is therefore a criterion for both homogeneity and separation.
 
-Those criteria which only measure one or the other, like min-split and
-max-diameter, are often conflicting.  For example, maximising min-split
-produces in clusters with poor homogeneity, called the chaining effect, and
-minimising max-diameter results in clusters with poor separation, called the
-dissection effect.  Such criteria are therefore not so useful on their own,
-but one could consider a criterion for homogeneity and a criterion for
-separation simultaneously.  This is called a bicriterion
+As it turns out, criteria which only measure one or the other, like min-split
+and max-diameter, are often conflicting.  For example, maximising min-split
+produces clusters with poor homogeneity, called the \textit{chaining effect},
+and minimising max-diameter results in clusters with poor separation, called
+the \textit{dissection effect}.  Such criteria are therefore not so useful on
+their own, but one could consider a criterion for homogeneity and a criterion
+for separation simultaneously.  This is called a bicriterion
 \citep{delattre1980bicriterion}.
 
-If the dataset is actually embedded in $m$-dimensional Euclidean space then
+\subsubsection{Scatter matrix based criteria}
+\label{sec:scatter-matrix-based}
+
+If the dataset, $\dset$ is embedded in $m$-dimensional Euclidean space then
 the following criteria based on the scatter or dispersion matrix of
-\citet{wilks60} are possible.  The total scatter matrix for $\dset$ is a $m
-\times m$ matrix defined
-as:
+\citet{wilks60} are possible.  Suppose $\dset = \{x_1,\dotsc,x_n\} \subset
+\mathbb{R}^m$, the \textit{total scatter matrix}, $\mathbf{T}_{\dset}$, is the
+$m \times m$ matrix defined as:
 \begin{equation*}
-  \mathbf{T} = \sum_{i=1}^{n} (x_i - \bar{x})(x_i - \bar{x})^{\mathrm{T}}
+  \mathbf{T}_{\dset} = \sum_{i=1}^{n} (x_i - \bar{x})(x_i - \bar{x})^{\mathrm{T}}
 \end{equation*}
-where $\bar{x}$ is the mean value of $\dset$.  Two further matrices are
-the within-cluster scatter matrix, $\mathbf{W} = \sum_{i=1}^{k} \mathbf{W}_i$,
-where $\mathbf{W}_i$ is the scatter matrix for cluster $C_i$, and between
-cluster scatter matrix
+where $\bar{x}$ is the mean value of $\dset$.
+
+For any partition, $\clus = \{C_1,\dotsc,C_k\}$ of $\dset$, two further
+matrices are defined.  The \textit{within-cluster scatter matrix},
+$\mathbf{W}_{\clus}$, is defined as:
 \begin{equation*}
-  \mathbf{B} =
+\mathbf{W}_{\clus} = \sum_{i=1}^{k} \mathbf{T}_{C_i},
+\end{equation*}
+where $\mathbf{T}_{C_i}$ is the total scatter matrix for cluster $C_i$.  The
+\textit{between-cluster scatter matrix}, $\mathbf{B}_{\clus}$, is defined as:
+\begin{equation*}
+  \mathbf{B}_{\clus} =
   \sum_{i=1}^{k} |C_i| (c_i - \bar{x}) (c_i - \bar{x})^{\mathrm{T}}
 \end{equation*}
 where $c_i$ is the mean of cluster $C_i$.  These matrices are related by the
 equality
 \begin{equation*}
-  \mathbf{T} = \mathbf{W} + \mathbf{B}.
+  \mathbf{T}_{\dset} = \mathbf{W}_{\clus} + \mathbf{B}_{\clus}.
 \end{equation*}
 
-One possible criterion is the minimisation of the trace of $\mathbf{W}$.  This
-is equivalent to minimising the trace of $\mathbf{B}$ since
+A popular criterion used in clustering algorithms is the minimisation of the
+trace of $\mathbf{W_{\clus}}$, denoted $\tr(\mathbf{W_{\clus}})$.  Since
 \begin{equation*}
-  \tr(\mathbf{T}) = \tr(\mathbf{W}) + \tr(\mathbf{B})
+  \tr(\mathbf{T_{\dset}}) = \tr(\mathbf{W_{\clus}}) + \tr(\mathbf{B_{\clus}}),
 \end{equation*}
-and $\mathbf{T}$ is a constant.  This criterion is actually equivalent to
-minimising the sum over all clusters of the sum of Euclidean distances squared
-between each member of the cluster and its centroid:
+and $\tr(\mathbf{T}_{\dset})$ is a constant, it follow that minimising
+$\tr(\mathbf{W_{\clus}})$ is equivalent to maximising
+$\tr(\mathbf{B_{\clus}})$.
+
+Intriguingly, $\tr(\mathbf{W}_{\clus})$ is also equivalent to the sum over all
+clusters of the sum of Euclidean distances squared between each member of the
+cluster and its mean:
 \begin{equation}
   \label{eq:tr(W)}
-  \tr(\mathbf{W}) = \sum_{i=1}^{k} \sum_{x \in C_i} d^2(x,c_i),
+  \tr(\mathbf{W_{\clus}}) = \sum_{i=1}^{k} \sum_{x \in C_i} d_{E}^2(x,c_i),
 \end{equation}
-where $d$ is Euclidean distance.  This can be seen easily by examining the
-main diagonal of each $\mathbf{W}_i$:
+where $d_{E}$ is Euclidean distance.  This can be seen easily by examining the
+main diagonal of each $\mathbf{W}_{C_i}$, as illustrated here:
 \begin{multline*}
-  \mathbf{W}_i = \\
+  \mathbf{W}_{C_i} = \\
   \sum_{x \in C_i}
   \begin{bmatrix}
     (x_1-c_{i1})^2 & (x_1-c_{i1})(x_2-c_{i2}) & \cdots &
@@ -1265,57 +1325,59 @@ main diagonal of each $\mathbf{W}_i$:
     (x_m-c_{im})^2
   \end{bmatrix}
 \end{multline*}
-where $x_j$, $c_{ij}$ mean the $j$th component of $x,c_{i}$ respectively.
+where $x_j$, $c_{ij}$ denotes the $j$th component of $x,c_{i}$ respectively.
 
-Similarly, maximising $\tr(\mathbf{B})$ is equivalent to maximising the sum of
-Euclidean distances squares between each cluster centroid and $\bar{x}$,
-multiplied by the cluster's cardinality:
+Similarly, $\tr(\mathbf{B_{\clus}})$ is equivalent to the sum of Euclidean
+distances squares between each cluster centroid and $\bar{x}$, multiplied by
+the cluster's cardinality:
 \begin{equation}
   \label{eq:tr(B)}
-  \tr(\mathbf{B}) = \sum_{i=1}^{k} |C_i| d^2(c_i,x).
+  \tr(\mathbf{B_{\clus}}) = \sum_{i=1}^{k} |C_i| d^2(c_i,x).
 \end{equation}
-For this reason, this criterion is often called ``sum-of-squares'', although
-this name is ambiguous since any criterion utilising sums of distances squared
-could have this name.  We therefore call it \textit{centroid-distance}, due to
-measuring the distances between elements and centroids, and in general call
-any criterion using sums of distances squared a sum-of-squares criterion.
-Note that when centroid-distance is calculated using
-equation~\eqref{eq:tr(W)}, we can use any metric for $d$.  If it is calculated
-using the scatter matrix then it is implicitly using the Euclidean metric.
+
+For this reason, $\tr(\mathbf{W}_{\clus})$ is often called ``sum-of-squares'',
+but this name is ambiguous since any criterion utilising sums of distances
+squared could have this name.  We therefore call the criterion shown in
+equation~\eqref{eq:tr(W)} the \textit{centroid-distance}, due to measuring the
+distances between elements and centroids, and in general call any criterion
+using sums of distances squared a sum-of-squares criterion.  Note that when
+centroid-distance is calculated using equation~\eqref{eq:tr(W)}, we can use
+any metric in place of $d_{E}$.  If it is calculated using the scatter matrix
+then it is implicitly using the Euclidean metric.
 
 The relationship between equations~\eqref{eq:tr(W)} and \eqref{eq:tr(B)} can
-also be shown by the Huygens-Steiner, or parallel-axis, theorem, which states
-that
+also be established by the Huygens-Steiner, or parallel-axis, theorem, which
+states that, for any cluster $C \subset \mathbb{R}^m$ with mean $c$ and any
+element $s \in \mathbb{R}^m$:
 \begin{equation}
   \label{eq:huygens}
-  \sum_{x \in C_i} d_E^2(x,s) = d_E^2(c_i,s) \dot |C_i| +
-                             \sum_{x \in C_i} d_E^2(x,c_i)
+  \sum_{x \in C} d_E^2(x,s) = d_E^2(c,s) \dot |C| +
+                             \sum_{x \in C} d_E^2(x,c).
 \end{equation}
-where $s$ and the members of $C_i$ are in Euclidean space and $d_E$ is
-Euclidean distance.
 
-We can also use this theorem to show a relationship between centroid-distance
-and sum-of-cliques.  Beginning with equation~\eqref{eq:huygens} we assign some
-$y \in C_i$ to $s$ and sum over all $y \in C_i$:
+We now use this theorem to establish a relationship between centroid-distance
+and sum-of-cliques.  With some $C \subset \mathbb{R}^m$ as before, we
+beginning with equation~\eqref{eq:huygens} and assign some $y \in C$ to $s$
+and sum over all $y \in C$:
 \begin{equation*}
-  \sum_{x,y \in C_i} d_E^2(x,y) = \sum_{y \in C_i} d_E^2(c_i,y) \dot |C_i|
-                           + \sum_{x \in C_i} d_E^2(x,c_i) \dot |C_i|
+  \sum_{x,y \in C} d_E^2(x,y) = \sum_{y \in C} d_E^2(c,y) \dot |C|
+                           + \sum_{x \in C} d_E^2(x,c) \dot |C|
 \end{equation*}
 and, since $d_E$ is symmetric,
 \begin{equation}
   \label{eq:cd-as-equivalence}
-  \frac{\displaystyle \sum_{x,y \in C_i} d_E^2(x,y)}
-       {|C_i|}
-  = 2 \sum_{x \in C_i} d_E^2(x,c_i).
+  \frac{\displaystyle \sum_{x,y \in C} d_E^2(x,y)}
+       {|C|}
+  = 2 \sum_{x \in C} d_E^2(x,c).
 \end{equation}
 So when we use Euclidean distance squared as dissimilarity measure,
 centroid-distance for each cluster is equivalent to sum-of-cliques over twice
 the cardinality of the cluster.  Since $d_E$ is symmetric this is the same as
 only counting pairwise distances once each.
 
-It should be noted that centroid-distance is, in fact, simply a more general
-version of sum-of-stars where the centre need not be a member of the dataset
-but is a member of the underlying metric space.
+It should also be noted that centroid-distance is, in fact, simply a more
+general version of sum-of-stars where the centre need not be a member of the
+dataset but is a member of some underlying metric space.
 
 As mentioned, we generally call any criterion involving a metric squared a
 sum-of-squares criterion.  We call the numerator of the left-hand side of
@@ -1324,69 +1386,98 @@ all pairs of distances.  Since sum-of-cliques can generally be used with any
 dissimilarity measure we generally count each pair of elements twice, once in
 each direction, but for a metric this is obviously redundant.
 
-Two other criteria based on the scatter matrix, which were suggested by
-\citet{friedman1967criteria}, are the minimisation of the determinant of
-$\mathbf{W}$, sometimes called generalised variance, and the maximisation of
-the trace of $\mathbf{BW}^{-1}$.  These criteria tend to produce clusters of
-similar shape and size as centroid-distance with the Euclidean metric
-\citep{marriott1982optimization}.
+\citet{friedman1967criteria} suggested two further criteria based on scatter
+matrices, these are the minimisation of the determinant of
+$\mathbf{W_{\clus}}$ (denoted $\det(\mathbf{W}_{\clus})$), which is sometimes
+called \textit{generalised variance}, and the maximisation of
+$\tr(\mathbf{B_{\clus}W_{\clus}}^{-1})$.  These criteria tend to produce
+clusters of similar shape and size as centroid-distance with the Euclidean
+metric \citep{marriott1982optimization}.
 
-A further four criteria based on the scatter matrix are discussed in
+A further three criteria based on scatter matrices are discussed in
 \citep{marriott1982optimization}, these are
-$\prod_{i=1}^{k}|\mathbf{W}_i|^{|C_i|}$, which is a generalisation of
-$|\mathbf{W}|$ that allows cluster of different shapes,
-$\sum_{i=1}^{k}|\mathbf{W}_i|^{\frac{1}{m}}$, introduced in
-\citep{maronna1974}, $n \log{|\mathbf{W}|} - 2\sum_{i=1}^{k} |C_i|
-\log{|C_i|}$ and $\sum_{i=1}^{k} (|C_i| \log{|\mathbf{W}_i|} -
-2|C_i|\log{|C_i|})$.
+$\prod_{i=1}^{k}\det(\mathbf{W}_i)^{|C_i|}$, which is a generalisation of
+$\det(\mathbf{W})$ that allows cluster of different shapes, $n
+\log{\det(\mathbf{W})} - 2\sum_{i=1}^{k} |C_i| \log{|C_i|}$ and
+$\sum_{i=1}^{k} (|C_i| \log{\det(\mathbf{W}_i)} - 2|C_i|\log{|C_i|})$.
+Finally, in \citep{maronna1974} the criterion
+$\sum_{i=1}^{k}\det(\mathbf{W}_i)^{\frac{1}{m}}$ was introduced.
 
 All of the criteria based on the scatter matrix tend to produce ellipsoidal
 clusters; clusters with other shapes will either not be found or be divided
-into small clusters \citep{marriott1982optimization}.  Most of the criteria
-also tend to produce clusters which are linearly-separable---meaning they are
-separated by hyperplanes.
+into small clusters.  Most of them also tend to produce clusters which are
+linearly-separable---meaning they are separated by hyperplanes
+\citep{marriott1982optimization}.
+
+\subsubsection{Other criteria}
+\label{sec:other-criteria}
 
 Some criteria are based on similarities instead of dissimilarities.  One such
-example is the average entity stability of \citep{Rubin67optimal}.  This
+example is the \textit{average entity stability} \citep{Rubin67optimal}.  This
 criterion considers an object to be stable if it is more attracted to the rest
-of the cluster it is currently in than to any other cluster.  Attraction to a
-cluster is the average similarity between the object and the members of that
-cluster.  The criterion is to maximise the average entity stability over the
-whole dataset.
+of the cluster it is currently in than to any other cluster.  Give, a
+similarity measure, $s$, the attraction between an object and a cluster is
+defined as the average similarity between the object and the members of that
+cluster, with respect to $s$.  The clustering criterion is to maximise the
+average entity stability over the whole dataset.
 
 Criteria based on information theory are also possible.
-\citet{wallace1968information} contains a clustering program called SNOB which
-attempts to optimise one such information measure.
-
-We finish our discussion on criteria with two further definitions.  The
-partition which is the global minimum or maximum solution, whichever is
-appropriate, for a particular criterion is called the \textit{optimal
-  partition}, for example, we will later refer to the centroid-distance
-optimal partition, all-squares optimal partition and so on.  The problem of
-finding an optimal partition according to any criterion we will refer to
-simply as \textit{clustering}, and when we speak of a particular criterion we
-will say centroid-distance clustering, all-squares clustering and so on.
+\citet{wallace1968information} introduce a clustering program called SNOB
+which attempts to optimise one such information measure.
 
 \subsection{Computational complexity}
 \label{sec:complexity-issues}
 
 Given the huge space of possible partitions of a dataset, partitional
-clustering is intuitively a hard problem.  In fact, it has been shown that
-many partitional clustering problems are NP-complete.
+clustering is intuitively a hard problem.  In fact, as we will see below, it
+has been shown that many partitional clustering problems are NP-complete.
 
-A number of partitional clustering problems were shown to be in NP-complete by
-\citet{brucker1978complexity}.  Among these was max-diameter clustering, a
-result which is directly deducible from the earlier results of
-\citet{sahni1976p}.  Max-diameter clustering remains NP-complete for $k=3$ and
-when all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.
+We first need to define what we mean by a partitional clustering problem.  A
+partition which is a global minimum or maximum solution, whichever is
+appropriate, for a particular criterion is called an \textit{optimal
+  partition}.  When we speak of a particular criterion we qualify this name
+appropriately, so for example a \textit{centroid-distance optimal partition}
+is a partition which globally minimised the centroid-distance criterion.
 
-Sum-of-cuts (and therefore sum-of-cliques) is equivalent to the classic
-NP-complete graph problem, MAX CUT
-\citep{karp72twentyone,gonzalez1982computational}.  The problem is NP-complete
-for $k=2$ and even when all dissimilarities are in $\{0,1\}$
+The problem of finding an optimal partition according to any criterion we will
+refer to simply as \textit{clustering}, and, again, whenever we speak of a
+particular criterion we will qualify the name appropriately, so for example
+\textit{centroid-distance clustering} is the problem of finding an optimal
+partition with respect to the centroid-distance criterion.
+
+An NP-completeness result refers to a decision problem.  Since clustering
+problems are optimisation problems, whenever one is said to be NP-complete we
+are actually referring to the decision problem derived from the optimisation
+problem.  The general decision problem version of clustering is simply stated:
+\begin{problem}{Clustering}
+  \instance{A finite, $n$ element set $\dset$, the number of clusters desired
+    $k \in \{1,\dotsc,n\}$, a criterion $f \colon \parts_{\dset} \to
+    \mathbb{R}^+$ and a bound $B \in \mathbb{R}^+$.}
+  \question{Does there exist a partition, $\clus \in \parts_{\dset}$, such
+    that $f(\clus) \leq B$?}
+\end{problem}
+\\\\
+\noindent Sum-of-cuts (and therefore sum-of-cliques) is easily seen to be
+NP-complete be considering the following classic NP-complete graph problem
+\citep{karp72twentyone,gonzalez1982computational}:
+\begin{problem}{Max Cut}
+  \instance{Graph $G=(V,E)$, weight $w(e) \in \mathbb{Z}^+$ for each $e \in
+    E$, positive integer $K$.}
+  \question{Is there a partition of $V$ into disjoint sets $V_1$ and $V_2$
+    such that the sum of weights of the edges from $E$ that have one endpoint
+    in $V_1$ and one endpoint in $V_2$ is at least $K$?}
+\end{problem}This is clearly a specific case of sum-of-cuts clustering with
+$k=2$ and where a dissimilarity with values in $\{0,1\}$ is used
 \citep{garey76simplified}.  An approximate solution to sum-of-cuts is possible
-to find in polynomial time, but the approximation problem of sum-of-cliques
-remains NP-complete \citep{sahni1976p}.
+to find in polynomial time, but, interestingly, the approximation problem of
+sum-of-cliques remains NP-complete \citep{sahni1976p}.
+\\\\
+\noindent A number of partitional clustering problems were shown to be in
+NP-complete by \citet{brucker1978complexity}.  Among these was max-diameter
+clustering, a result which, as it turns out, is directly deducible from the
+earlier results of \citet{sahni1976p}.  Max-diameter clustering remains
+NP-complete for $k=3$ and when all dissimilarities are in $\{0,1\}$
+\citep{gareyjohnson79}.
 
 It was shown in \citet{gonzalez1985clustering} that max-diameter clustering is
 NP-complete when the dataset is in 2-dimensional Euclidean space and the
@@ -1401,25 +1492,24 @@ triangle inequality it possible to find an approximate solution efficiently.
 a max-diameter within two times the max-diameter of the optimal solution.
 
 \citet{bern1996approximation} show that, under the Euclidean metric, it is
-NP-complete to find approximate solutions with a max-diameter within 1.969
-times the max-diameter of the optimal, and with a max-radius within 1.822
-times the max-radius of the optimal.
-
-Another result of \citet{brucker1978complexity} is that sum-of-diameters
-clustering is NP-complete for $k \geq 3$.  \citet{doddi2000approximation} show
-that approximate solutions with a sum-of-diameters within two times the
-optimal can be found efficiently, but only when the dissimilarity satisfies
-the triangle inequality.  If the triangle inequality is not satisfied then it
-shown that, if $P \neq NP$, no efficient approximation algorithm is possible,
-even for $k=3$.
+NP-complete to find approximate solutions with a max-diameter value within
+1.969 times the max-diameter of the optimal, and with a max-radius value
+within 1.822 times the max-radius of the optimal.
+\\\\
+\noindent Another result of \citet{brucker1978complexity} is that
+sum-of-diameters clustering is NP-complete for $k \geq 3$.
+\citet{doddi2000approximation} show that approximate solutions with a
+sum-of-diameters within two times the optimal can be found efficiently, but
+only when the dissimilarity satisfies the triangle inequality.  If the
+triangle inequality is not satisfied then it is shown that, if $P \neq NP$, no
+efficient approximation algorithm is possible, even for $k=3$.
 
 In \citet{hansen87sumofdiameters} it is shown that the problem when $k=2$ is
 solvable in $O(n^2 \log n)$ time.  It is also shown that minimising any
 function of the diameters can be done in $O(n^5)$ time when $k=2$.
-
-In \citet{garey82quant} it is shown that the quantization problem is
+\\\\
+\noindent In \citet{garey82quant} it is shown that the quantization problem is
 NP-complete for $k \geq 2$.  This problem is stated as follows:
-
 \begin{quote}
   A source produces one sample of a random variable $X$ with equiprobable
   values in $\{1,2,\dotsc,n\}$.  The encoder (quantizer) maps $X$ into a
@@ -1434,26 +1524,28 @@ NP-complete for $k \geq 2$.  This problem is stated as follows:
   \end{equation*}
   is as small as possible.
 \end{quote}
-
 It it easy to see that this problem is equivalent to a specific case of
-sum-of-stars clustering where all dissimilarities are in $\{0,1\}$.
+sum-of-stars clustering where a dissimilarity with values in $\{0,1\}$ is
+used.
+\\\\
+\noindent The above complexity results, especially the last one for
+sum-of-stars, has led many authors to believe that centroid-distance
+clustering in Euclidean space is also NP-complete.  In fact this was proved
+only relatively recently.  It is in fact NP-complete even when $k=2$
+\citep{aloise09exact} and for general $k$ in 2-dimensional Euclidean space
+\citep{mahajan09}.  If both $k$ and the number of dimensions, $m$, are fixed,
+then the problem is exactly solvable in $O(n^{mk+1} \log n)$ time
+\citep{inaba94weightedvoronoi}.
 
-The above complexity results, especially the last one for sum-of-stars, has
-led many authors to believe that centroid-distance clustering in Euclidean
-space is also NP-complete.  In fact this was proved only relatively recently.
-It is in fact NP-complete even when $k=2$ \citep{aloise09exact} and for
-general $k$ in 2-dimensional Euclidean space \citep{mahajan09}.  If both $k$
-and $s$, the number of dimensions, are fixed, then the problem is exactly
-solvable in $O(n^{sk+1} \log n)$ time \citep{inaba94weightedvoronoi}.
-
-Not all criteria are hard to optimise.  Min-split is one criterion for which
-optimal clusterings can be found efficiently.  This can be done using the
-single-link hierarchical clustering algorithm of
-\citet{johnson67hierarchical}.  The runtime of this algorithm is $O(n^2)$
-\citep{delattre1980bicriterion}.  However, this criterion does suffer from the
-previously mentioned chaining effect and for this reason it is often paired
-with a criterion for homogeneity in a bicriterion.  It is unlikely that any
-criteria exist which produce good solutions and can be optimised efficiently.
+We conclude with remarking that not all clustering problems are hard.  One
+example is min-split clustering for which a polynomial time algorithm exists.
+In particular, the problem is solved with the single-link hierarchical
+clustering algorithm of \citet{johnson67hierarchical}.  The runtime of this
+algorithm is $O(n^2)$ \citep{delattre1980bicriterion}.  However, this
+criterion does suffer from the previously mentioned chaining effect and for
+this reason it is often paired with a criterion for homogeneity in a
+bicriterion, effectively making it a hard problem again
+\citep{delattre1980bicriterion}.
 
 \subsection{Methods}
 \label{sec:methods}
@@ -1464,42 +1556,64 @@ prevalent.  There are only a small handful of algorithms which are either
 guaranteed to find a globally optimal solution or guaranteed to find a
 solution within a known degree of the optimal.
 
-Many of the heuristic algorithms happen in two stages:
+Many of the heuristic methods happen in two stages.  Given an $n$ element
+dataset, $\dset$, the number of clusters desired, $k \in \{1,\dotsc,n\}$, and
+a criterion, $f \colon \parts_{\dset} \to \mathbb{R}^+$, we proceed as
+follows:
 \begin{enumerate}
-\item \label{item:initpart} Select some initial partition,
-\item \label{item:improvepart} Try to improve the partition with respect to
-  some criterion.
+\item (Initialisation) Select some initial partition, $\clus
+  \in \parts_{\dset}$,
+\item (Improvement) Try to improve the partition with respect to the
+  criterion, so find a second partition $\clus'$ such that $f(\clus') <
+  f(\clus)$.
 \end{enumerate}
-We will first look at some methods for stage~\ref{item:initpart}.
+We will look at each stage in turn now.
 
-A common way to select an initial partition is to choose $k$ elements to be
-initial estimates for the ``centre'' of each cluster.  The elements of the
-dataset are then grouped with the centre that is closest.  Sometimes the
-centres are updated each time a new element is grouped with them, for example
-they could become the actual centroid or medoid of that cluster.  The $k$
-centres are usually selected from the dataset, but they could also be taken
-from the underlying metric space.
+\subsubsection{Initialisation}
+\label{sec:initialisation}
 
-Some simple ways to select $k$ centres are to take the first $k$ elements of
-the dataset \citep{macqueen1967some}, $k$ random elements of the dataset
-\citep{forgy65cluster} or $k$ elements regularly spaced across the dataset
-\citep{beale1969euclidean}.
+A common way to select an initial partition, $\clus$, is to choose $k$
+elements to be initial estimates for the ``centre'' of each cluster.  The
+elements of the dataset are then grouped with the centre that is closest.
+Sometimes the centres are updated each time a new element is grouped with
+them, for example they could become the actual centroid of the current
+cluster.  The $k$ centres are usually selected from the dataset, but they
+could also be taken from the underlying metric space.
 
-The Kennard-Stone algorithm (Algorithm~\ref{alg:kennard-stone}) finds $k$
-centres that are maximally separated in the metric space.
+A great number of methods for selecting centres have been suggested and we
+present a far from exhaustive review next.  Further examples can be found in
+the following \citep{he2004initialization}, \citep{khan2004clusterecenter},
+\citep{cao09initialization}, \citep{yedla2010enhancing},
+\citep{zhang2009initialcenters}, \citep{Erisoglu2011intiailcenters} and
+\citep{redmond2007method}.
 
-\begin{algorithm}
+The most simple ways to select $k$ centres include taking the first $k$
+elements of the dataset \citep{macqueen1967some}, taking $k$ random elements
+of the dataset \citep{forgy65cluster} or taking $k$ elements regularly spaced
+across the dataset \citep{beale1969euclidean}.
+
+More sophisticated methods include the Kennard-Stone algorithm (shown in
+Algorithm~\ref{alg:kennard-stone}) which aims to find $k$ centres that are
+maximally separated in the metric space.  It is noted by
+\citet{degroot1999selecting} that this method is sensitive to outliers and it
+is suggested that, instead of picking maximally separated elements as the
+first two centres as in the original algorithm (see
+Algorithm~\ref{alg:kennard-stone}), the first two centres should be distant,
+but not outliers.
+
+\begin{algorithm}[h]
   \caption{Kennard-Stone initial centres algorithm.}
   \label{alg:kennard-stone}
 
   \begin{algorithmic}
     \Require Number of centres desired, $k \geq 2$, and a dataset, $\dset =
-             \{x_1,x_2,\dotsc,x_n\}$ with $n \geq k$, with distance function
-             $d \colon \dset \times \dset \to \mathbb{R}^+$.
+             \{x_1,x_2,\dotsc,x_n\}$ with $n \geq k$, with dissimilarity
+             $d \colon \dset \times \dset \to \mathbb{R}^{\geq 0}$.
     \Ensure Centres $\{c_1,c_2,\dotsc,c_k\} \subseteq \dset$.
 
     \State $\displaystyle (c_1,c_2) \gets
-            \argmax_{(c,c') \in \dset \times \dset} d(c,c')$
+            \argmax_{(c,c') \in \dset \times \dset} d(c,c')$ \Comment First
+            two centres
     \State $S \gets \{c_1,c_2\}$
     \State $m \gets 2$
 
@@ -1515,21 +1629,18 @@ centres that are maximally separated in the metric space.
   \end{algorithmic}
 \end{algorithm}
 
-It is noted by \citet{degroot1999selecting} that this method is sensitive to
-outliers and it is suggested that the initial two elements are not necessarily
-maximally separated; they should be distant, but not outliers.
+Another method, due to \citet{yuan04initial}, is shown in
+Algorithm~\ref{alg:yuan-meng}.  The algorithm has a parameter, $\alpha$, for
+which the authors suggest a value of 0.75 since this gave good results in
+their experiments.
 
-Another method is due to \citet{yuan04initial}
-(Algorithm~\ref{alg:yuan-meng}).  The authors suggest a value of 0.75 for the
-parameter $\alpha$.
-
-\begin{algorithm}
+\begin{algorithm}[h]
   \caption{Yuan-Meng-Zhang-Dong initial centres algorithm.}
   \label{alg:yuan-meng}
 
   \begin{algorithmic}
     \Require Number of centres desired, $k > 0$, $0 < \alpha \leq 1$, and a
-             dataset $\dset = \{x_1,x_2,\dotsc,c_k\}$, with $n \geq k$,
+             dataset $\dset = \{x_1,x_2,\dotsc,x_k\}$, with $n \geq k$,
              embedded in a metric space $(M,d)$.
     \Ensure Centres $\{c_1,c_2,\dotsc,c_k\} \subseteq \dset$.
 
@@ -1556,18 +1667,19 @@ parameter $\alpha$.
   \end{algorithmic}
 \end{algorithm}
 
-A further method which is commonly used prior to either Lloyd's or Hartigan's
-method for centroid-distance is called $k$-means++
-(Algorithm~\ref{alg:kmeans++}).
+A further method, introduced by \citet{arthur2007kmeans++} is called
+$k$-means++ and is shown in Algorithm~\ref{alg:kmeans++}.  Its name reflects
+the fact that it was designed to be used in conjunction with an improvement
+method, which we will see later, that is often referred to as $k$-means.
 
-\begin{algorithm}
+\begin{algorithm}[h]
   \caption{$k$-means++ initial centres algorithm.}
   \label{alg:kmeans++}
 
   \begin{algorithmic}
     \Require Number of centres desired, $k > 0$, dataset $\dset =
-             \{x_1,x_2,\dotsc,x_n\}$, with $n \geq k$, and distance function
-             $d \colon \dset \times \dset \to \mathbb{R}^+$.
+             \{x_1,x_2,\dotsc,x_n\}$, with $n \geq k$, and dissimilarity
+             $d \colon \dset \times \dset \to \mathbb{R}^{\geq 0}$.
     \Ensure Centres $\{c_1,c_2,\dotsc,\c_k\}$.
 
     \State $S \gets \{\text{element chosen at random from $\dset$}\}$
@@ -1585,179 +1697,218 @@ method for centroid-distance is called $k$-means++
   \end{algorithmic}
 \end{algorithm}
 
-Many other methods have been suggested and examples can be found in
-\citep{he2004initialization}, \citep{khan2004clusterecenter},
-\citep{cao09initialization}, \citep{yedla2010enhancing},
-\citep{zhang2009initialcenters}, \citep{Erisoglu2011intiailcenters} and
-\citep{redmond2007method}.
+\subsubsection{Improvement}
+\label{sec:improvement}
 
-Given an initial partition there are then many different ways to improve upon
-it for stage~\ref{item:improvepart}.  Some methods take a criterion as a
-parameter while others are specialised for a particular criterion.
+Given an initial partition, $\clus$, of a set $\dset$ and a criterion $f
+\colon \parts_{\dset} \to \mathbb{R}^+$, the aim is now to find a partition
+that is an \textit{improvement} of the initial partition, if possible.  A
+partition $\clus'$ of $\dset$ is an improvement of $\clus$ if $f(\clus') <
+f(\clus)$ or $f(\clus') > f(\clus)$, whichever is appropriate for the
+criterion.  We will now look at some of the methods that have been devised for
+making improvements.
+\\\\
+\noindent \textit{Hartigan's method} \citep{hartigan1975clustering} is a
+simple heuristic that is general in the sense that it takes a criterion as a
+parameter and attempts to produce an improvement with respect to that
+criterion.  This is unlike most methods which are specialised to a particular
+criterion and often even to a particular type of dataset and metric.  Many of
+the earliest clustering methods, such as those described in \citep{everitt80},
+simply consisted of a particular initialisation step followed by Hartigan's
+method with respect to a particular criterion.
 
-One of the oldest and simplest heuristics is due to
-\citet{hartigan1975clustering}:  Given some initial partition and a criterion,
-repeatedly select objects and optimally reassign them until no further
-reassignments will improve make an improvement with respect to the criterion.
-Clearly when termination occurs a local optimum has been found.  Many of the
-earliest clustering methods simply consisted of a particular initialisation
-step followed by Hartigan's method with respect to a particular criterion
-\citep{everitt80}.
+Given a set $\dset$, a partition $\clus$ on $\dset$ and a criterion,
+Hartigan's method produces a new partition, $\clus'$, by selecting an element
+in $\dset$ and moving it to a different cluster, if such a move would produce
+an improvement.  The new cluster is chosen such that the criterion is
+optimised at each stage.  This is called an optimal reassignment.  Elements
+are repeatedly optimally reassigned until no more reassignments would produce
+an improvement.  Thus, upon termination, a locally optimal partition has been
+found.
+\\\\
+\noindent \textit{LLoyd's method}, which is specialised to the
+centroid-distance criterion with the Euclidean metric, is probably the most
+well-known and widely used clustering method today.  The centroid-distance
+problem is also commonly called the $k$-means problem.  The popularity of
+Lloyd's method had led to many authors referring to it simply as ``the
+$k$-means algorithm'' (although, as we note below, calling it an algorithm may
+be erroneous).  There is some confusion here, though, as some authors also
+refer to Hartigan's method with respect to the centroid-distance criterion as
+$k$-means and others refer Lloyd's method as H-means.  To try to avoid
+ambiguity we avoid any of these alternative names.
 
-LLoyd's method, which is designed to optimise centroid-distance in Euclidean
-space, is probably the most well-known and widely used clustering algorithm
-today.  The centroid-distance problem is also commonly called $k$-means.  The
-popularity of Lloyd's algorithm has led to many authors referring to it simply
-as ``the $k$-means algorithm''.  There is some confusion here, though, as some
-authors also refer to Hartigan's method with respect to centroid-distance as
-$k$-means and others call Lloyd's method H-means.  To avoid ambiguity we avoid
-any of these alternative names.
-
-The algorithm is easy to understand and proceeds as follows:
+The method is simple and easy to understand, given an initial $k$ partition of
+a dataset $\dset$ it proceeds as follows:
 \begin{enumerate}
-\item find $k$ initial centres using a method above,
-\item \label{item:lloyds-2} Assign each element to the group with the closest
-  centre,
-\item \label{item:lloyds-3} Set each centre equal to the centroid of the
-  cluster,
-\item \label{item:lloyds-4} Repeat steps~\ref{item:lloyds-2} and
-  \ref{item:lloyds-3} until no new reassignments take place.
+\item Call the current centroid of each cluster the ``centre''.  Move each
+  element to the cluster with the closest centre.
+\item Set each cluster's centre equal to the centroid.  If any centres changed
+  then go to step 1, otherwise terminate.
 \end{enumerate}
 
 The version written here is as suggested by \citet{ballhall67clustering}.
-\citet{macqueen1967some} prefers a variation which combines
-steps~\ref{item:lloyds-2} and \ref{item:lloyds-3}: the cluster centres are
-updated to the new centroid each time a new elements are added or removed from
-a cluster.  Usually, to enable quicker termination, another stopping condition
-is added to step~\ref{item:lloyds-4}, for example a maximum number of
-iterations or a minimum threshold for the changes made after each iteration.
+\citet{macqueen1967some} prefers a variation which recomputes centroids every
+time new elements are added to the clusters, instead of only once during each
+iteration.  To enable quicker termination, usually another stopping condition
+is added, for example a maximum number of iterations or a minimum threshold
+for the changes made after each iteration.
 
-The major advantage of LLoyd's method is that it is simple and easy to
-implement (assuming centroids are easy to computer) and it is generally very
-fast to converge to a local optimum.  There are many disadvantages, however.
-As mentioned already, it is implicitly assumed that centroids are easy to
-compute.  This is true when the dataset is embedded in Euclidean space and the
-distance used is a Bregman divergence, such as Euclidean distance squared as
-in the sum-of-squares centroid-distance, since the centroid is simply the mean
-\citep{telgarsky2010hartigan,banerjee2005clustering}.  This is not generally
-the case, though.  Calculating means does require that we have access to the
-database itself rather than simply a matrix of dissimilarities, this is a
-disadvantage in many applications.  A further disadvantage is that the
-algorithm actually requires, in the worse case, exponentially many iterations
-to converge, even in the plane \citep{vattani2009exponential}.
+Note also that we are careful not to call this method an algorithm.  It is
+possible that step 1 will results in empty clusters, which has two problems:
+we no longer have a partition, and centroids are not defined for empty sets.
+Some modifications have been suggested to ensure that clusters remain
+nonempty, for example in \citep{pakhira2009modified}.
 
-Despite these drawbacks, Lloyd's method remains very popular.  In a brief
+The major advantage of Lloyd's method is that it is simple, easy to implement
+(assuming centroids are easy to compute) and it generally converges very
+quickly to a solution.  There are some drawbacks, however.  As mentioned
+already, it is implicitly assumed that centroids are easy to compute.  This is
+the case when Euclidean distance is used, or in fact any Bregman divergence,
+since centroids are then equal to the mean of the elements
+\citep{telgarsky2010hartigan,banerjee2005clustering}.  Even calculating means
+presents a drawback, since it requires that an implementation has access to
+the dataset while other methods only require a matrix of dissimilarities.  A
+final drawback is that the method actually requires, in the worse case,
+exponentially many iterations to converge, even in the Euclidean plane
+\citep{vattani2009exponential}.
+
+But despite these drawbacks, Lloyd's method remains very popular.  In a brief
 survey of some popular data mining and machine learning software it was found
 that Lloyd's method is used in around three-quarters of implementations for
 centroid-distance clustering.  Hartigan's method is used the rest of the time
 including in some of the more prominent software, for example in Weka and R.
 A comparison of Lloyd's method and Hartigan's method, in which Hartigan's
-method is shown to be slightly better, is given in
-\citep{telgarsky2010hartigan}.
+method is shown to produce more attractive partitions in fewer iterations, is
+given in \citep{telgarsky2010hartigan}.
+\\\\
+\noindent We turn now to sum-of-stars clustering, which is also known as
+$k$-medoids clustering analogous to $k$-means clustering and reflecting the
+fact that medoids are calculated in the process of calculating the
+sum-of-stars criterion.  The oldest and simplest heuristic method for
+sum-of-stars clustering is Partitioning Around Medoids (PAM), shown in
+Algorithm~\ref{alg:pam}, was introduced by \citet{kaufman2005finding}.
+\begin{algorithm}[h]
+  \caption{Partition Around Medoids (PAM)}
+  \label{alg:pam}
+  \begin{algorithmic}
+    \Require A dataset, $\dset = \{x_1,\dotsc,x_n\}$ with a dissimilarity $d
+             \colon \dset \times \dset \to \mathbb{R}^{\geq 0}$ and an integer
+             $k > n$.
+    \Ensure  A $k$ partition $\{C_1,\dotsc,C_k\}$ of $\dset$.
+    \begin{itemize}
+    \item Initialise a partition $\{C_1,\dotsc,C_k\}$ by selecting $k$
+      elements at random from $\dset$ and placing one in each cluster.  Call
+      the set of $k$ selected elements $\dset_s$ and the set of unselected
+      elements $\dset_u$.
+    \item Assign each element in $\dset_u$ to the cluster containing a
+      maximally similar element of $\dset_s$, according to $d$.  Calculate the
+      sum-of-stars value for this partition.
+    \item Repeatedly swap elements of $\dset_s$ with elements of $\dset_u$ and
+      reassign the elements of $\dset_u$, whenever the swap would improve the
+      sum-of-stars value.  Continue to swap until no swap will improve the
+      sum-of-stars.
+    \end{itemize}
+  \end{algorithmic}
 
-Sum-of-stars clustering is also known as $k$-medoids clustering.  The oldest
-and simplest heuristic for sum-of-stars is Partitioning Around Medoids (PAM)
-as introduced in \citet{kaufman2005finding}.  The algorithm proceeds as
-follows:
-\begin{algorithm}
-  \caption{PAM}
-  \begin{enumerate}
-  \item Initialise a partition $\{C_1,\dotsc,C_k\}$ by selecting $k$ elements
-    at random from $\dset$ and placing one in each cluster.  Call the set of
-    $k$ selected elements $\dset_s$ and the unselected elements $\dset_u$.
-  \item Assign each element in $\dset_u$ to the cluster containing the closest
-    element of $\dset_s$.  Calculate the sum-of-stars for this partition.
-  \item Repeatedly swap elements of $\dset_s$ with elements of $\dset_u$, and
-    reassign the elements of $\dset_u$, whenever the swap would improve the
-    sum-of-stars.  Continue to swap until no swap will improve the
-    sum-of-stars.
-  \end{enumerate}
 \end{algorithm}
 
-Since PAM requires the sum-of-stars to be calculated a potentially very large
+Since PAM can require the sum-of-stars value to be calculated a very large
 number of times, \citet{kaufman2005finding} suggested a version with enhanced
 performance for large datasets called CLARA (CLustering LArge Applications).
-The basic idea is to run PAM on a subset of the dataset which is selected at
-random.  The centres found by PAM in the subset should be a good approximation
-for the centres that would be found by PAM in the entire dataset.  After the
-centres are found in the subset, the rest of the dataset is assigned to the
-cluster with the closest centre.  Usually multiple samples are taken and the
-partition with the smallest sum-of-stars is taken.  \citet{kaufman2005finding}
+For a dataset, $\dset$, the basic idea is to run PAM on a subset, $\dset'$, of
+the $\dset$ which is selected at random.  The centres found by PAM in $\dset'$
+should be a good approximation for the centres that would be found by PAM in
+$\dset$.  After the centres are found in $\dset'$, the remaining elements of
+$\dset$ are assigned to the cluster with the closest centre.  Usually multiple
+samples are taken for $\dset'$ and the partition with the smallest
+sum-of-stars value is taken.  As a guidance, \citet{kaufman2005finding}
 suggest taking five samples of size $40+2k$.
 
-Compared with PAM, CLARA performs well for larger datasets.  Each iteration of
-PAM has runtime complexity of $O(k(n-k)^2)$ while for CLARA it is only
-$O(k(40+k)^2 + k(n-k))$ with the suggested sample size \citep{ng2002clarans}.
+Compared with PAM, CLARA performs well for larger datasets.  For an $n$
+element dataset where $k$ clusters are desired, each iteration of PAM has
+runtime complexity of $O(k(n-k)^2)$ while for CLARA it is only $O(k(40+k)^2 +
+k(n-k))$ with the suggested sample size \citep{ng2002clarans}.
 
 CLARANS (Clustering Large Applications based on RANdomized Search) takes
 influence from both PAM and CLARA \citep{ng2002clarans}.  The algorithm
-considers the graph $G_{nk}$ with vertices $\{\{m_1,m_2,\dotsc,m_k\} |
-m_1,m_2,\dotsc,m_k \in \dset\}$---all possible $k$-medoids, which each define
-a partition.  Two vertices, $M_1$ and $M_2$ are connected by an edge if and
-only if $|M_1 \cap M_2| = k-1$---they differ by only one object.
+considers the graph $G_{nk}$ with vertex set $V_{nk}=\{\{m_1,m_2,\dotsc,m_k\}
+| m_1,m_2,\dotsc,m_k \in \dset\}$, so all possible $k$-medoids, which each
+define a partition.  Two vertices, $M_1, M_2 \in V_{nk}$ are connected by an
+edge if and only if $|M_1 \cap M_2| = k-1$, meaning $M_1$ and $M_2$ differ by
+only one object.
 
-PAM can be thought of as a search through this graph to find a vertex for
-which no adjacent vertices have a lower sum-of-stars.  PAM considers every
-adjacent vertex at each stage in the search.  CLARA instead searches through
-only a subgraph which is much smaller than $G_{nk}$ so does not consider every
-adjacent vertex at each stage.
+With regards to this graph, PAM can be thought of as a search through $G_{nk}$
+to find a vertex for which no adjacent vertices have a smaller sum-of-stars
+value.  For a found vertex in $G_{nk}$, PAM works by considering every vertex
+adjacent to it to continue the search.  CLARA instead searches through only a
+subgraph of $G_{nk}$ which has far fewer vertices, so effectively, when a
+vertex is found in $G_{nk}$, it considers only a subset of the vertices
+adjacent to it.
 
-CLARANS searches through the entire graph $G_{nk}$, but does not check every
-adjacent vertex at each step, instead if considers a random subset of the
-adjacent vertices.  It proceeds as follows:
-\begin{algorithm}
+CLARANS, shown in Algorithm~\ref{alg:clarans}, searches through the entire
+graph $G_{nk}$ but, for a found vertex $v \in V_{nk}$, does not consider every
+vertex adjacent to $v$, instead it considers only a random subset of the set
+of vertices adjacent to $v$.  In experiments, CLARANS was shown to run faster
+than PAM while producing partitions with a smaller sum-of-stars value than
+those produced by CLARA \citep{ng2002clarans}.
+
+\begin{algorithm}[h]
   \caption{CLARANS}
-  \begin{enumerate}
-  \item Require parameters $numlocal$ and $maxneighbour$.  Set $i \gets 1$ and
-    $mincost$ to a large number,
-  \item Set $current$ to a random vertex of $G_{nk}$,
-  \item Set $j \gets 1$,
-  \item Compare the sum-of-stars of $current$ and a random vertex, $S$,
-    adjacent to $current$,
+  \label{alg:clarans}
+  \begin{algorithmic}
+    \Require A dataset, $\dset = \{x_1,\dotsc,x_n\}$, with a dissimilarity $d
+             \colon \dset \times \dset \to \mathbb{R}^{\geq 0}$, an integer
+             $k \geq n$ and parameters $numlocal$ and $maxneighbour$.
+    \Ensure  A set of $k$ medoids $\{m_1,\dotsc,m_k\}\subseteq \dset$.
+    \begin{itemize}
+    \item Set $i \gets 1$ and $mincost$ to a large number,
+    \item Set $current$ to a random vertex of $G_{nk}$,
+    \item Set $j \gets 1$,
+    \item Compare the sum-of-stars of $current$ and a random vertex, $S$,
+      adjacent to $current$,
 
-    If $S$ has a lower cost, set $current \gets S$ and go to 3,
+      If $S$ has a lower cost, set $current \gets S$ and go to 3,
 
-    Otherwise, set $j \gets j+1$,
-  \item If $j \leq maxneighbour$, go to 4,
+      Otherwise, set $j \gets j+1$,
+    \item If $j \leq maxneighbour$, go to 4,
 
-    Otherwise, if $ss(current)<mincost$, set $mincost \gets ss(current)$ and
-    $bestnode \gets current$,
-  \item Set $i \gets i+1$m
+      Otherwise, if $ss(current)<mincost$, set $mincost \gets ss(current)$ and
+      $bestnode \gets current$,
+    \item Set $i \gets i+1$m
 
-    If $i \leq numlocal$, go to 2,
+      If $i \leq numlocal$, go to 2,
   
-    Otherwise return $bestnode$.
-  \end{enumerate}
+      Otherwise return $bestnode$.
+    \end{itemize}
+  \end{algorithmic}
+
 \end{algorithm}
 
-In experiments, CLARANS was shown to run faster than PAM while producing
-higher quality output than CLARA \citep{ng2002clarans}.
-
-Heuristics remain the most popular choice for clustering applications in
-general, probably due to their ability to produce acceptable solutions for a
-wide variety of input.  But it is often more desirable to have a proper
-algorithm; one with a proven worst-case runtime complexity and which is
-guaranteed to produce optimal solutions, or solutions within some known degree
-of the optimal; the former type are called exact algorithms and the latter
-approximation algorithms.
+\noindent Heuristics remain the most popular choice for clustering
+applications in general, probably due to their ability to produce acceptable
+solutions for a wide variety of input.  But it is often more desirable to have
+an algorithm with a proven worst-case runtime complexity and which is
+guaranteed to produce either optimal solutions or solutions within some known
+degree of the optimal.  The former type are called \textit{exact algorithms}
+and the latter \textit{approximation algorithms}.
 
 Approximation algorithms are a popular way to deal with many NP-hard
 optimisation problems.  An algorithm is called an $n$-approximation algorithm
 if the solutions produced are guaranteed to have a cost, with respect to the
 objective criterion function, of no more than $n$ times (a minimisation
 problem) or $1/n$ times (a maximisation problem) the cost of the optimal
-solution.
+solution, for some $n > 1$.
 
 \citet{gonzalez1985clustering} provides a 2-approximation algorithm for
-max-diameter which has worst-case runtime complexity of $O(nk)$.  The
-algorithm requires that the dissimilarity used satisfies the triangle
-inequality.  \citet{doddi2000approximation} provide a 2-approximate algorithm
-for sum-of-diameters which, again, requires the dissimilarity to satisfy the
-triangle inequality.  They also provide a version which produces partitions of
-no more than $O(k)$ clusters that has sum-of-diameters within $O(\ln(n/k))$
-times the optimal for a $k$-partition.  Other approximation algorithms have
-been devised for amx-radius \citep{wirth04approx} and centroid-distance
-\citep{cormode2008approximation}.
+max-diameter which, for an $n$ element dataset and $k$ cluster desired, has
+worst-case runtime complexity of $O(nk)$.  The algorithm requires that the
+dissimilarity used is a metric.  \citet{doddi2000approximation} provide a
+2-approximate algorithm for sum-of-diameters which, again, requires that the
+dissimilarity is a metric.  They also provide a version which produces
+partitions of no more than $O(k)$ clusters that have sum-of-diameters values
+within $O(\ln(n/k))$ times the optimal for a $k$-partition.  Other
+approximation algorithms have been devised for max-radius
+\citep{wirth04approx} and centroid-distance \citep{cormode2008approximation}.
 
 Some work has been done on exact algorithms for certain criteria.  For those
 problems which are NP-complete, these algorithms are only efficient under very
@@ -1765,8 +1916,8 @@ constrained input conditions.  Algorithms for centroid-distance exist
 including methods using brand-and-bound \citep{brusco2006repetitive},
 branch-and-cut \citep{aloise09exact} and column generation
 \citep{merle1999interior}.  Some of these algorithms are able to find exact
-solutions to instance in the plane with up to 2000 objects, in reasonable time
-\citep{aloise09exact}.
+solutions to instances in the plane with up to 2000 objects, in reasonable
+time \citep{aloise09exact}.
 
 The all-squares problem, or more generally sum-of-cliques, has received
 attention also.  An exact algorithm using branch-and-bound
