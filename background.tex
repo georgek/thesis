@@ -1,152 +1,13 @@
-% -------------------------------- PREAMBLE --------------------------------
-\documentclass[a4paper]{report}
-
-\usepackage[utf8]{inputenc}
-\usepackage[T2A,OT1]{fontenc}
-\usepackage[english]{babel}
-\usepackage{graphicx}
-\usepackage{tikz}
-\usepackage{booktabs}
-\usepackage[format=hang,font=small,labelfont=bf]{caption}
-\usepackage[protrusion=true,expansion=true]{microtype}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{upgreek}
-\usepackage{nbaseprt}
-\usepackage{appendix}
-\usepackage{color}
-\usepackage{url}
-\usepackage{hyperref}
-\usepackage{underscore}
-\usepackage[numbers]{natbib}
-\usepackage{enumitem}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-
-\newcommand{\reporttitle}{Metric Based Data Analysis Techniques}
-\newcommand{\reportauthor}{George Kettleborough}
-
-% --- hyperref stuff ---
-\definecolor{darkblue}{rgb}{0,0,0.4}
-\hypersetup{
-  pdftex,
-  bookmarks=true,
-  bookmarksopen=true,
-  colorlinks=true,
-  citecolor=black,
-  filecolor=black,
-  linkcolor=black,
-  urlcolor=darkblue,
-  pdfauthor={\reportauthor},
-  pdftitle={\reporttitle},
-  pdfsubject={}
-}
-\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
-
-% --- TikZ stuff ---
-
-\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
-  decorations.pathreplacing,decorations.pathmorphing,shapes,%
-  matrix,shapes.symbols}
-
-\tikzstyle{dot}=[circle,fill,inner sep=0,minimum size=1.2mm]
-\tikzstyle{dist}=[>=stealth,->,shorten >=2pt]
-\tikzstyle{symdist}=[>=stealth,<->,shorten <=2pt,shorten >=2pt]
-\tikzstyle{faint}=[gray!50]
-\tikzstyle{clus}=[circle,draw,inner sep=0,minimum size=5mm]
-
-% --- End TikZ stuff ---
-
-
-% the figures location
-\graphicspath{./figures/}
-
-% make equations and figures numbered (sec.eq)
-% \numberwithin{equation}{section}
-% \numberwithin{figure}{section}
-
-% new operators for maths
-\DeclareMathOperator{\op}{op}
-\DeclareMathOperator{\remainder}{remainder}
-\DeclareMathOperator{\lc}{lc}
-\DeclareMathOperator{\pquo}{pquo}
-\DeclareMathOperator{\prem}{prem}
-\DeclareMathOperator{\pp}{pp}
-\DeclareMathOperator{\cont}{cont}
-\DeclareMathOperator{\resultant}{resultant}
-\DeclareMathOperator{\numerator}{numerator}
-\DeclareMathOperator{\denominator}{denominator}
-\DeclareMathOperator{\ADCO}{ADCO}
-\DeclareMathOperator{\dens}{dens}
-\DeclareMathOperator{\symdif}{\bigtriangleup}
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\tr}{tr}
-
-% -------------------- convenience things --------------------
-
-\newcommand{\dset}{D}
-\newcommand{\clus}{\mathcal{C}}
-\newcommand{\parts}{\mathcal{P}}
-\newcommand{\NP}{\text{NP}}
-
-% for functions between two partitions C_1 and C_2
-\newcommand{\partcompare}[1]{\Delta_{\mathcal{#1}}(\clus_1,\clus_2)}
-\newcommand{\partcomparest}[1]{\Delta_{\mathcal{#1}}(\clus^*_1,\clus^*_2)}
-% for functions between two partitions C and C' and C and C''
-\newcommand{\partcomparep}[1]{\Delta_{\mathcal{#1}}(\clus,\clus')}
-\newcommand{\partcomparepp}[1]{\Delta_{\mathcal{#1}}(\clus,\clus'')}
-
-% -------------------- pretty things --------------------
-
-% works nicely for fraction indices
-\newcommand{\prettyfrac}[2]{^#1\!/\!_#2}
-
-% use this for functions on powersets
-\newcommand{\psettimes}{\! \times}
-% and this for functions on powersets of powersets
-\newcommand{\pspsettimes}{\! \! \times}
-
-% -------------------- environments --------------------
-
-% theorems
-\newtheorem{thm}{Theorem}
-\newtheorem{lem}{Lemma}
-\newtheorem{cor}{Corollary}
-\newtheorem{dfn}{Definition}
-
-% problem template
-\newenvironment{problem}[1]{\par\addvspace{\topsep}\noindent\textsc{#1}\\}
-{\par\addvspace{\topsep}\noindent}
-\newcommand{\instance}[1]{\textsc{Instance:} #1\\}
-\newcommand{\question}[1]{\textsc{Question:} #1}
-
-% algorithmic stuff
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-
-\title{\reporttitle}
-\author{\reportauthor}
-
-% ------------------------------ END PREAMBLE ------------------------------
-
-\begin{document}
-
-\maketitle
-
-\tableofcontents
-
-\chapter{Introduction}
-\label{cha:introduction}
-
 \chapter{Background}
 \label{cha:background}
 
 \section{Summary}
 \label{sec:summary-backgd}
 
+In this chapter we introduce the background knowledge and terminology that is
+required for the work presented later.  We then review the current state of
+two broad categories of data analysis techniques, namely partitional
+clustering and hierarchical clustering.
 
 \section{Datasets and metric spaces}
 \label{sec:datas-metr-spac}
@@ -155,165 +16,186 @@ A dataset, in the most general sense, is simply a collection of objects.  For
 now we will consider the collection to be a set, but later we will look at
 some generalisations.
 
-Let $\dset$ be a set with some $x,y,z \in \dset$.  It is important for many
-applications to be able to compare objects in a set.  For this purpose we can
-define a function:
+Let $\dset$ be a set.  It is important for many applications to be able to
+compare objects in a set.  For this purpose we can define a function:
 \begin{equation*}
   d \colon \dset \times \dset \to \mathbb{R}^{\geq 0}.
 \end{equation*}
 Such a function is called a \textit{dissimilarity on $\dset$}.  Whenever we
-have $d(x,y)>d(x,z)$ this is interpreted as ``$x,y$ are more dissimilar than
-$x,z$''.
+have, for any $x,y,z \in \dset$, that $d(x,y)>d(x,z)$, we interpret it as
+``$x,y$ are more dissimilar than $x,z$''.
 
-Some dissimilarities are more useful than others.  One would generally expect
-the function to have the following two properties for all $x,y \in \dset$:
-\begin{enumerate}
-\item $d(x,y) = d(y,x)$,
-\item \label{item:distinct} $d(x,x) = 0$.
-\end{enumerate}
-Informally, this means the function is symmetrical, and that no two distinct
-elements can be more similar than identical elements.  A dissimilarity on
-$\dset$ which satisfies these two properties is called a \textit{distance on
-  $\dset$}.  When we use a distance, objects are usually said to be close or
-distant, instead of similar or dissimilar.
-
-Two further properties that may be expected are, for all $x,y,z \in \dset$:
-\begin{enumerate}[resume]
-\item \label{item:identity} $d(x,y) = 0$ only if $x=y$,
-\item \label{item:tri-ineq} $d(x,y)+d(y,z) \geq d(x,z)$.
-\end{enumerate}
-Properties~\ref{item:distinct} and \ref{item:identity} together are called the
-\textit{identity of indiscernibles}.  Property~\ref{item:tri-ineq} is called
-the \textit{triangle inequality}.  A distance on $\dset$ which satisfies all
-four properties is called a \textit{metric on $\dset$}.  If $d$ is a metric on
-$\dset$, then $(\dset,d)$ is called a \textit{metric space}.
-
-Sometimes when we wish to compare elements of a particular dataset it is
-necessary to invent a dissimilarity.  Usually a metric is most desirable.  But
-often the objects in the dataset will be of a common type, such as Euclidean
-vectors, for which there are many dissimilarities already defined.  We will
-look at some examples of existing dissimilarities now.  Since we are most
-interested in metrics, we will only briefly mention some non-metrics.
-
-Dissimilarities which are not distances include Bregman divergences, which are
+Examples of dissimilarities include Bregman divergences, which are
 generalisations of Euclidean distance squared for objects in Euclidean space
 \citep{banerjee2005clustering}, and the Kullback-Leibler divergence for
-probability distributions \citep{kullback68information}.  Distances which are
-not metrics include the Bhattacharyya distance \citep{bhattacharyya43distance}
-and in a general positive edge-weighted graph, the length of the shortest path
-between two vertices.
+probability distributions \citep{kullback68information}.
+
+Some dissimilarities are more useful than others.  One would generally expect
+such a function to have the following two properties for all $x,y \in \dset$:
+\begin{enumerate}
+\item $d(x,y) = d(y,x)$ \quad (symmetry),
+\item \label{item:distinct} $d(x,x) = 0$ \quad (identical elements are most
+  similar).
+\end{enumerate}
+A dissimilarity on $\dset$ that satisfies these two properties is called a
+\textit{distance on $\dset$}.  When we use a distance, objects are usually
+said to be close or distant instead of similar or dissimilar.
+
+Examples of distances include the Bhattacharyya distance
+\citep{bhattacharyya43distance} and in a general positive edge-weighted graph,
+the length of the shortest path between two vertices.
+
+Two further properties that one may expect a dissimilarity to satisfy are, for
+all $x,y,z \in \dset$:
+\begin{enumerate}[resume]
+\item \label{item:identity} $d(x,y) = 0$ only if $x=y$ \quad (identity of
+  indiscernibles),
+\item \label{item:tri-ineq} $d(x,y)+d(y,z) \geq d(x,z)$ \quad (triangle inequality).
+\end{enumerate}
+A distance on $\dset$ which satisfies all four properties is called a
+\textit{metric on $\dset$}.  If $d$ is a metric on $\dset$ then the pair
+$(\dset,d)$ is called a \textit{metric space}.
+
+A metric is usually the most desirable and intuitive type of dissimilarity.
+In the remainder of this section we review some of the common metrics used for
+certain types of objects, namely Euclidean vectors, sequences, mixed vectors
+and sets.
+
+Metrics exist for many other types of objects including probability
+distributions, for which metrics include the Hellinger distance and
+Jensen-Shannon divergence squared \citep{endres03metric}.  In
+Section~\ref{sec:comparing-partitions} we look at metrics (and other measures)
+for comparing partitions and in Chapter~\ref{cha:sum-squar-clust} we
+introduce our own metric.  It is also possible to transform some
+dissimilarities into metrics, for example see \citet[chap. 2.5]{everitt80}.
 
 \subsection{Euclidean space metrics}
 \label{sec:eucl-space-metr}
 
-Let $M$ be $m$-dimensional Euclidean space and $x=(x_1,x_2,\dotsc,x_m),
-y=(y_1,y_2,\dotsc,y_m) \in M$ be any two elements.  Metrics include the
-familiar Euclidean distance:
+Let $M$ be $m$-dimensional Euclidean space, $\mathbb{R}^m$.  For all
+$\vec{x}=(x_1,x_2,\dotsc,x_m), \vec{y}=(y_1,y_2,\dotsc,y_m) \in M$, metrics on
+$M$ include the familiar \textit{Euclidean distance} $\dissimdefn{E}$ defined
+as:
 \begin{equation*}
-  d_E(x,y) = \sqrt{\sum_{i=1}^{m} (x_i - y_i)^2},
+  d_E(\vec{x},\vec{y}) = \sqrt{\sum_{i=1}^{m} (x_i - y_i)^2},
 \end{equation*}
-the Manhattan distance:
+the \textit{Manhattan distance} $\dissimdefn{M}$ defined as:
 \begin{equation*}
-  d_{M}(x,y) = \sum_{i=1}^{m} |x_i - y_i|
+  d_{M}(\vec{x},\vec{y}) = \sum_{i=1}^{m} |x_i - y_i|
 \end{equation*}
-and the Chebyshev distance:
+and the \textit{Chebyshev distance} $\dissimdefn{C}$ defined as:
 \begin{equation*}
-  d_C(x,y) = \max_{1 \leq i \leq m} |x_i - y_i|,
+  d_C(\vec{x},\vec{y}) = \max_{1 \leq i \leq m} |x_i - y_i|.
 \end{equation*}
-which are all three special cases of the Minkowski distance:
+It should be noted that all three are special cases of the \textit{Minkowski
+  distance}, $\dissimdefn{I}$ defined as:
 \begin{equation*}
-  d_{I}(x,y) = \left(\sum_{i=1}^{m} |x_i - y_i|^{p}\right)^{\prettyfrac{1}{p}}
+  d_{I}(\vec{x},\vec{y}) = \left(\sum_{i=1}^{m} |x_i - y_i|^{p}\right)^{\prettyfrac{1}{p}}
 \end{equation*}
-where $p$ is the order; order 1 being Manhattan, 2 being Euclidean and
-$\lim_{p \to \infty}$ being Chebyshev.
+for all $\vec{x}=(x_1,x_2,\dotsc,x_m), \vec{y}=(y_1,y_2,\dotsc,y_m) \in M$
+where $p$ is the order.  For $p=1$, $d_I=d_M$, for $p=2$, $d_I=d_E$ and for
+$\lim_{p \to \infty}$, $d_I=d_C$.
 
 The Mahalanobis distance \citep{mahalanobis30distance} is a metric which is
 equivalent to Euclidean distance on scaled principle components of the
-dataset.  Given a dataset, $\dset$, of $n$ elements embedded in
-$m$-dimensional Euclidean space, the covariance of components $i$ and $j$ is
-defined as
+dataset.  To make this more precise, let $\dset =
+\{\vec{s}_1,\dotsc,\vec{s}_n\} \subset \mathbb{R}^m$, then the
+\textit{covariance} of the $i$th and $j$th components in $\dset$ is defined
+as:
 \begin{equation*}
-  S_{ij} = \frac{1}{n-1} \sum_{k=1}^{n} (x_{ki}-\bar{x}_i)(x_{kj}-\bar{x}_j),
+  S_{ij} = \frac{1}{n-1} \sum_{k=1}^{n} (\vec{s}_{ki}-\bar{\vec{s}}_i)(\vec{s}_{kj}-\bar{\vec{s}}_j),
 \end{equation*}
-where $x_{ki}$ means the $i$th component of the $k$th element and $\bar{x}_i$
-means the mean of component $i$ in the dataset.  In this context, components
-are often called \textit{features} or \textit{fields}.  The covariance matrix
-is then the symmetric $m \times m$ matrix $S = [S_{ij}]$.  The Mahalanobis
-distance is then defined as
+where $\vec{s}_{ki}$ means the $i$th component of the $k$th element and
+$\bar{\vec{s}}_i$ means the mean of component $i$ across $\dset$.  In this
+context, components are often called \textit{features} or \textit{fields}.
+The covariance matrix associated with $\dset$ is then the $m \times m$ matrix
+$S = [S_{ij}]$, which is clearly symmetric.  The Mahalanobis distance, $d_{P}
+\colon \dset \times \dset \to \mathbb{R}^{\geq 0}$, is then defined as:
 \begin{equation*}
-  d_{P}(x,y) = \sqrt{(x-y)S^{-1}(x-y)^T}.
+  d_{P}(\vec{x},\vec{y}) = \sqrt{(\vec{x}-\vec{y})S^{-1}(\vec{x}-\vec{y})^T},
 \end{equation*}
+for all $\vec{x},\vec{y} \in \dset$.
 
 \subsection{Sequence space metrics}
 \label{sec:sequ-space-metr}
 
 Sequences are a frequently occurring type of object found in many areas such
-as genetics and natural language analysis.
+as evolutionary biology and the analysis of natural language.  A well-known
+metric on sequences of equal length is the \textit{Hamming distance}
+\citep{hamming50errorcodes}.  The Hamming distance, for two sequences $x$ and
+$y$ of equal length, is equal to the number of positions where $x$ and $y$
+differ.
 
-A well known metric on sequences of equal length is the Hamming distance
-\citep{hamming50errorcodes} which is equal to the minimum number of
-substitutions required to transform one sequence into the other.
-
-Another well known metric, this time on sequences of arbitrary length, is the
-Levenshtein distance \citep{levenshtein1965distance} which is equal to the
-minimum number of insertions, deletions and substitutions required to
-transform one sequence into the other.
+Another well-known metric, this time on sequences of arbitrary length, is the
+Levenshtein distance \citep{levenshtein1965distance}.  The Levenshtein
+distance is an edit distance, where the allowed edits are insertion, deletion
+and substitution (for definitions, see \citep{levenshtein1965distance}).  The
+Levenshtein distance between two sequences $x$ and $y$ is the minimum number
+of edits required to transform one sequence into the other.
 
 \subsection{Mixed data metrics}
 \label{sec:mixed-data-metrics}
 
-Euclidean space consists of $m$-tuples of real numbers.  This is often called
-numerical data.  Another type of data is categorical data, where the value of
-each object is one of a fixed, usually small, number of categories.
+Euclidean space consists of $m$-tuples of real numbers, where $m$ is some
+positive integer.  This type of data is often called numerical data.  Another
+type of data is categorical data, where the value of each object is one of a
+fixed, usually small, number of categories, such as true and false or male and
+female.
 
-The simplest metric for categorical data is the overlap metric, or $0/1$
-metric:
+The simplest metric for categorical data is the \textit{overlap metric}, which
+is also variously called the \textit{split metric}, \textit{discrete metric}
+or \textit{$0/1$ metric}.  For a set, $\dset$, the overlap metric, $d_{O}
+\colon \dset \times \dset \to \mathbb{R}^{\geq 0}$, is defined as:
 \begin{equation*}
   d_O(x,y) =
   \begin{cases}
     0 & \text{if $x=y$,} \\
-    1 & \text{otherwise.}
+    1 & \text{otherwise,}
   \end{cases}
 \end{equation*}
+for all $x,y \in \dset$.
 
-A frequently occurring type of data is mixed data, which consists of
-$m$-tuples with both numerical and categorical components.  The heterogeneous
-Euclidean-overlap metric uses normalised Euclidean distance on the numerical
+A frequently occurring type of data appearing in many areas is mixed data,
+which consists of $m$-tuples with both numerical and categorical components.
+Let $\dset$ be a set of such $m$-tuples.  The \textit{heterogeneous
+  Euclidean-overlap metric}, $d_{H} \colon \dset \times \dset \to
+\mathbb{R}^{\geq 0}$, uses normalised Euclidean distance on the numerical
 components and the overlap metric on categorical components.  It is defined
 as:
 \begin{equation*}
-  d_{H}(x,y) = \sqrt{\sum_{i=1}^{m} d_{Hi}^2(x_i,y_i)},
+  d_{H}(\vec{x},\vec{y}) = \sqrt{\sum_{i=1}^{m} d_{Hi}^2(x_i,y_i)},
 \end{equation*}
-where
+for all $\vec{x}=(x_1,\dotsc,x_m),\vec{y}=(y_1,\dotsc,y_m) \in \dset$ where
 \begin{equation*}
   d_{Hi}(x_i,y_i) =
   \begin{cases}
-    d_O(x_i,y_i) & \text{if $i$ is a categorical component,} \\
+    d_O(x_i,y_i) & \text{if $i$ is a categorical component in $\dset$,} \\
     \displaystyle \frac{|x_i-y_i|}{range_i} & \text{otherwise,}
   \end{cases}
 \end{equation*}
-where $range_i$ is the difference between maximum and minimum observed values
-for component $i$.
+for all $1 \geq i \geq m$ where $range_i$ is the difference between maximum
+and minimum observed values for component $i$ in $\dset$.
+
+There also exist generalised Mahalanobis distances for mixed data, see for
+example \citep{leon2005generalized}.
 
 \subsection{Set metrics}
 \label{sec:set-metric}
 
 Metrics are also possible on more complex structures, like sets.  Throughout
-this thesis we will use the following convention for naming dissimilarity
-functions: $d$ will be used for dissimilarities on the objects contained in a
-dataset, so $d \colon \dset \times \dset$.  For dissimilarities on sets of
-those objects we will use $\delta$, so $\delta \colon 2^{\dset} \psettimes
-2^{\dset}$.  For dissimilarities on sets of those sets we will use $\Delta$,
-so $\Delta \colon 2^{2^{\dset}} \pspsettimes 2^{2^{\dset}}$.  We will look at
-some examples of dissimilarities on sets next and in
-Section~\ref{sec:comparing-partitions} we will look at some examples of
-dissimilarities on sets of sets.
+this thesis we use a convention for naming dissimilarities: $d$ is used in
+general, $\delta$ is used for dissimilarities on sets and, later, we will use
+$\Delta$ for dissimilarities on partitions.  In this subsection we look at
+some metrics on sets and in Section~\ref{sec:comparing-partitions} we will
+look at dissimilarities on partitions.
 
-Let $S$ be a set of arbitrary elements and $X,Y \in 2^{S}$ be any two subsets.
-The cardinality of the symmetric difference is a well known metric on $2^{S}$:
+Let $\dset$ be a set.  The cardinality of the symmetric difference,
+$\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to \mathbb{R}^{\geq 0}$
+is a well-known metric on sets defined as:
 \begin{equation*}
-  \delta_{\symdif}(X,Y) = |X \symdif Y|.
+  \delta_{\symdif}(X,Y) = |X \symdif Y|,
 \end{equation*}
+for all $X,Y \in 2^{\dset}$.
 
 \begin{figure}
   \centering
@@ -341,19 +223,28 @@ The cardinality of the symmetric difference is a well known metric on $2^{S}$:
   \label{fig:partition}
 \end{figure}
 
-The normalised symmetric difference is also a metric on $2^{S}$:
+A related dissimilarity is the normalised symmetric difference,
+$\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to \mathbb{R}^{\geq 0}$,
+defined as:
 \begin{equation*}
   \delta_{\symdif_n}(X,Y) =
   \begin{cases}
     \displaystyle \frac{|X \symdif Y|}{|X \cup Y|} & \text{if $X \cup Y \neq
-      \emptyset$} \\
-    0 & \text{otherwise.}
+      \emptyset$}, \\
+    0 & \text{otherwise,}
   \end{cases}
 \end{equation*}
+for all $X,Y \in 2^{\dset}$.
+
+\begin{thm}
+  The normalised symmetric difference is a metric on $2^{\dset}$.
+\end{thm}
+
+The following proof was presented in \citep{yianilos91}, with some errors.  We
+reproduce the proof here with the errors corrected.
 
 \begin{proof}
-  The proof shown here is from \citep{yianilos91}, with some corrections.
-  Again, it is easy to see the function is non-negative, symmetric and that
+  It is easy to see the function is nonnegative, symmetric and that
   $\delta_{\symdif_n}(X,Y)=0$ if and only if $X=Y$ for all $X,Y \in 2^{\dset}$
   so we will show that the triangle inequality holds which is:
   \begin{equation*}
@@ -371,13 +262,13 @@ The normalised symmetric difference is also a metric on $2^{S}$:
   We partition $X \cup Y \cup Z$ into disjoint subsets as shown in
   Figure~\ref{fig:partition} and let
   \begin{align*}
-    a &= |X \setminus (Y \cup Z)|\\
-    b &= |Y \setminus (X \cup Z)|\\
-    c &= |Z \setminus (X \cup Y)|\\
-    d &= |(X \cap Y) \setminus Z|\\
-    e &= |(Y \cap Z) \setminus X|\\
-    f &= |(Z \cap X) \setminus Y|\\
-    g &= |X \cap Y \cap Z|
+    a = |X \setminus (Y \cup Z)|,&\qquad
+    b = |Y \setminus (X \cup Z)|,\\
+    c = |Z \setminus (X \cup Y)|,&\qquad
+    d = |(X \cap Y) \setminus Z|.\\
+    e = |(Y \cap Z) \setminus X|.&\qquad
+    f = |(Z \cap X) \setminus Y|.\\
+    g = |X& \cap Y \cap Z|,
   \end{align*}
   and for convenience we let
   \begin{equation*}
@@ -435,10 +326,6 @@ The normalised symmetric difference is also a metric on $2^{S}$:
 \begin{figure}
   \centering
   \begin{tikzpicture}[
-    node1/.style={dot,regular polygon,regular polygon sides=3,
-      minimum size=2mm,fill=black},
-    node2/.style={dot,regular polygon,regular polygon sides=3,
-      minimum size=2mm,fill=black,rotate=180}
     ]
 
     \draw [dashed,faint] (-2.8em,0) ellipse (4em and 5em);
@@ -448,14 +335,14 @@ The normalised symmetric difference is also a metric on $2^{S}$:
     \begin{scope}[xshift=-2.8em,scale=0.85]
       \foreach \theta in {0,30,...,330} {
         \pgfmathparse{(4*5)/sqrt((5*cos(\theta))^2+(4*sin(\theta))^2)}
-        \node [node1] (1set\theta) at (\theta:\pgfmathresult em) {};
+        \node [setnode1] (1set\theta) at (\theta:\pgfmathresult em) {};
       }
     \end{scope}
     % set 2 markers
     \begin{scope}[xshift=-2.8em,scale=0.85]
       \foreach \theta in {0,30,330} {
         \pgfmathparse{(4*5)/sqrt((5*cos(\theta))^2+(4*sin(\theta))^2)}
-        \node [node2] at (\theta:\pgfmathresult em) {};
+        \node [setnode2] at (\theta:\pgfmathresult em) {};
       }
     \end{scope}
 
@@ -463,108 +350,107 @@ The normalised symmetric difference is also a metric on $2^{S}$:
     \begin{scope}[xshift=2.8em,scale=0.85]
       \foreach \theta in {0,30,...,330} {
         \pgfmathparse{(5*4)/sqrt((4*cos(\theta))^2+(5*sin(\theta))^2)}
-        \node [node2] (2set\theta) at (\theta:\pgfmathresult em) {};
+        \node [setnode2] (2set\theta) at (\theta:\pgfmathresult em) {};
       }
     \end{scope}
     % set 1 markers
     \begin{scope}[xshift=2.8em,scale=0.85]
       \foreach \theta in {150,180,210} {
         \pgfmathparse{(5*4)/sqrt((4*cos(\theta))^2+(5*sin(\theta))^2)}
-        \node [node1] at (\theta:\pgfmathresult em) {};
+        \node [setnode1] at (\theta:\pgfmathresult em) {};
       }
     \end{scope}
 
-    \draw [symdist] (2set0) -- (1set0);
+    \draw [symdist] (2set0) -- node[auto,swap] {$d$} (1set0);
+
+    % labels
+    \node at (-6em,4em) {$X$};
+    \node at (6em,4em) {$Y$};
   \end{tikzpicture}
-  \caption{The Haussdorf distance between two subsets of a metric space can be
-    described informally as the greatest distance one must travel if starting
-    from a point in one set and travelling to the closest point in the other
-    set.  This distance is marked in the diagram.}
+  \caption{$X$ and $Y$ are sets with elements labelled by \tikzuptriangle ~and
+    \tikzupdtriangle ~respectively.  Elements in both sets are labelled with
+    \tikzbotriangle .  The Haussdorf distance between $X$ and $Y$ is,
+    informally, the greatest distance one must travel if starting from a point
+    in one set and travelling to the closest point in the other.  This
+    distance is marked by $d$ in the diagram.}
   \label{fig:haussdorf}
 \end{figure}
 
-If the sets are nonempty subsets of a metric space, $(M,d)$, then the
-underlying metric space can be used to define metrics on the sets.  The
-Haussdorf metric is a metric on $2^{M}$ \citep{braun2003geometry}:
+Let $(M,d)$ be a metric space and $\mathcal{M}=2^M \setminus \emptyset$.  The
+Haussdorf distance, $\delta_{H} \colon \mathcal{M} \times \mathcal{M} \to
+\mathbb{R}^{\geq 0}$, is defined as:
 \begin{equation*}
   \delta_{H}(X,Y) = \max\left(\max_{x \in X} \min_{y \in Y} d(x,y),
-                             \max_{y \in Y} \min_{x \in X} d(x,y)\right).
+                             \max_{y \in Y} \min_{x \in X} d(x,y)\right), 
 \end{equation*}
-This distance is illustrated in Figure~\ref{fig:haussdorf}.  In
-Chapter~\ref{cha:assignment-metric} we present another metric which can be
-used for this purpose.
+for all $X,Y \in \mathcal{M}$.  The Haussdorf distance is a metric on
+$\mathcal{M}$ \citep{braun2003geometry}.  This distance is illustrated in
+Figure~\ref{fig:haussdorf} by showing the Haussdorf distance between two sets
+with elements in a metric space.  In Chapter~\ref{cha:sum-squar-clust} we
+present a new metric on $\mathcal{M}$.
 
-As an aside, it should be noted that linkage functions, which are used in
+We conclude by remarking that the linkage functions, which are used in
 hierarchical clustering, the topic of Section~\ref{sec:hierarchies}, are not
-generally metrics.  The \textit{single-linkage distance}:
+generally metrics.  For a metric space, $(M,d)$, and $\mathcal{M}=2^M
+\setminus \emptyset$, the \textit{single-linkage distance}, $\delta_{SL}
+\colon \mathcal{M} \times \mathcal{M} \to \mathbb{R}^{\geq 0}$ is defined as:
 \begin{equation*}
-  \delta(X,Y) = \min_{x \in X, y \in Y} d(x,y)
+  \delta_{SL}(X,Y) = \min_{x \in X, y \in Y} d(x,y),
 \end{equation*}
-is a simple and intuitive distance between sets, but is not a metric since
-distinct sets can have a distance of zero.  \textit{Complete-linkage} and
-\textit{average-linkage} are, in fact, not even distances.  These measures
-will be discussed in Section~\ref{sec:hierarchies}.
+for all $X,Y \in \mathcal{M}$.  While single-linkage is a simple and intuitive
+distance between sets, it is not a metric since distinct sets can have a
+distance of zero.  The \textit{complete-linkage} and \textit{average-linkage}
+dissimilarities are, in fact, not even distances.  These measures will be
+discussed further in Section~\ref{sec:hierarchies}.
 
-\subsection{Other metrics}
-\label{sec:other-metrics}
+% \subsection{Multiset datasets}
+% \label{sec:multiset-datasets}
 
-Many other metrics exist including the Hellinger distance and Jensen-Shannon
-divergence squared \citep{endres03metric} for probability distributions.
-There exist generalised Mahalanobis distances for mixed data
-\citep{leon2005generalized}.  In Section~\ref{sec:comparing-partitions} we
-look at metrics (and general dissimilarities) on partitions and in
-Chapter~\ref{cha:assignment-metric} we introduce our own metric.
+% It is tempting to think of a dataset and a metric defined on its elements as a
+% metric space, but this is not necessarily correct.  The reason is that,
+% contrary to the name, a dataset is not usually a set but a multiset.  Consider
+% a dataset consisting of only the heights of some population of humans.
+% Depending on the precision of the measurements taken, it would generally be
+% expected that multiple subjects share the same height.  In order to have these
+% observations in a set, some unique integer---an experiment number, say---would
+% need to be attached to each observation.  But then the metric condition that
+% $d(x,y)=0$ only if $x=y$ would be violated---in fact we would have only a
+% \textit{pseudometric}.  We can get a proper metric if we define an equivalence
+% relation $x \sim y$ if $d(x,y)=0$.  Then $(\dset/\sim,d)$ is a metric space.
 
-It is also possible in some cases to transform a general dissimilarity into a
-metric, for example see \citet[chap. 2.5]{everitt80}.
+% Most of the time we do not need to worry about this.  From now on a dataset,
+% $\dset$, will implicitly mean $\dset/\sim$ as defined above unless stated
+% otherwise.  Occasionally. though, it will be useful or necessary to consider
+% the multiset $(\dset,\mu_{\dset})$ where $\dset$ is the underlying set, and
+% $\mu_{\dset} \colon \dset \to \mathbb{N}_1$---a map from $\dset$ to the
+% (nonzero) natural numbers---is called the membership function and tells us how
+% many times an element appears in the multiset.
 
-\subsection{Multiset datasets}
-\label{sec:multiset-datasets}
-
-It is tempting to think of a dataset and a metric defined on its elements as a
-metric space, but this is not necessarily correct.  The reason is that,
-contrary to the name, a dataset is not usually a set but a multiset.  Consider
-a dataset consisting of only the heights of some population of humans.
-Depending on the precision of the measurements taken, it would generally be
-expected that multiple subjects share the same height.  In order to have these
-observations in a set, some unique integer---an experiment number, say---would
-need to be attached to each observation.  But then the metric condition that
-$d(x,y)=0$ only if $x=y$ would be violated---in fact we would have only a
-\textit{pseudometric}.  We can get a proper metric if we define an equivalence
-relation $x \sim y$ if $d(x,y)=0$.  Then $(\dset/\sim,d)$ is a metric space.
-
-Most of the time we do not need to worry about this.  From now on a dataset,
-$\dset$, will implicitly mean $\dset/\sim$ as defined above unless stated
-otherwise.  Occasionally. though, it will be useful or necessary to consider
-the multiset $(\dset,\mu_{\dset})$ where $\dset$ is the underlying set, and
-$\mu_{\dset} \colon \dset \to \mathbb{N}_1$---a map from $\dset$ to the
-(nonzero) natural numbers---is called the membership function and tells us how
-many times an element appears in the multiset.
-
-A further generalisation is then possible: we can relax the definition of the
-membership function to $\mu_{\dset} \colon \dset \to \mathbb{R}_1$---a map
-from $\dset$ to the positive real numbers.  The dataset is then a fuzzy
-multiset.  Such datasets have been used in document clustering applications,
-for example in \citep{miyamoto2003information}, where objects can appear
-multiple times with a certain probability attached.  If the membership
-function if $\mu_{\dset} \colon \dset \to \mathbb{R}_1 \cap [0,1]$ then
-$(\dset,\mu_{\dset})$ is called a fuzzy set
-\citep{zadeh1965fuzzy,gottwald2010fuzzy}.
+% A further generalisation is then possible: we can relax the definition of the
+% membership function to $\mu_{\dset} \colon \dset \to \mathbb{R}_1$---a map
+% from $\dset$ to the positive real numbers.  The dataset is then a fuzzy
+% multiset.  Such datasets have been used in document clustering applications,
+% for example in \citep{miyamoto2003information}, where objects can appear
+% multiple times with a certain probability attached.  If the membership
+% function if $\mu_{\dset} \colon \dset \to \mathbb{R}_1 \cap [0,1]$ then
+% $(\dset,\mu_{\dset})$ is called a fuzzy set
+% \citep{zadeh1965fuzzy,gottwald2010fuzzy}.
 
 \section{Partitions}
 \label{sec:partitions}
 
 In this section we look at the properties of partitions of sets, how we can
-compare partitions and how we can find partitions.
+compare partitions and how we can find partitions.  Throughout, we assume that
+$n > 0$ and refer to a set of $n$ elements as an \textit{$n$-set}.  We also
+denote the set $\{1,\dotsc,n\}$ by $[n]$.
 
 \subsection{The space of partitions}
 \label{sec:space-partitions}
 
-A $k$-partition, $\clus = \{C_1,C_2,\dotsc,C_k\}$, of an $n$ element set,
-$\dset$, is a set of $k \in \{1,2,\dotsc,n\}$ non-empty, pairwise disjoint
-subsets such that $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$.  Following
-common practice, we will refer to the elements of $\clus$ as
-\textit{clusters}.
+Given an $n$-set $\dset$, a $k$-partition $\clus = \{C_1,C_2,\dotsc,C_k\}$ of
+$\dset$ is a set of $k \in [n]$ nonempty, pairwise-disjoint subsets of $\dset$
+such that $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$.  Following common
+practice, we will refer to the elements of $\clus$ as \textit{clusters}.
 
 \begin{figure}
   \centering
@@ -635,33 +521,42 @@ common practice, we will refer to the elements of $\clus$ as
   \label{fig:lattice}
 \end{figure}
 
-The set, $\parts_{\dset}$, of all partitions of $\dset$ forms a lattice called
-the \textit{lattice of partitions}.  A lattice can be represented as a graph
-called a \textit{Hasse diagram} with vertex set $\parts_{\dset}$ and edge set
-consisting of edges $(\clus_1,\clus_2) \in \parts_{\dset}
-\times \parts_{\dset}$ such that a cluster in $\clus_1$ is the union of two
-clusters in $\clus_2$.  In general, we call $\clus_2$ a \textit{refinement} of
-$\clus_1$.
+Let $\parts_{\dset}$ be the set of all partitions of $\dset$ and $\clus,\clus'
+\in \parts_{\dset}$.  The partition $\clus$ is called a \textit{refinement} of
+$\clus'$ if every element of $\clus$ is a subset of some element of $\clus'$.
+We can then say that $\clus$ is \textit{finer-than-or-equal-to} $\clus'$,
+which we notate $\clus \leq \clus'$ (or that $\clus'$ is
+\textit{coarser-than-or-equal-to} $\clus$).  The relation $\leq$ imposes a
+partial order on the elements of $\parts_{\dset}$.
 
-The Hasse diagram of a four element set is shown in Figure~\ref{fig:lattice}.
-The partition at the top is the partition that is not a refinement of any
-partition ($k=1$).  The partition at the bottom is the partition that is a
-refinement of every other partition ($k=n$).
+The partially-ordered set $(\parts_{\dset},\leq)$ is called the
+\textit{lattice of partitions} and can be represented in terms of a graph
+called the \textit{Hasse diagram} associated with $\parts_{\dset}$.  The
+vertex set of that graph is $\parts_{\dset}$ and its arc set consists of the
+pairs $(\clus_1,\clus_2) \in \parts_{\dset} \times \parts_{\dset}$ such that
+$\clus_2 < \clus_1$ and there exists no $\clus_3 \in \parts_{\dset}$ such that
+$\clus_2 < \clus_3 < \clus_1$.  Informally, this means that $\clus_2$ can be
+obtained by bisecting one cluster of $\clus_1$.
 
-As this example suggests, a set can support a large number of possible
-partitions.  We can count the number of possible partitions of an $n$ element
-set using the \textit{Bell number}, $B_n$
-\citep{bell1934exponential,stanley2000enumerative}, which is defined by $B_0 =
-1$ and the recursive formula:
+The Hasse diagram of the set $\dset = \{a,b,c,d\}$ is presented in
+Figure~\ref{fig:lattice}.  The partition at the top is the coarsest partition
+(a 1-partition) and the partition at the bottom is the finest partition (an
+$n$-partition).
+
+As this example suggests, a set can potentially support a very large number of
+partitions.  For an $n$-set $\dset$ the cardinality of $\parts_{\dset}$ is
+given by the \textit{Bell number} $B_n$
+\citep{bell1934exponential,stanley2000enumerative} where $B_0=1$ and
 \begin{equation*}
-  B_n = \sum_{l=0}^{n-1} B_l \binom{n-1}{l} \qquad \text{for $n \geq 1$},
+  B_n = \sum_{l=0}^{n-1} B_l \binom{n-1}{l} \qquad \text{for $n \geq 1$}.
 \end{equation*}
-and, alternatively, Dobinski's formula \citep{dobinski1877summation}:
+Alternatively, $B_n$ is given by Dobi\'{n}ski's formula
+\citep{dobinski1877summation}:
 \begin{equation*}
   B_n = \frac{1}{e} \sum_{l=0}^{\infty} \frac{l^n}{l!} \qquad \text{for $n
     \geq 0$}.
 \end{equation*}
-We illustrate the growth of the Bell numbers in Table~\ref{tab:bell-number}.
+We illustrate the growth of the Bell number in Table~\ref{tab:bell-number}.
 
 \begin{table}
   \centering
@@ -677,7 +572,8 @@ We illustrate the growth of the Bell numbers in Table~\ref{tab:bell-number}.
     \bottomrule
   \end{tabular}
   \caption{The value of the Bell number, $B_n$, for some selected values of
-    $n$.}
+    $n$.  The value of $B_n$ is equivalent to the number of possible
+    partitions of an $n$ element set.}
   \label{tab:bell-number}
 \end{table}
 
@@ -692,19 +588,17 @@ are either members of a set or they are not.  Fuzzy sets and partitions have
 many applications including classification of data in the natural sciences
 where membership is not precisely defined.
 
-A fuzzy set is an ordered pair, $(C,\mu_{C})$, consisting of an underlying
-set, $C$, and a membership function $\mu_{C} \colon C \to (0,1]$.  Note that
-in our definition, all members of the underlying set are members to some
-extent of the fuzzy set since the grade of membership cannot be zero.
+Formally, a fuzzy set is an ordered pair $(C,\mu_{C})$ consisting of an
+underlying set $C$ and a membership function $\mu_{C} \colon C \to (0,1]$.
+Note that in our definition, all members of the underlying set are members of
+the fuzzy set to some extent since the grades of membership cannot be zero.
 
-A \textit{$k$-fuzzy-partition} of an $n$ element set, $\dset$, is a set of $k
-\in \{1,2,\dotsc,n\}$ fuzzy sets,
-$\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}$, where $C_1 \cup C_2 \cup
-\dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $1 \leq i \leq k$ and
-$\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.  For convenience we
-denote each membership function $\mu_{C_i}$ as simply $\mu_i$.  The underlying
-sets of the clusters are not necessarily pairwise disjoint, so elements can
-belong to more than one cluster.
+A \textit{$k$-fuzzy-partition} of an $n$-set $\dset$ is a set of $k \in [n]$
+fuzzy sets: \[\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}\] where $C_1 \cup
+\dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $i \in [k]$ and
+$\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.  Note that the underlying
+sets of the fuzzy sets $(C_i,\mu_i)$ are not necessarily pairwise disjoint, so
+elements can belong to more than one cluster.
 
 \subsection{Comparing partitions}
 \label{sec:comparing-partitions}
@@ -713,17 +607,17 @@ An attractive way to find partitions of a set is by means of a partitional
 clustering method.  Many methods exist---we will review some in
 Section~\ref{sec:part-clust-algor}---and, depending on their respective
 approach to the problem, they all tend to produce different partitions.  To
-further complicate matters, some methods are non-deterministic and produce
-different partitions each time they are used.
+further complicate matters, some methods are nondeterministic so can
+potentially produce different partitions each time they are used.
 
 For the purposes of comparing and assessing clustering methods it is therefore
 useful to be able to compare partitions.  Many measures have been devised for
 this purpose, including similarity measures and dissimilarity measures, of
 which some are metrics.  Existing methods fall into four main categories; for
-two partitions, $\clus_1$ and $\clus_2$, of a set $\dset$, these are:
+two partitions $\clus_1$ and $\clus_2$ of a set $\dset$, these are:
 \begin{description}
 \item[Pair counting] which measures the agreement and disagreement between
-  $\clus_1$ and $\clus_2$ by means of counting pairs of element in the set,
+  $\clus_1$ and $\clus_2$ by means of counting pairs of element in $\dset$,
 \item[Set matching] which ``matches'' clusters in $\clus_1$ with clusters in
   $\clus_2$ and measures the similarity between matched sets,
 \item[Information theoretic] which uses information theory to measure the
@@ -734,35 +628,33 @@ two partitions, $\clus_1$ and $\clus_2$, of a set $\dset$, these are:
 
 We will review measures belonging to the first three categories in this
 section.  The fourth category consists of a single measure called ADCO which
-we will analyse in Chapter~\ref{cha:assignment-metric}.
+we will analyse in Chapter~\ref{cha:sum-squar-clust}.
 
 To be able to describe the measures in detail, we need to introduce some more
-terminology.  As before, let $\dset = \{x_1,x_2,\dotsc,x_n\}$ be a set of $n
-\geq 2$ elements and $\clus_1 = \{C_{11},C_{12},\dotsc,C_{1k}\}$ and $\clus_2
-= \{C_{21},C_{22},\dotsc,C_{2k'}\}$ be two partitions of $\dset$ with $k$ and
-$k'$ clusters respectively.
-
-We denote, for some $x \in \dset$, and a partition, $\clus$, of $\dset$, the
-cluster in $\clus$ that contains $x$ by $\clus(x)$.
-
-The \textit{confusion matrix} of two partitions, $\clus_1$ and $\clus_2$, is
-the $k \times k'$ matrix $[n_{ij}]$ where $n_{ij} = |C_{i1} \cap C_{2j}|$.
-The confusion matrix is used for the calculation of both pair counting and set
+terminology.  Let $\dset = \{x_1,x_2,\dotsc,x_n\}$ be an $n$-set with $n \geq
+2$ and again, as before, let $\clus_1 = \{C_{11},C_{12},\dotsc,C_{1k}\}$ and
+$\clus_2 = \{C_{21},C_{22},\dotsc,C_{2k'}\}$ be two partitions of $\dset$ with
+$k$ and $k'$ clusters, respectively.  We denote, for some $x \in \dset$, and a
+partition, $\clus$, of $\dset$, the cluster in $\clus$ that contains $x$ by
+$\clus(x)$.  The \textit{confusion matrix} associated with $\clus_1$ and
+$\clus_2$ is the $k \times k'$ matrix $[n_{ij}]$ where $n_{ij} = |C_{i1} \cap
+C_{2j}|$.  It is used for the calculation of both pair counting and set
 matching measures.
 
-To illustrate these definitions and the comparison measures we will use two
-example partitions, $\clus^*_1$ and $\clus^*_2$, on a set, $\dset^* =
-\{1,2,\dotsc,9\}$, throughout this section:
-\begin{align*}
-  \clus^*_1 &= \{C^*_{11},C^*_{12},C^*_{13}\}, \\
-  \clus^*_2 &= \{C^*_{21},C^*_{22},C^*_{23},C^*_{24}\}
-\end{align*}
+To illustrate these definitions and the comparison measures we review below,
+we will use two example partitions $\clus^*_1$ and $\clus^*_2$ of the set
+$\dset^* = [9]$ throughout this section:
+\begin{equation}
+  \label{eq:example-parts}
+  \clus^*_1 = \{C^*_{11},C^*_{12},C^*_{13}\},\qquad
+  \clus^*_2 = \{C^*_{21},C^*_{22},C^*_{23},C^*_{24}\}
+\end{equation}
 where
 \begin{align*}
-  C^*_{11}&=\{1,2,3\},C^*_{12}=\{4,5,6\},C^*_{13}\{7,8,9\}, \\
-  C^*_{21}&=\{1,4\},C^*_{22}=\{2,3,6\},C^*_{23}=\{5,8\},C^*_{24}\{7,9\}.
+  C^*_{11}&=\{1,2,3\},\quad C^*_{12}=\{4,5,6\},\quad C^*_{13}\{7,8,9\} \quad \text{and}\\
+  C^*_{21}&=\{1,4\},\quad C^*_{22}=\{2,3,6\},\quad C^*_{23}=\{5,8\},\quad C^*_{24}\{7,9\}.
 \end{align*}
-Then, for example, we have $\clus^*_1(3) = C^*_{11}$.  The confusion matrix
+Then, for example, we have $\clus^*_1(3) = C^*_{11}$, and the confusion matrix
 associated with $\clus^*_1$ and $\clus^*_2$ is:
 \begin{equation*}
   [n_{ij}]^*=\left[
@@ -779,17 +671,12 @@ associated with $\clus^*_1$ and $\clus^*_2$ is:
 
 There are $\binom{n}{2}$ distinct pairs of elements in $\dset$.  For each
 distinct pair $(a,b) \in \dset \times \dset$ one of the following is true:
-\begin{itemize}
-\item $a,b$ are in the same cluster in $\clus_1$ and the same cluster in
-  $\clus_2$,
-\item $a,b$ are in different clusters in $\clus_1$ and different clusters in
-  $\clus_2$,
-\item $a,b$ are in the same cluster in $\clus_1$ but in different clusters in
-  $\clus_2$,
-\item $a,b$ are in different clusters in $\clus_1$ but in the same cluster in
-  $\clus_2$.
-\end{itemize}
-
+\begin{align*}
+\clus_1(a)=\clus_1(b) &\text{ and } \clus_2(a)=\clus_2(b),\\
+\clus_1(a)\neq \clus_1(b) &\text{ and } \clus_2(a)\neq \clus_2(b),\\
+\clus_1(a)=\clus_1(b) &\text{ and } \clus_2(a)\neq \clus_2(b),\\
+\clus_1(a)\neq \clus_1(b) &\text{ and } \clus_2(a)=\clus_2(b).
+\end{align*}
 Counting the number of element in each category gives us four counts which are
 defined formally as:
 \begin{align*}
@@ -806,13 +693,14 @@ defined formally as:
               \clus_1(a)\neq\clus_1(b) \text{ and } \clus_2(a)=\clus_2(b)
             \}|.
 \end{align*}
+The size of $N_{11}$ and $N_{00}$ are considered to be measurements of
+\textit{agreement} between $\clus_1$ and $\clus_2$, while $N_{10}$ and
+$N_{01}$ are considered measurements of \textit{disagreement}.
 
-The size of $N_{11}$ and $N_{00}$ are considered to be measurements of the
-agreement between the $\clus_1$ and $\clus_2$, while $N_{10}$ and $N_{01}$ are
-considered measurements of the disagreement between them.  The measures based
-on pair counting can all be expressed in terms of these four counts.  Clearly
-$N_{11}+N_{00}+N_{10}+N_{01} = \binom{n}{2}$ is always satisfied.  The counts
-can all be obtained from the confusion matrix using the following formul\ae
+The measures based on pair counting can all be expressed in terms of these
+four counts.  Clearly \[N_{11}+N_{00}+N_{10}+N_{01} = \binom{n}{2}\] is always
+satisfied.  The quantities $N_{11},N_{00},N_{10}$ and $N_{01}$ can all be
+obtained from the confusion matrix using the following formul\ae
 \citep{hubert-arabie-1985}:
 \begin{align*}
   N_{11} &= \frac{1}{2} \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}(n_{ij}-1),\\
@@ -831,20 +719,26 @@ can all be obtained from the confusion matrix using the following formul\ae
                              - \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
                        \right).
 \end{align*}
+The four counts for our example partitions $\clus^*_1$ and $\clus^*_2$ are:
+\begin{equation*}
+  N_{11} = 2,\quad
+  N_{00} = 23,\quad
+  N_{10} = 7,\quad
+  N_{01} = 4.
+\end{equation*}
 
-One of the simplest pair counting measures between two partitions, $\clus_1$
-and $\clus_2$, is the widely-used \textit{Rand index}, $\partcompare{R}$,
-introduced in \citep{rand-1971} and defined as:
+One of the simplest pair counting measures between $\clus_1$ and $\clus_2$ is
+the widely-used \textit{Rand index} $\partcomparen{R}$ introduced in
+\citep{rand-1971} and defined as:
 \begin{equation*}
 \partcompare{R} = \frac{(N_{11}+N_{00})}{\binom{n}{2}}.
 \end{equation*}
 The Rand index is a similarity measure with a lower bound of 0 and an upper
 bound of 1.  \citet{hubert-arabie-1985} use the following variation:
-\[\partcompare{HA} = (N_{11}+N_{00}-N_{10}-N_{01})/\binom{n}{2}\].
+\[\partcompare{HA} = (N_{11}+N_{00}-N_{10}-N_{01})/\binom{n}{2}.\]
 
-\citet{wallace-1983} introduced two asymmetric measures,
-$\mathcal{W}_{I}(\clus_1,\clus_2)$ and $\mathcal{W}_{II}(\clus_1,\clus_2)$
-defined as:
+\citet{wallace-1983} introduced two asymmetric measures for comparing
+$\clus_1$ and $\clus_2$ defined as:
 \begin{equation*}
   \mathcal{W}_{I}(\clus_1,\clus_2) =
   \frac{N_{11}}{\sum_{i=1}^{k} |C_{i1}|(|C_{1i}|-1)/2},
@@ -857,8 +751,8 @@ and
 $\mathcal{W}_{I}$ and $\mathcal{W}_{II}$ represent the probabilities that, for
 a pair of elements $(a,b) \in \dset \times \dset$ with
 $\clus_1(a)=\clus_1(b)$, we also have $\clus_2(a)=\clus_2(b)$, and vice versa.
-A symmetric similarity measure can be obtained from Wallace's measures by
-taking their geometric mean:
+A symmetric similarity measure for $\clus_1$ and $\clus_2$ can be obtained by
+taking the geometric mean of the Wallace measures:
 \begin{equation*}
   \partcompare{F} = \sqrt{\mathcal{W}_{I}(\clus_1,\clus_2)
                           \mathcal{W}_{II}(\clus_1,\clus_2)}.
@@ -866,26 +760,26 @@ taking their geometric mean:
 This measure was also introduced independently by Fowlkes and Mallows in
 \citep{fowlkes-mallows-1983}.
 
-The Jaccard coefficient, $\partcompare{J}$, is another widely-used similarity
-measure and is defined, for $\clus_1$ and $\clus_2$, as:
+The \textit{Jaccard coefficient} $\partcomparen{J}$ is another widely-used
+similarity measure and is defined, for $\clus_1$ and $\clus_2$, as:
 \begin{equation*}
   \partcompare{J} = \frac{N_{11}}{N_{10}+N_{01}+N_{11}}.
 \end{equation*}
 
 It should be noted that all measures reviewed so far are similarity measures.
-The \textit{Mirkin metric}, $\partcompare{M}$, for measuring dissimilarity
-between two partitions, $\clus_1$ and $\clus_2$, was originally introduced in
+The \textit{Mirkin metric} $\partcomparen{M}$ for measuring dissimilarity
+between $\clus_1$ and $\clus_2$ was originally introduced in
 \citep{mirkin1996mathematical} and is defined as
 \begin{equation*}
   \partcompare{M} = \sum_{i=1}^{k} |C_{1i}|^2 +
                     \sum_{j=1}^{k'} |C_{1j}|^2 +
                     2\sum_{i=1}^{k}\sum_{j=1}^{k'} n_{ij}^2,
 \end{equation*}
-where $n_{ij}$ again denotes the confusion matrix associated with $\clus_1$
-and $\clus_2$.  As it turns out, $\partcompare{M}=2(N_{10}+N_{01})$.  A
-closely related measure, $\partcompare{AB}=(N_{10}+N_{01})/\binom{n}{2}$, is
-also a metric and was used by \citet{mirkin1970measurement} and
-\citet{arabie1973multidimensional}.
+where $[n_{ij}]$ again denotes the confusion matrix associated with $\clus_1$
+and $\clus_2$.  As it turns out, \[\partcompare{M}=2(N_{10}+N_{01}).\] The
+closely related measure: \[\partcompare{AB}=(N_{10}+N_{01})/\binom{n}{2}\] is
+also a metric on $\parts_{\dset}$ and was used by
+\citet{mirkin1970measurement} and \citet{arabie1973multidimensional}.
 
 \begin{table}
   \centering
@@ -901,37 +795,30 @@ also a metric and was used by \citet{mirkin1970measurement} and
     Merkin metric       & $\partcomparest{M} = 22.00$ \\
     \bottomrule
   \end{tabular}
-  \caption{Various pair counting based measures applied to the partitions
-    $\clus_1$ and $\clus_2$.}
+  \caption{Various pair counting based measures applied to the example
+    partitions $\clus^*_1$ and $\clus^*_2$~\eqref{eq:example-parts}.}
   \label{tab:pair-counting-comparison}
 \end{table}
 
-The four counts for our example partitions, $\clus^*_1$ and $\clus^*_2$, are:
-\begin{equation*}
-  N_{11} = 2,\quad
-  N_{00} = 23,\quad
-  N_{10} = 7,\quad
-  N_{01} = 4.
-\end{equation*}
 The values of the reviewed pair counting measures when applied to $\clus^*_1$
 and $\clus^*_2$ are given in Table~\ref{tab:pair-counting-comparison}.
 
 \subsubsection{Set matching}
 \label{sec:set-matching}
 
-Set matching measures are based on comparisons between matched pairs of
-clusters.  Each pair consists of a cluster from each partition that is being
-compared.  All existing measures use the cardinality of the intersection
-between two clusters as a similarity measure for comparison.  This is given by
-the confusion matrix.  The differences between the measures are essentially
-due to the way that they find the matched pairs for comparison.
+Set matching measures for partitions $\clus_1$ and $\clus_2$ are based on
+comparisons between matched pairs of clusters.  Each pair to be compared
+consists of one element of $\clus_1$ and one of $\clus_2$.  All of the
+measures that we review here are based on the confusion matrix, meaning that
+they use the cardinality of the intersection between two clusters as a
+similarity measure.  The differences between the measures are essentially due
+to the way that they find the matched pairs of clusters for comparison.
 
-As before, let $\clus_1 = \{C_{11},\dotsc,C_{1k}\}$ and $\clus_2 =
-\{C_{21},\dotsc,C_{1k'}\}$, where $k,k' \geq 1$, be two partitions of an $n$
-element set, $\dset$.  Assume, without loss of generality, that $k' \geq k$.
-Then, a matching between $\clus_1$ and $\clus_2$ is a function $\sigma \colon
-\{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.  A possible matching for a pair of
-partitions is shown in figure~\ref{fig:matching}.
+As before, let $\dset$ be an $n$-set and let $\clus_1 =
+\{C_{11},\dotsc,C_{1k}\}$ and $\clus_2 = \{C_{21},\dotsc,C_{1k'}\}$, where
+$k,k' \geq 1$, denote two partitions of $\dset$.  Also assume, without loss of
+generality, that $k' \geq k$.  Then, a \textit{matching} between $\clus_1$ and
+$\clus_2$ is a function $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.
 
 \begin{figure}
   \Centering
@@ -971,14 +858,15 @@ partitions is shown in figure~\ref{fig:matching}.
   \label{fig:matching}
 \end{figure}
 
-\citet{meila-2001} introduced a set matching measure for the similarity
-between two partitions.  It finds a matching using the following heuristic:
-let $[n_{ij}]$ be the $k \times k'$ confusion matrix associated with $\clus_1$
-and $\clus_2$.  Compute $n_{ab} = \argmax \{n_{ij} \colon 1 \leq i \leq k, 1
-\leq j \leq k'\}$ and put $\sigma(a) \gets b$.  Repeat the process for the
-$(k-1) \times (k'-1)$ submatrix obtained by deleting row $a$ and column $b$,
-and so on until $k$ matches have been made.  This process give us an injection
-for $\sigma$ and the measure is then defined as:
+\citet{meila-2001} introduced a set matching measure for measuring the
+similarity between $\clus_1$ and $\clus_2$.  It finds a matching using the
+following heuristic: let $[n_{ij}]$ be the $k \times k'$ confusion matrix
+associated with $\clus_1$ and $\clus_2$.  Compute $n_{ab} = \argmax \{n_{ij}
+\colon 1 \leq i \leq k, 1 \leq j \leq k'\}$ and put $\sigma(a) \gets b$.
+Repeat the process for the $(k-1) \times (k'-1)$ submatrix obtained by
+deleting row $a$ and column $b$, and so on until $k$ matches have been made.
+This process give us an injection for $\sigma$ and the measure is then defined
+as:
 \begin{equation*}
   \partcompare{H} = \frac{1}{n} \sum_{i=1}^{k} n_{i \sigma(i)}.
 \end{equation*}
@@ -1016,14 +904,15 @@ $\dset$.
     \toprule
     Name & Measure \\
     \midrule
-    Meilă \& Heckerman   & $\partcompare{H} \approx 0.556$ \\
-    Larsen \& Aone       & $\partcompare{L} \approx 0.622$ \\
-    Van Dongen metric    & $\partcompare{V} = 7.000$ \\
-    Classification Error & $\partcompare{CE} \approx 0.445$ \\
+    Meilă \& Heckerman   & $\partcomparest{H} \approx 0.556$ \\
+    Larsen \& Aone       & $\partcomparest{L} \approx 0.622$ \\
+    Van Dongen metric    & $\partcomparest{V} = 7.000$ \\
+    Classification Error & $\partcomparest{CE} \approx 0.445$ \\
     
     \bottomrule
   \end{tabular}
-  \caption{Various set matching based measures applied to $\clus_1$ and $\clus_2$.}
+  \caption{Various set matching based measures applied to the example
+    partitions $\clus^*_1$ and $\clus^*_2$~\eqref{eq:example-parts}.}
   \label{tab:set-matching-comparison}
 \end{table}
 
@@ -1081,9 +970,10 @@ each partition and how much information one partition contains about the other
 
 Let $\clus_1 = \{C_{11},\dotsc,C_{1k}\}$, where $k \geq 1$, be partition of an
 $n$ element set, $\dset$.  The first quantity is measured by
-\begin{equation*}
+\begin{equation}
+  \label{eq:entropy}
   H(\clus_1) = -\sum_{i=1}^{k} P_1(i) \log_b P_1(i),
-\end{equation*}
+\end{equation}
 where
 \begin{equation*}
   P_1(i) = \frac{|C_{i1}|}{k}, \qquad \text{for $i = 1,\dotsc,k$}.
@@ -1098,10 +988,11 @@ in so-called \textit{bits}, \textit{nits} and \textit{Hartleys}, respectively
 Now, with $\clus_1$ as above and $\clus_2 = \{C_{21},\dotsc,C_{1k'}\}$, where
 $k' \geq 1$, the mutual information, $I(\clus_1,\clus_2)$, between $\clus_1$
 and $\clus_2$ is given by:
-\begin{equation*}
+\begin{equation}
+  \label{eq:mutualinf}
   I(\clus_1,\clus_2) = \sum_{i=1}^{k} \sum_{i=1}^{k'}
                       P_{12}(i,j) \log_b \frac{P_{12}(i,j)}{P_1(i)P_2(j)},
-\end{equation*}
+\end{equation}
 where
 \begin{equation*}
   P_{12}(i,j) = \frac{|C_{1i} \cap C_{2j}|}{n}, \qquad \text{for $i =
@@ -1136,15 +1027,17 @@ holds.
     \toprule
     Name & Measure \\
     \midrule
-    Information & $H(\clus_1) \approx 1.585$ \\
-                & $H(\clus_2) \approx 1.975$ \\
-    Mutual information & $I(\clus_1,\clus_2) \approx 0.834$ \\
-    Variation of Information & $\partcompare{VI} \approx 1.891$
+    Information & $H(\clus^*_1) \approx 1.585$ \\
+                & $H(\clus^*_2) \approx 1.975$ \\
+    Mutual information & $I(\clus^*_1,\clus^*_2) \approx 0.834$ \\
+    Variation of Information & $\partcomparest{VI} \approx 1.891$
     \\
     \bottomrule
   \end{tabular}
-  \caption{Variation of Information and its components applied to our example
-    partitions  $\clus^*_1$ and $\clus^*_2$ using base 2 for the logarithms.}
+  \caption{Variation of Information and its components applied to the example
+    partitions $\clus^*_1$ and $\clus^*_2$~\eqref{eq:example-parts} using base
+    2 for the logarithms in equations~\eqref{eq:entropy} and
+    \eqref{eq:mutualinf}.}
   \label{tab:vi-comparison}
 \end{table}
 
@@ -1156,7 +1049,7 @@ Table~\ref{tab:vi-comparison}.
 account the values of the data contained within the set, $\dset$.  This is
 unlike any of the measures reviewed in this section, which are all, in one way
 or another, based only on the relative sizes of the clusters.  We will discuss
-this type of measure in Chapter~\ref{cha:assignment-metric}.
+this type of measure in Chapter~\ref{cha:sum-squar-clust}.
 
 \section{Partional clustering}
 \label{sec:part-clust-algor}
@@ -1343,7 +1236,7 @@ distances between elements and centroids, and in general call any criterion
 using sums of distances squared a sum-of-squares criterion.  Note that when
 centroid-distance is calculated using equation~\eqref{eq:tr(W)}, we can use
 any metric in place of $d_{E}$.  If it is calculated using the scatter matrix
-then it is implicitly using the Euclidean metric.
+then it is implicitly using Euclidean distance.
 
 The relationship between equations~\eqref{eq:tr(W)} and \eqref{eq:tr(B)} can
 also be established by the Huygens-Steiner, or parallel-axis, theorem, which
@@ -1392,7 +1285,7 @@ $\mathbf{W_{\clus}}$ (denoted $\det(\mathbf{W}_{\clus})$), which is sometimes
 called \textit{generalised variance}, and the maximisation of
 $\tr(\mathbf{B_{\clus}W_{\clus}}^{-1})$.  These criteria tend to produce
 clusters of similar shape and size as centroid-distance with the Euclidean
-metric \citep{marriott1982optimization}.
+distance \citep{marriott1982optimization}.
 
 A further three criteria based on scatter matrices are discussed in
 \citep{marriott1982optimization}, these are
@@ -1428,27 +1321,29 @@ which attempts to optimise one such information measure.
 \subsection{Computational complexity}
 \label{sec:complexity-issues}
 
-Given the huge space of possible partitions of a dataset, partitional
-clustering is intuitively a hard problem.  In fact, as we will see below, it
-has been shown that many partitional clustering problems are NP-complete.
+Given the potentially huge space of possible partitions of a dataset,
+partitional clustering is intuitively a hard problem.  In fact, as we will see
+below, it has been shown that many partitional clustering problems are
+NP-complete.
 
 We first need to define what we mean by a partitional clustering problem.  A
 partition which is a global minimum or maximum solution, whichever is
 appropriate, for a particular criterion is called an \textit{optimal
   partition}.  When we speak of a particular criterion we qualify this name
 appropriately, so for example a \textit{centroid-distance optimal partition}
-is a partition which globally minimised the centroid-distance criterion.
+is a partition which globally minimises the centroid-distance criterion.
 
 The problem of finding an optimal partition according to any criterion we will
-refer to simply as \textit{clustering}, and, again, whenever we speak of a
+refer to simply as \textsc{Clustering} and, again, whenever we speak of a
 particular criterion we will qualify the name appropriately, so for example
-\textit{centroid-distance clustering} is the problem of finding an optimal
+\textsc{Centroid-Distance Clustering} is the problem of finding an optimal
 partition with respect to the centroid-distance criterion.
 
 An NP-completeness result refers to a decision problem.  Since clustering
 problems are optimisation problems, whenever one is said to be NP-complete we
 are actually referring to the decision problem derived from the optimisation
-problem.  The general decision problem version of clustering is simply stated:
+problem.  The general decision problem version of \textsc{Clustering} is
+simply stated:
 \begin{problem}{Clustering}
   \instance{A finite, $n$ element set $\dset$, the number of clusters desired
     $k \in \{1,\dotsc,n\}$, a criterion $f \colon \parts_{\dset} \to
@@ -1456,9 +1351,9 @@ problem.  The general decision problem version of clustering is simply stated:
   \question{Does there exist a partition, $\clus \in \parts_{\dset}$, such
     that $f(\clus) \leq B$?}
 \end{problem}
-\\\\
-\noindent Sum-of-cuts (and therefore sum-of-cliques) is easily seen to be
-NP-complete be considering the following classic NP-complete graph problem
+
+\noindent \textsc{Sum-of-Cuts Clustering} (\textsc{S-Cuts}) is easily seen to
+be NP-complete be considering the following classic NP-complete graph problem
 \citep{karp72twentyone,gonzalez1982computational}:
 \begin{problem}{Max Cut}
   \instance{Graph $G=(V,E)$, weight $w(e) \in \mathbb{Z}^+$ for each $e \in
@@ -1466,47 +1361,51 @@ NP-complete be considering the following classic NP-complete graph problem
   \question{Is there a partition of $V$ into disjoint sets $V_1$ and $V_2$
     such that the sum of weights of the edges from $E$ that have one endpoint
     in $V_1$ and one endpoint in $V_2$ is at least $K$?}
-\end{problem}This is clearly a specific case of sum-of-cuts clustering with
-$k=2$ and where a dissimilarity with values in $\{0,1\}$ is used
-\citep{garey76simplified}.  An approximate solution to sum-of-cuts is possible
-to find in polynomial time, but, interestingly, the approximation problem of
-sum-of-cliques remains NP-complete \citep{sahni1976p}.
+\end{problem}This is clearly a specific case of \textsc{S-Cuts} with $k=2$ and
+where a dissimilarity with values in $\{0,1\}$ is used
+\citep{garey76simplified}.  Since an optimal partition according to the
+sum-of-cuts criterion is also an optimal partition according to the
+sum-of-cliques criterion, it is clear that \textsc{Sum-of-Cliques Clustering}
+(\textsc{S-Cliques}) is NP-complete also.  An approximate solution to
+\textsc{S-Cuts} is possible to find in polynomial time, but, interestingly,
+the approximation problem of \textsc{S-Cliques} remains NP-complete
+\citep{sahni1976p}.
 \\\\
 \noindent A number of partitional clustering problems were shown to be in
-NP-complete by \citet{brucker1978complexity}.  Among these was max-diameter
-clustering, a result which, as it turns out, is directly deducible from the
-earlier results of \citet{sahni1976p}.  Max-diameter clustering remains
-NP-complete for $k=3$ and when all dissimilarities are in $\{0,1\}$
-\citep{gareyjohnson79}.
+NP-complete by \citet{brucker1978complexity}.  Among these was
+\textsc{Max-Diameter Clustering} (\textsc{M-Diam}), a result which, as it
+turns out, is directly deducible from the earlier results of
+\citet{sahni1976p}.  \textsc{M-Diam} remains NP-complete for $k=3$ and when
+all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.
 
-It was shown in \citet{gonzalez1985clustering} that max-diameter clustering is
-NP-complete when the dataset is in 2-dimensional Euclidean space and the
-Euclidean metric is used.  It is also shown that for a general dissimilarity
-function, even finding an approximate solution to within some known degree of
-the optimal is NP-complete.
+It was shown in \citet{gonzalez1985clustering} that \textsc{M-Diam} is
+NP-complete when the dataset is in 2-dimensional Euclidean space and Euclidean
+distance is used.  It is also shown that for a general dissimilarity function,
+even the approximation problem is NP-complete.
 
-For a dataset in 1-dimensional Euclidean space the problem is solvable in
-polynomial time.  Further, whenever the dissimilarity measure satisfies the
-triangle inequality it possible to find an approximate solution efficiently.
+For a dataset in 1-dimensional Euclidean space \textsc{M-Diam} is solvable in
+polynomial time.  Further, whenever the dissimilarity measure is a metric it
+is possible to find an approximate solution efficiently in general.
 \citet{brucker1978complexity} provides an algorithm for finding solutions with
-a max-diameter within two times the max-diameter of the optimal solution.
-
-\citet{bern1996approximation} show that, under the Euclidean metric, it is
-NP-complete to find approximate solutions with a max-diameter value within
-1.969 times the max-diameter of the optimal, and with a max-radius value
-within 1.822 times the max-radius of the optimal.
+a max-diameter value within two times the max-diameter value of the optimal
+solution.  However, \citet{bern1996approximation} show that, under the
+Euclidean distance, the 1.969-approximation problem associated with
+\textsc{M-Diam} is NP-complete.  It is also shown that, for the similar
+\textsc{Max-Radius Clustering} problem, the 1.822-approximation problem is
+NP-complete.
 \\\\
 \noindent Another result of \citet{brucker1978complexity} is that
-sum-of-diameters clustering is NP-complete for $k \geq 3$.
-\citet{doddi2000approximation} show that approximate solutions with a
-sum-of-diameters within two times the optimal can be found efficiently, but
-only when the dissimilarity satisfies the triangle inequality.  If the
-triangle inequality is not satisfied then it is shown that, if $P \neq NP$, no
-efficient approximation algorithm is possible, even for $k=3$.
+\textsc{Sum-of-Diameters Clustering} (\textsc{S-Diam}) is NP-complete for $k
+\geq 3$.  \citet{doddi2000approximation} show that the associated
+2-approximation problem can be solved efficiently when the dissimilarity used
+is a metric.  But if the triangle inequality is not satisfied by the
+dissimilarity used then it is shown that, if $P \neq NP$, no efficient
+approximation algorithm is possible, even for $k=3$.
 
-In \citet{hansen87sumofdiameters} it is shown that the problem when $k=2$ is
-solvable in $O(n^2 \log n)$ time.  It is also shown that minimising any
-function of the diameters can be done in $O(n^5)$ time when $k=2$.
+In \citet{hansen87sumofdiameters} it is shown that, when $k=2$,
+\textsc{S-Diam} is solvable in $O(n^2 \log n)$ time.  It is also shown that
+minimising any function of the diameters can be done in $O(n^5)$ time when
+$k=2$.
 \\\\
 \noindent In \citet{garey82quant} it is shown that the quantization problem is
 NP-complete for $k \geq 2$.  This problem is stated as follows:
@@ -1525,27 +1424,27 @@ NP-complete for $k \geq 2$.  This problem is stated as follows:
   is as small as possible.
 \end{quote}
 It it easy to see that this problem is equivalent to a specific case of
-sum-of-stars clustering where a dissimilarity with values in $\{0,1\}$ is
-used.
+\textsc{Sum-of-Stars Clustering} (\textsc{S-Stars}) where a dissimilarity with
+values in $\{0,1\}$ is used.
 \\\\
 \noindent The above complexity results, especially the last one for
-sum-of-stars, has led many authors to believe that centroid-distance
-clustering in Euclidean space is also NP-complete.  In fact this was proved
-only relatively recently.  It is in fact NP-complete even when $k=2$
-\citep{aloise09exact} and for general $k$ in 2-dimensional Euclidean space
-\citep{mahajan09}.  If both $k$ and the number of dimensions, $m$, are fixed,
-then the problem is exactly solvable in $O(n^{mk+1} \log n)$ time
-\citep{inaba94weightedvoronoi}.
-
-We conclude with remarking that not all clustering problems are hard.  One
-example is min-split clustering for which a polynomial time algorithm exists.
-In particular, the problem is solved with the single-link hierarchical
-clustering algorithm of \citet{johnson67hierarchical}.  The runtime of this
-algorithm is $O(n^2)$ \citep{delattre1980bicriterion}.  However, this
-criterion does suffer from the previously mentioned chaining effect and for
-this reason it is often paired with a criterion for homogeneity in a
-bicriterion, effectively making it a hard problem again
-\citep{delattre1980bicriterion}.
+\textsc{S-Stars}, has led many authors to believe that
+\textsc{Centroid-Distance Clustering} in Euclidean space is also NP-complete.
+In fact this was proved only relatively recently.  It is in fact NP-complete
+even when $k=2$ \citep{aloise09exact} and for general $k$ in 2-dimensional
+Euclidean space \citep{mahajan09}.  If both $k$ and the number of dimensions,
+$m$, are fixed, then the problem is exactly solvable in $O(n^{mk+1} \log n)$
+time \citep{inaba94weightedvoronoi}.
+\\\\
+\noindent We conclude by remarking that not all clustering problems are hard.
+One example is \textsc{Min-Split Clustering} for which a polynomial time
+algorithm exists (for the optimisation problem).  In particular, the problem
+is solved with the single-link hierarchical clustering algorithm of
+\citet{johnson67hierarchical}.  The runtime of this algorithm is $O(n^2)$
+\citep{delattre1980bicriterion}.  However, this criterion does suffer from the
+previously mentioned chaining effect and for this reason it is often paired
+with a criterion for homogeneity in a bicriterion, effectively making it a
+hard problem again \citep{delattre1980bicriterion}.
 
 \subsection{Methods}
 \label{sec:methods}
@@ -1727,7 +1626,7 @@ an improvement.  Thus, upon termination, a locally optimal partition has been
 found.
 \\\\
 \noindent \textit{LLoyd's method}, which is specialised to the
-centroid-distance criterion with the Euclidean metric, is probably the most
+centroid-distance criterion with the Euclidean distance, is probably the most
 well-known and widely used clustering method today.  The centroid-distance
 problem is also commonly called the $k$-means problem.  The popularity of
 Lloyd's method had led to many authors referring to it simply as ``the
@@ -1913,7 +1812,7 @@ approximation algorithms have been devised for max-radius
 Some work has been done on exact algorithms for certain criteria.  For those
 problems which are NP-complete, these algorithms are only efficient under very
 constrained input conditions.  Algorithms for centroid-distance exist
-including methods using brand-and-bound \citep{brusco2006repetitive},
+including methods using branch-and-bound \citep{brusco2006repetitive},
 branch-and-cut \citep{aloise09exact} and column generation
 \citep{merle1999interior}.  Some of these algorithms are able to find exact
 solutions to instances in the plane with up to 2000 objects, in reasonable
@@ -1939,37 +1838,104 @@ by taking the layer of the hierarchy with the desired number of clusters.
 \section{Hierarchies}
 \label{sec:hierarchies}
 
+Assume that $X$ is a finite non-empty set with at least 3 elements.  Put
+$[n]:=\{1,\ldots, n\}$ for all $n\geq 1$.  We call a subset $\cL\subseteq
+{X\choose 2}$ of $X$ a {\em covering} of $X$ is $X=\bigcup_{A\in \mathcal L}A$
+holds and we call the elements of a covering of $X$ {\em cords}.
 
 
-\chapter{The Assignment Metric}
-\label{cha:assignment-metric}
+\begin{enumerate}
+\item A {\em rooted phylogenetic $X$-tree}, or $X$-tree for short, is a rooted
+  tree $T=(V,E)$ with no degree two vertices but possibly the root $\rho_T$
+  whose leaf set is $X$. For $T$ an $X$-tree, we call any vertex of $T$ that
+  is not a leaf of $T$ an {\em interior vertex} of $T$ and an edge that is
+  incident with a leaf of $T$ a {\em pendant edge} of $T$.
 
-\section{Summary}
-\label{sec:asgn-met-summary}
+  Assume for the following that $T$ is an $X$-tree. Let $T'$ be a further
+  $X$-tree. Then we say that $T$ and $T'$ are {\em equivalent} if there exists
+  a bijection $\phi:V(T)\to V(T')$ that extends to a graph isomorphism between
+  $T$ and $T'$ that is the identity on $X$ and maps the root $\rho_T$ of $T$
+  to the root $\rho_{T'}$ of $T'$. We say that $T'$ {\em refines} $T$ if, up
+  to equivalence, $T$ can be obtained from $T'$ by collapsing edges of $T'$
+  (see e.\,g.\, \cite{semple2003phylogenetics}).
 
-In this chapter we present the assignment metric and show how it can be used
-as a metric on subsets in a metric space as well as partitions.
+  An {\em edge weighting} $\omega$ of $T$ is a map $\omega :E(T)\to \mathbb
+  R_{\geq 0}$ that maps every edge of $T$ to a non-negative real. In this case,
+  we call the pair $(T,\omega)$ a {\em weighted} $X$-tree. We call an
+  edge-weighting $\omega$ of $T$ {\em proper} if $\omega(e)>0$ holds for every
+  interior edge $e$ of $T$. We denote the distance induced by $(T,\omega)$ on
+  the leaves of $T$ by $D_{(T,\omega)}$.  With putting $\rho=\rho_T$, we call an
+  edge-weighting $\omega$ of $T$ {\em equidistant} if
+  \begin{enumerate}
+  \item $D_{(T,\omega)}(x,\rho)= D_{(T,\omega)}(y,\rho)$, for all $x,y\in X$,
+    and
+  \item $D_{(T,\omega)}(x,u)\geq D_{(T,\omega)}(x,v)$, for all $x\in X$ and
+    any $u,v\in V$ such that $u$ is encountered before $v$ on the path from $\rho$
+    to $x$.
+  \end{enumerate}
+\item A bivariate map $d:X\times X\to \mathbb R_{\geq 0}$ is called a {\em
+    dissimilarity} if, for all $x,y\in X$, we have $d(x,x)=0$ and
+  $d(x,y)=d(y.x)$. We call a dissimilarity map $d$ on $X$ an {\em ultrametric}
+  on $X$ if there exists an $X$-tree $T$ with equidistant edge-weighting
+  $\omega$ so that $D_{(T,\omega)}(x,y)=d(x,y)$ holds for all $x,y\in X$. In
+  that case $(T,\omega)$ is called an {\em equidistant representation} of $d$.
+  Clearly, if $(T,\omega)$ is an equidistant representation of some
+  dissimilarity $d$ on $X$ and $v$ is an interior vertex of $T$ then $(T_v,
+  \omega|_{T_v})$ is an equidistant representation of $d_{L(v)\times L(v)}$.
 
-\chapter{Sum-of-Squares Clustering}
-\label{cha:sum-squar-clust}
+\item Suppose $T$ and $T'$ are $X$-tree. Then we say that $T$ and $T'$ are
+  {\em equivalent} if there exists a bijection $\phi:V(T)\to V(T')$ that
+  extends to a graph isomorphism between $T$ and $T'$ that is the identity on
+  $X$ and maps the root $\rho_T$ of $T$ to the root $\rho_{T'}$ of $T'$.
 
-\section{Summary}
-\label{sec:summary-sum-squar}
+\item Suppose $(T,\omega)$ and $(T',\omega')$ are two edge-weighted $X$-trees
+  and that $\cL\subseteq {X\choose 2}$. Then we say that $(T,\omega)$ and
+  $(T',\omega')$ are {\em $\cL$-isometric} if
+  $D_{(T,\omega)}(x,y)=D_{(T',\omega')}(x,y)$ holds for all cords $xy\in \cL$.
 
-In this chapter we examine two sum-of-squares criteria for clustering in a
-metric space and compare their performance.
+\item Suppose $T$ is an $X$-tree and $\cL\subseteq {X\choose 2}$ is a set of
+  cords. Extending the corresponding concepts introduced in
+  \cite{dress2011lassoing} for unrooted phylogenetic trees on $X$ to
+  $X$-trees, we say that $\cL$ is
+  \begin{enumerate}
+  \item an {\em equidistant lasso} for $T$ if, for all equidistant, proper
+    edge-weightings $\omega$ and $\omega'$ of $T$, we have that
+    $\omega=\omega'$ holds whenever $(T,\omega)$ and $(T,\omega')$ are
+    $\cL$-isometric
+  \item a {\em topological lasso} for $T$ if for every $X$-tree $T'$ and any
+    equidistant, proper edge-weightings $\omega$ of $T$ and $\omega'$ of $T'$,
+    respectively, we have that $T$ and $T'$ are equivalent whenever
+    $(T,\omega)$ and $(T',\omega')$ are $\cL$-isometric.
+  \item a {\em weak lasso} for $T$ if for every $X$-tree $T'$ and any
+    equidistant, proper edge-weightings $\omega$ of $T$ and $\omega'$ of $T$',
+    respectively, we have that $T$ is refined by $T'$ whenever $(T,\omega)$
+    and $(T',\omega')$ are $\cL$-isometric.
 
-\chapter{Tree Stuff}
-\label{cha:tree-stuff}
+  \item is a {\em strong lasso} for $T$ if $\cL$ is simultaneously an
+    equidistant and a topological lasso for $T$.
+  \end{enumerate}
+
+  % \item for a vertex $v$ and a set $\cl\subseteq {X\choose 2}$
+  %   the graph $G(\cL, v)$
+\item A graph is {\em strongly non-bipartite} if each one of its connected
+  components is non-bipartite.
+\item The lowest common ancestor $lca(a,b)$ of two leaves $a$ and $b$ in a
+  rooted tree $T$ is the lowest node in $T$ which has both $a$ and $b$ as
+  descendants.
+\end{enumerate}
+
+
+% \chapter{The Assignment Metric}
+% \label{cha:assignment-metric}
+
+% \section{Summary}
+% \label{sec:asgn-met-summary}
+
+% In this chapter we present the assignment metric and show how it can be used
+% as a metric on subsets in a metric space as well as partitions.
 
 
 
-\chapter{Further Work}
-\label{cha:further-work}
-
-
-
-\bibliographystyle{plainnat}
-\bibliography{../metrics.bib,../comp-clustering.bib,../clustering.bib}
-
-\end{document}
+%%% Local Variables:
+%%% TeX-master: "thesis"
+%%% End:

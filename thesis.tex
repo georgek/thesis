@@ -1,0 +1,266 @@
+% -------------------------------- PREAMBLE --------------------------------
+\documentclass[a4paper,12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,OT1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage[format=hang,font=small,labelfont=bf]{caption}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{upgreek}
+\usepackage{nbaseprt}
+\usepackage{appendix}
+\usepackage{color}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{underscore}
+\usepackage[numbers]{natbib}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+% \renewcommand{\baselinestretch}{1.62}
+\onehalfspacing
+
+\newcommand{\reporttitle}{Metric Based Data Analysis Techniques}
+\newcommand{\reportauthor}{George Kettleborough}
+
+\usepackage[nottoc,numbib]{tocbibind}
+
+% --- hyperref stuff ---
+\definecolor{darkblue}{rgb}{0,0,0.4}
+\hypersetup{
+  pdftex,
+  bookmarks=true,
+  bookmarksopen=true,
+  colorlinks=true,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=darkblue,
+  pdfauthor={\reportauthor},
+  pdftitle={\reporttitle},
+  pdfsubject={}
+}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+
+% --- TikZ stuff ---
+
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+  decorations.pathreplacing,decorations.pathmorphing,shapes,%
+  matrix,shapes.symbols}
+
+\tikzstyle{dot}=[circle,fill,inner sep=0,minimum size=1.2mm]
+\tikzstyle{dist}=[>=stealth,->,shorten >=2pt]
+\tikzstyle{symdist}=[>=stealth,<->,shorten <=2pt,shorten >=2pt]
+\tikzstyle{faint}=[gray!50]
+\tikzstyle{clus}=[circle,draw,inner sep=0,minimum size=5mm]
+\tikzstyle{setnode1}=[dot,regular polygon,regular polygon sides=3,
+      minimum size=2mm,fill=black]
+\tikzstyle{setnode2}=[dot,regular polygon,regular polygon sides=3,
+      minimum size=2mm,fill=black,rotate=180]
+
+\DeclareRobustCommand\tikzuptriangle{\tikz \node [setnode1] at (0,0) {};}
+\DeclareRobustCommand\tikzupdtriangle{\tikz \node [setnode2] at (0,0) {};}
+\DeclareRobustCommand\tikzbotriangle{\tikz{\node [setnode1] at (0,0) {};\node [setnode2] at (0,0) {};}}
+
+% --- End TikZ stuff ---
+
+
+% the figures location
+\graphicspath{./figures/}
+
+% make equations and figures numbered (sec.eq)
+% \numberwithin{equation}{section}
+% \numberwithin{figure}{section}
+
+% new operators for maths
+\DeclareMathOperator{\op}{op}
+\DeclareMathOperator{\remainder}{remainder}
+\DeclareMathOperator{\lc}{lc}
+\DeclareMathOperator{\pquo}{pquo}
+\DeclareMathOperator{\prem}{prem}
+\DeclareMathOperator{\pp}{pp}
+\DeclareMathOperator{\cont}{cont}
+\DeclareMathOperator{\resultant}{resultant}
+\DeclareMathOperator{\numerator}{numerator}
+\DeclareMathOperator{\denominator}{denominator}
+\DeclareMathOperator{\ADCO}{ADCO}
+\DeclareMathOperator{\dens}{dens}
+\DeclareMathOperator{\symdif}{\bigtriangleup}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\tr}{tr}
+
+% use bold vectors
+\let\oldhat\hat
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\renewcommand{\hat}[1]{\oldhat{\mathbf{#1}}}
+
+% -------------------- convenience things --------------------
+
+\newcommand{\0}{{\emptyset}}
+\newcommand{\rk}{{\rm rk}}
+%\newcommand{\dim}{{\rm dim}}
+\newcommand{\rr}{{\mathbb R}}
+\newcommand{\cq}{{\mathcal Q}}
+\newcommand{\cp}{{\mathcal P}}
+\newcommand{\cd}{{\mathcal D}}
+\newcommand{\cc}{{\mathcal C}}
+\newcommand{\cs}{{\mathcal S}}
+\newcommand{\rM}{{\mathbb M}}
+\newcommand{\sgn}{{\rm sgn}}
+\newcommand{\supp}{{\rm supp}}
+\newcommand{\ct}{{\mathcal T}}
+\newcommand{\cl}{{\mathcal L}}
+\newcommand{\s}{{\textfrak c}}
+\newcommand{\ch}{{X \choose 2}}
+\newcommand{\E}{{\mathcal E}}
+\newcommand{\nn}{{\mathbb N}}
+\newcommand{\F}{{\mathbb F}}
+\newcommand{\RR}{{\mathbb R}}
+\newcommand{\cQ}{{\mathcal Q}}
+\newcommand{\cP}{{\mathcal P}}
+\newcommand{\cD}{{\mathcal D}}
+\newcommand{\cC}{{\mathcal C}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cT}{{\mathcal T}}
+%\newcommand{\cl}{{\mathcal B}}
+\newcommand{\ra}{{\rightarrow}}
+\newcommand{\Ra}{{\Rightarrow}}
+
+%\newcommand{\pf}{\noindent{\em Proof: }}
+%\newcommand{\epf}{\hfill\hbox{\rule{3pt}{6pt}}\\}
+
+
+\newcommand{\dset}{D}
+\newcommand{\clus}{\mathcal{C}}
+\newcommand{\parts}{\mathcal{P}}
+\newcommand{\NP}{\text{NP}}
+
+% for functions between two partitions C_1 and C_2
+\newcommand{\partcompare}[1]{\Delta_{\mathcal{#1}}(\clus_1,\clus_2)}
+\newcommand{\partcomparen}[1]{\Delta_{\mathcal{#1}}}
+\newcommand{\partcomparest}[1]{\Delta_{\mathcal{#1}}(\clus^*_1,\clus^*_2)}
+% for functions between two partitions C and C' and C and C''
+\newcommand{\partcomparep}[1]{\Delta_{\mathcal{#1}}(\clus,\clus')}
+\newcommand{\partcomparepp}[1]{\Delta_{\mathcal{#1}}(\clus,\clus'')}
+% for definition of dissimilarity functions
+\newcommand{\dissimdef}[1]{d_{#1} \colon M \times M \to \mathbb{R}^{\geq 0}}
+\newcommand{\dissimdefn}[1]{d_{#1}}
+
+% -------------------- pretty things --------------------
+
+% works nicely for fraction indices
+\newcommand{\prettyfrac}[2]{^#1\!/\!_#2}
+
+% use this for functions on powersets
+\newcommand{\psettimes}{\! \times}
+% and this for functions on powersets of powersets
+\newcommand{\pspsettimes}{\! \! \times}
+
+% -------------------- environments --------------------
+
+% theorems
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+\newtheorem{dfn}{Definition}
+
+% problem template
+\newenvironment{problem}[1]{\par\addvspace{\topsep}\noindent\underline{\textsc{#1}}\\}
+{\par\addvspace{\topsep}\noindent}
+\newcommand{\instance}[1]{\textsc{Instance:} #1\\}
+\newcommand{\question}[1]{\textsc{Question:} #1}
+
+% algorithmic stuff
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\title{\reporttitle}
+\author{\reportauthor}
+
+% ------------------------------ END PREAMBLE ------------------------------
+
+\begin{document}
+
+\pagenumbering{roman}
+
+% \maketitle
+
+\begin{titlepage}
+\begin{center}
+\vspace*{1in}
+{\LARGE \reporttitle}
+\par
+\vspace{1.5in}
+{\large \reportauthor}
+\par
+\vspace{.3in}
+{ Supervisors:\\
+K.T. Huber\\
+V.J. Rayward-Smith\\
+B. De Le Iglesia}
+\par
+\vfill
+Ph.D. Upgrade Report
+\par
+\vspace{0.5in}
+School of Computing Sciences
+\par
+\vspace{0.5in}
+University of East Anglia
+\par
+\vspace{0.5in}
+June 2012
+\end{center}
+\end{titlepage}
+
+\begin{abstract}
+  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit
+  tempor tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et,
+  mattis eget, convallis nec, purus. Cum sociis natoque penatibus et magnis
+  dis parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae
+  dolor. Nullam tristique diam non turpis. Cras placerat accumsan
+  nulla. Nullam rutrum. Nam vestibulum accumsan nisl.
+
+  Aliquam erat volutpat. Nunc eleifend leo vitae magna. In id erat non orci
+  commodo lobortis. Proin neque massa, cursus ut, gravida ut, lobortis eget,
+  lacus. Sed diam. Praesent fermentum tempor tellus. Nullam tempus. Mauris ac
+  felis vel velit tristique imperdiet. Donec at pede. Etiam vel neque nec dui
+  dignissim bibendum. Vivamus id enim. Phasellus neque orci, porta a, aliquet
+  quis, semper a, massa. Phasellus purus. Pellentesque tristique imperdiet
+  tortor. Nam euismod tellus id erat.
+\end{abstract}
+
+\tableofcontents
+
+\listoftables
+
+\listoffigures
+
+\include{intro}
+
+\include{background}
+
+\include{sum-squares}
+
+\include{supertrees}
+
+\include{contributions}
+
+\include{further}
+
+\bibliographystyle{plainnat}
+\bibliography{../metrics.bib,../comp-clustering.bib,../clustering.bib,
+  ../phylogenetics.bib}
+
+\end{document}

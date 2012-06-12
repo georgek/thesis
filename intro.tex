@@ -1,0 +1,52 @@
+\chapter{Introduction}
+\label{cha:introduction}
+
+\pagenumbering{arabic}
+
+Metric spaces arise in a wide variety of contexts.  Whenever we are presented
+with information, one of the first things we would like to do is make
+comparisons.  A metric supplies us with a distance between objects that fits
+our intuition about distances.  This is probably because we live in a metric
+space---or at least a good approximation of one!
+
+There are a number of problems that present themselves when we have a metric
+space.  The problem of identifying groups of similar objects based on their
+relative proximity is called cluster analysis.  The problem is very old,
+ubiquitous and has a rich and diverse set of applications.  Despite the fact
+that intelligent beings seem to be naturally adept at the task, it is a
+well-known hard problem for a computer, and in more than one sense.  The first
+difficulty is in defining precisely what one actually expects in terms of a
+metric, rather than the vague objective of ``groups of similar objects''.  The
+second difficulty is in the sense of computational complexity.  Indeed, as we
+will see, efficient generation of exact solutions to the problem is unlikely
+to be possible in general.
+
+Metrics present themselves in the context of that most well-known and useful
+data structure: the tree.  It is well-established that an edge-weighted tree
+is essentially defined by the distances between its leaf nodes.  But in
+practice, we may not always have access to the complete matrix of distances.
+An interesting problem arises in constructing trees from only a sparse
+distance matrix.  We investigate the circumstances under which a sparse matrix
+uniquely defines an edge-weighted tree.  We say that such a matrix ``lassos''
+the tree.  We focus on a special type of commonly occurring tree that has
+distances between leaves satisfying a stronger version of a metric: an
+ultrametric.  A further problem is then the construction of ultrametric
+supertrees from two or more lassoed subtrees.
+
+In Chapter~\ref{cha:background} we introduce the concept of metric spaces and
+review various metrics that have been used over the years.  We then introduce
+partitions and review metrics for comparing partitions.  This leads to a
+review of partitional clustering, the problem of finding partitions of a
+dataset.  Finally, we introduce trees and their applications.  In
+Chapter~\ref{cha:sum-squar-clust} we compare and contrast two closely related
+partitional clustering criteria, called sum-of-squares criteria, and in the
+process introduce a new metric for comparing partitions.
+Chapter~\ref{cha:constr-ultr-supertr} looks at metrics from the perspective of
+trees and considers the problem of constructing supertrees from partial
+distance matrices.
+
+
+
+%%% Local Variables:
+%%% TeX-master: "thesis"
+%%% End:
