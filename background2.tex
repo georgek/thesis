@@ -1,0 +1,79 @@
+\chapter{Hierarchical clustering background}
+\label{cha:hier-clust-backgr}
+
+\section{Trees}
+\label{sec:trees}
+
+In this section we introduce much of the terminology that is required for
+dealing with trees.  Since trees are special cases of graphs, we begin with
+general graph theory before moving on to trees and then special type of trees
+that are of greatest interest to us.
+
+A \textit{graph} is an ordered pair $(V,E)$ where $V$ is a set of
+\textit{vertices} and $E$ is a set (or multiset) of \textit{edges}, each of
+the form $\{x,y\}$ such that $x,y \in V$.  Two vertices $v,v' \in V$ are said
+to be \textit{adjacent} if there exists an edge $\{v,v'\} \in E$.  A
+\textit{path} in a graph is a sequence of vertices $v_1,v_2,\dotsc,v_k$ such
+that for all $i \in \{1,2,\dotsc,k-1\}, v_i$ and $v_{i+1}$ are adjacent.  If
+$v_1$ and $v_k$ are also adjacent then the graph is said to contain a
+\textit{cycle}.  A graph is \textit{connected} if there exists a path joining
+each pair of vertices in $V$.
+
+A \textit{tree} is a connected graph with no cycles.  A \textit{forest} is a
+disjoint union of trees or, equivalently, a graph with no cycles.  A
+\textit{rooted tree} is a tree with one distinguished vertex called the root
+which we usually call $\rho$.
+
+An edge $\{x,y\} \in E$ is said to be \textit{incident} with the vertices $x$
+and $y$.  The \textit{degree} of a vertex is the number of edges in the graph
+incident with it.  A vertex in a tree is called a \textit{leaf} if it has
+degree 1.
+
+A \textit{phylogenetic $X$-tree} is a tree with no degree 2 vertices and set
+of leaves $X$.  A \textit{rooted phylogenetic $X$-tree} (henceforth $X$-tree
+for short) is a rooted tree with no degree 2 vertices except possibly the root
+and with leaf set $X$.
+
+An \textit{edge-weighted graph} is a graph $(V,E)$ paired with an
+edge-weighting function $\omega \colon E \to \rr_{\geq 0}$.
+
+A rooted tree has a natural partial order on the vertices.  A vertex $v$ is an
+\textit{ancestor} of a vertex $v'$ if and only if $v$ is on the path from $v'$
+to the root.  $v'$ is then said to be a \textit{descendant} of $v$.  If $v$
+and $v'$ are adjacent then we also call $v$ the \textit{parent} of $v'$ and
+$v'$ a \textit{child} of $v$.
+
+Two graphs $(V,E)$ and $(V',E')$ are called \textit{isomorphic} if there
+exists a bijection $\phi \colon V \to V'$ such that whenever $\{v,v'\} \in E$
+we have $\{\phi(v),\phi(v')\} \in E'$.  So, in other words, adjacency of
+vertices is preserved.  We call two $X$-trees \textit{equivalent} if there
+exists a bijection which preserves adjacency, is the identity on $X$ and maps
+the root of one tree to the root of the other.  This means that, in addition
+to adjacency, the parent and child relationships are preserved.
+
+The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in a rooted
+tree is the unique vertex that lies on the pat from $v$ to $v'$, the path from
+$v$ to the root and the path from $v'$ to the root.  The lowest common
+ancestor of $v$ and $v'$ is denoted $\lca(v,v')$.
+
+A tree in which all vertices have degree 3 is called \textit{binary}.  Rooted
+binary trees are often defined with the root having degree 2; we defined a
+\textit{rooted binary $X$-tree} to be an $X$-tree where each vertex has degree
+3 apart from the root which has degree 2.
+
+A pair of leaves of a rooted $X$-tree that share the same parent is called a
+\textit{cherry}.  In general, a set of leaves that share the same parent is
+called a \textit{pseudocherry}.  A rooted $X$-tree with $|X| = 3$ that
+contains a cherry is called a \textit{triplet}.  If $X = \{a,b,c\}$ and $a,b$
+is a cherry then we denote the triplet by $ab|c$.
+
+A graph $(V',E')$ is a \textit{subgraph} of a graph $(V,E)$ if $V' \subseteq
+V$ and $E' \subseteq E$.  A connected subgraph of a tree is called a
+\textit{subtree}.  If $T$ is an $X$-tree and $X' \subseteq X$ then we denote
+by $T|X'$ the minimal subtree of $X$ whose vertex set contains $X'$, with
+degree 2 vertices suppressed.  $T|X'$ is then called a \textit{restricted
+  subtree}.  If $T$ is binary and $|X'| = 3$ then $T|X'$ is a triplet.
+
+%%% Local Variables:
+%%% TeX-master: "thesis"
+%%% End:
