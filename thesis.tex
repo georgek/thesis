@@ -9,7 +9,7 @@
 \usepackage{tikz}
 \usepackage{booktabs}
 \usepackage[format=hang,font=small,labelfont=bf]{caption}
-\usepackage[protrusion=true,expansion=true]{microtype}
+% \usepackage[protrusion=true,expansion=true]{microtype}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -98,6 +98,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\tr}{tr}
+\DeclareMathOperator{\lca}{lca}
 
 % use bold vectors
 \let\oldhat\hat
@@ -192,8 +193,6 @@
 
 \begin{document}
 
-\pagenumbering{roman}
-
 % \maketitle
 
 \begin{titlepage}
@@ -211,7 +210,7 @@ V.J. Rayward-Smith\\
 B. De Le Iglesia}
 \par
 \vfill
-Ph.D. Upgrade Report
+Ph.D. Thesis
 \par
 \vspace{0.5in}
 School of Computing Sciences
@@ -224,28 +223,46 @@ June 2012
 \end{center}
 \end{titlepage}
 
-\begin{abstract}
-  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit
-  tempor tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et,
-  mattis eget, convallis nec, purus. Cum sociis natoque penatibus et magnis
-  dis parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae
-  dolor. Nullam tristique diam non turpis. Cras placerat accumsan
-  nulla. Nullam rutrum. Nam vestibulum accumsan nisl.
+\newpage
 
-  Aliquam erat volutpat. Nunc eleifend leo vitae magna. In id erat non orci
-  commodo lobortis. Proin neque massa, cursus ut, gravida ut, lobortis eget,
-  lacus. Sed diam. Praesent fermentum tempor tellus. Nullam tempus. Mauris ac
-  felis vel velit tristique imperdiet. Donec at pede. Etiam vel neque nec dui
-  dignissim bibendum. Vivamus id enim. Phasellus neque orci, porta a, aliquet
-  quis, semper a, massa. Phasellus purus. Pellentesque tristique imperdiet
-  tortor. Nam euismod tellus id erat.
+\begin{abstract}
+  Metrics arise in a wide variety of different contexts one of which is
+  clustering, that is, the problem of finding groups of similar objects within
+  a set of objects.  These groups are seemingly very easy to find for humans,
+  but very difficult to find for machines as there are two major difficulties
+  to be overcome: defining precisely an objective criterion for the vague
+  notion of ``groups of similar objects'', and the computational complexity of
+  finding such groups given a criterion.  In the first part of this thesis, we
+  focus mainly on the first difficulty and show that even seemingly similar
+  optimisation criteria used for partitional clustering can produce vastly
+  different results.
+
+  A further area in which metrics arise is the reconstruction of (rooted
+  edge-weighted leaf-labelled) trees from distances.  It is well-known that a
+  tree can be uniquely reconstructed from the matrix of distances between each
+  pair of leaves if these distances have been induced by a tree in the first
+  place.  But the complete matrix may not always be available in practice.  In
+  the second part of this thesis we look at some of the circumstances under
+  which a tree can be uniquely reconstructed from only an incomplete matrix of
+  distances.  We call this process ``lassoing'' a tree.  We then look into the
+  problem of the construction of supertrees from lassoed trees.
 \end{abstract}
+\newpage
+
+\pagenumbering{roman}
+\setcounter{page}{3}
 
 \tableofcontents
+\newpage
 
 \listoftables
+\newpage
 
 \listoffigures
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 \include{intro}
 
