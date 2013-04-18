@@ -4,16 +4,180 @@
 \section{Summary}
 \label{sec:con-summary}
 
-It is well-known that an edge-weighted tree can be constructed from the matrix
-if graph-theoretic distances between its leaf nodes.  This chapter considers
-the problem of constructing trees from only partial distances.
+It is well known that for any distance $d$ on some set $X$ there exists a
+unique rooted edge-weighted tree with leaf set $X$ and no degree 2 vertices,
+except possibly the root, such that the induced distance between any two
+leaves $x,y \in X$ is $d(x,y)$ if and only if $d$ satisfies the following
+condition for all $x,y,z \in X$:
+\begin{equation}
+  \label{eq:ultrametric}
+  d(x,y) \leq max(d(x,z),d(y,z)).
+\end{equation}
+This chapter considers the problem of constructing trees from only partial
+distances.
 
-\section{Lassoing binary ultrametric trees}
-\label{sec:lass-ultr-trees}
+\section{Lasso algorithm}
+\label{sec:lasso-algorithm}
 
-An algorithm has been developed that constructs a binary ultrametric tree from
-a given lasso.  The algorithm is based on the \textsc{BUILD} algorithm.
+An algorithm has already been developed that constructs a binary ultrametric
+tree from a strong lasso.  It similar in principle to the \textsc{Build}
+algorithm.
 
+\section{Lassoing preliminaries}
+\label{sec:lass-prelim}
+
+Assume that $X$ is a finite non-empty set with at least 3 elements.  Put
+$[n]:=\{1,\ldots, n\}$ for all $n\geq 1$.  We call a subset $\cL\subseteq
+{X\choose 2}$ of $X$ a {\em covering} of $X$ if $X=\bigcup_{A\in \mathcal L}A$
+holds and we call the elements of a covering of $X$ {\em cords}.
+
+\begin{enumerate}
+\item A {\em rooted phylogenetic $X$-tree}, or $X$-tree for short, is a rooted
+  tree $T=(V,E)$ with no degree two vertices, except possibly the root
+  $\rho_T$, whose leaf set is $X$. For $T$ an $X$-tree, we call any vertex of
+  $T$ that is not a leaf of $T$ an {\em interior vertex} of $T$ and an edge
+  that is incident with a leaf of $T$ a {\em pendant edge} of $T$.
+
+  Assume for the following that $T$ is an $X$-tree. Let $T'$ be a further
+  $X$-tree. Then we say that $T$ and $T'$ are {\em equivalent} if there exists
+  a bijection $\phi:V(T)\to V(T')$ that extends to a graph isomorphism between
+  $T$ and $T'$ that is the identity on $X$ and maps the root $\rho_T$ of $T$
+  to the root $\rho_{T'}$ of $T'$. We say that $T'$ {\em refines} $T$ if, up
+  to equivalence, $T$ can be obtained from $T'$ by collapsing edges of $T'$
+  (see e.\,g.\, \cite{semple2003phylogenetics}).
+
+  An {\em edge weighting} $\omega$ of $T$ is a map $\omega :E(T)\to \mathbb
+  R_{\geq 0}$ that maps every edge of $T$ to a non-negative real. In this case,
+  we call the pair $(T,\omega)$ a {\em weighted} $X$-tree. We call an
+  edge-weighting $\omega$ of $T$ {\em proper} if $\omega(e)>0$ holds for every
+  interior edge $e$ of $T$. We denote the distance induced by $(T,\omega)$ on
+  the leaves of $T$ by $D_{(T,\omega)}$.  With putting $\rho=\rho_T$, we call an
+  edge-weighting $\omega$ of $T$ {\em equidistant} if
+  \begin{enumerate}
+  \item $D_{(T,\omega)}(x,\rho)= D_{(T,\omega)}(y,\rho)$, for all $x,y\in X$,
+    and
+  \item $D_{(T,\omega)}(x,u)\geq D_{(T,\omega)}(x,v)$, for all $x\in X$ and
+    any $u,v\in V$ such that $u$ is encountered before $v$ on the path from
+    $\rho$ to $x$.
+  \end{enumerate}
+\item A bivariate map $d:X\times X\to \mathbb R_{\geq 0}$ is called a {\em
+    dissimilarity} if, for all $x,y\in X$, we have $d(x,x)=0$ and
+  $d(x,y)=d(y.x)$. We call a dissimilarity map $d$ on $X$ an {\em ultrametric}
+  on $X$ if there exists an $X$-tree $T$ with equidistant edge-weighting
+  $\omega$ so that $D_{(T,\omega)}(x,y)=d(x,y)$ holds for all $x,y\in X$. In
+  that case $(T,\omega)$ is called an {\em equidistant representation} of $d$.
+  Clearly, if $(T,\omega)$ is an equidistant representation of some
+  dissimilarity $d$ on $X$ and $v$ is an interior vertex of $T$ then $(T_v,
+  \omega|_{T_v})$ is an equidistant representation of $d_{L(v)\times L(v)}$.
+
+\item Suppose $T$ and $T'$ are $X$-tree. Then we say that $T$ and $T'$ are
+  {\em equivalent} if there exists a bijection $\phi:V(T)\to V(T')$ that
+  extends to a graph isomorphism between $T$ and $T'$ that is the identity on
+  $X$ and maps the root $\rho_T$ of $T$ to the root $\rho_{T'}$ of $T'$.
+
+\item Suppose $(T,\omega)$ and $(T',\omega')$ are two edge-weighted $X$-trees
+  and that $\cL\subseteq {X\choose 2}$. Then we say that $(T,\omega)$ and
+  $(T',\omega')$ are {\em $\cL$-isometric} if
+  $D_{(T,\omega)}(x,y)=D_{(T',\omega')}(x,y)$ holds for all cords $xy\in \cL$.
+
+\item Suppose $T$ is an $X$-tree and $\cL\subseteq {X\choose 2}$ is a set of
+  cords. Extending the corresponding concepts introduced in
+  \cite{dress2011lassoing} for unrooted phylogenetic trees on $X$ to
+  $X$-trees, we say that $\cL$ is
+  \begin{enumerate}
+  \item an {\em equidistant lasso} for $T$ if, for all equidistant, proper
+    edge-weightings $\omega$ and $\omega'$ of $T$, we have that
+    $\omega=\omega'$ holds whenever $(T,\omega)$ and $(T,\omega')$ are
+    $\cL$-isometric
+  \item a {\em topological lasso} for $T$ if for every $X$-tree $T'$ and any
+    equidistant, proper edge-weightings $\omega$ of $T$ and $\omega'$ of $T'$,
+    respectively, we have that $T$ and $T'$ are equivalent whenever
+    $(T,\omega)$ and $(T',\omega')$ are $\cL$-isometric.
+  \item a {\em weak lasso} for $T$ if for every $X$-tree $T'$ and any
+    equidistant, proper edge-weightings $\omega$ of $T$ and $\omega'$ of $T$',
+    respectively, we have that $T$ is refined by $T'$ whenever $(T,\omega)$
+    and $(T',\omega')$ are $\cL$-isometric.
+
+  \item is a {\em strong lasso} for $T$ if $\cL$ is simultaneously an
+    equidistant and a topological lasso for $T$.
+  \end{enumerate}
+
+  % \item for a vertex $v$ and a set $\cl\subseteq {X\choose 2}$
+  %   the graph $G(\cL, v)$
+\item A graph is {\em strongly non-bipartite} if each one of its connected
+  components is non-bipartite.
+\item The lowest common ancestor $lca(a,b)$ of two leaves $a$ and $b$ in a
+  rooted tree $T$ is the lowest node in $T$ which has both $a$ and $b$ as
+  descendants.
+\end{enumerate}
+
+\section{Lassoing supertrees}
+
+Let $X_1$ and $X_2$ denote two non-empty subsets of $X$.  and suppose $T$ is a
+$X$-tree and $T_1$ and $T_2$ are $X_1$- and $X_2$-trees, respectively where
+$X_1\cap X_2\not=\emptyset$ such that $T|_{X_i}$ and $T_i$ are equivalent,
+$i=1,2$. For $i=1,2$ let $\cL_i\subseteq {X_i\choose 2}$ denote an
+equidistant/topological lasso of $T_i$. Put
+$$
+cl(\cL_1,\cL_2):=\{ab\in {X\choose 2}\,:\, ac\in \cL_1 
+\mbox{ and } bc\in \cL_2\} \cup \cL_1\cup \cL_2
+$$ 
+
+The ultimate goal is to answer the question: when is $cl(\cL_1,\cL_2)$ an
+equidistant/topological lasso of $T$?
+
+There are some problems that we have found which need examples constructing to
+illustrate them:
+\begin{enumerate}
+\item An example that illustrates that vertices in $T$ that are not also in at
+  least one of $T_i$ are causing major problems for topological lasso and
+  equidistant lasso as we cannot see them in the $T_i$'s.
+\item An example that illustrates that vertices $v$ in $T$ that are also
+  vertices in $T_{X_1\cap X_2}$ can cause problems for equidistant lasso since
+  although $v$ must also be a vertex in each of the $T_i$ and so there must be
+  an edge in $G(\cL_i,v)$, $i=1,2$ there is no guarantee that the pairs of
+  leaves in $T_i$ that support that edge in $G(\cL_i,v)$ have a leaf in
+  common.  Put differently, if (i) the pair of leaves that support the edge
+  $G(\cL_i,v)$ is not also in $X_1\cap X_2$ then $G(cl(\cL_1,\cL_2),v)$ need
+  not have an edge or (ii) if pairs of leaves in $T_i$ that support that edge
+  in $G(\cL_i,v)$ have a leaf in common we cannot apply the ``transitivity
+  rule'' that underpins the definition of $cl(\cL_1,\cL_2)$ and so
+  $G(cl(\cL_1,\cL_2),v)$ need not have an edge.
+\end{enumerate}
+
+To overcome this problem, we now look at special types of {\em covers} of $X$
+that is subsets $\cL\subseteq {X\choose 2}$ such that $X=\bigcup_{A\in
+  \cL}A$. One such type of cover is the {\em pointed cover} which can be
+defined in analogy to the pointed cover for an unrooted phylogenetic
+tree. More precisely, let $A|B$ denote a split of $X$ such that for every
+pseudo-cherry $\frak c$ of $T$ precisely one leaf of $\frak c$ is contained in
+$A$. Choose some $x\in B$ and put $X':=X-\{x\}$. Then the {\em $x$-pointed
+  cover} $\cL_x$ is defined by putting
+$$
+\cL_x:=\{xy\,:\, y\in A\}\cup
+\{yz\in {X'\choose 2}\,:\, 
+\mbox{ there exists a pseudo-cherry } \frak c \mbox{ of } T \mbox{ with }
+z,y\in \frak c\}.
+$$
+A pointed cover $\cL$ is a cover for which there exists some $x\in X$ such
+that $\cL=\cL_x$.
+
+The following tasks then need to be completed:
+\begin{enumerate}
+\item An example that shows that if $\cL_i$ is a pointed cover for $T_i$ then,
+  in general, $cl(\cL_1,\cL_2)$ need not be a pointed cover for $T$. Check if
+  having an element in $X_1\cap X_2$ as ``point'' might help.
+\item Check if the following works. Let $\sigma$ be a circular ordering of the
+  leaves of $T$ and let blue, red, green, denote 3 different colors.  Color
+  the leaves in $X_1\cap X_2$ red, those in $L(T_1)-X_1$ blue and those in
+  $L(T_2)-X_2$ green. Clearly this induces a circular ordering on $T_i$ and
+  thus $\cL_i$ defined as the set $\cL$ is the previous point is an
+  equidistant lasso for $T_i$. In general however $cl(\cL_1,\cL_2)$ is not an
+  edge-weight lasso for $T$. Claim if the coloring in of the elements in
+  $\sigma$ is done in such a way that a blue element is never followed by a
+  green element and vice versa then $cl(\cL_1,\cL_2)$ is an edge-weight lasso
+  for $T$.
+\end{enumerate}
 
 
 %%% Local Variables:

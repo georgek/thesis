@@ -6,23 +6,29 @@ the candidate to date.
 \begin{itemize}
 \item Showed that minimisation of the centroid-distance ($k$-means)
   homogeneity criterion is not equivalent to maximisation of the separation
-  criterion when a mixed-data metric is used,
-\item Proved that \textsc{All-Squares Clustering} is NP-complete with a
-  3-valued metric by transformation from the \textsc{Partition into Triangles}
-  problem,
-\item Proved that \textsc{All-Squares Clustering} is NP-complete with a
+  criterion when a mixed-data metric is used.  This means that the commonly
+  used centroid-distance criterion should not generally be considered a
+  criterion for the separation of clusters,
+\item Proved that the \textsc{All-Squares Clustering} problem is NP-complete
+  with a 3-valued metric by transformation from the \textsc{Partition into
+    Triangles} problem, then proved that it is NP-complete with a $p$-valued
+  metric whenever $p\geq 3$,
+\item Proved that the \textsc{Centroid-Distance Clustering} problem is
+  NP-complete with a 3-valued metric by transformation from the
+  \textsc{Dominating Set} problem, then proved that it is NP-complete with a
   $p$-valued metric whenever $p\geq 3$,
-\item Proved that \textsc{Centroid-Distance Clustering} is NP-complete with a
-  3-valued metric by transformation from the \textsc{Dominating Set} problem,
-\item Proved that \textsc{Centroid-Distance Clustering} is NP-complete with a
-  $p$-valued metric whenever $p\geq 3$,
-\item Extended the Assignment Metric to allow comparing nonempty subsets of a
-  metric space of arbitrary size.  The assignment metric can now be used to
+\item Developed the Assignment Metric for comparing nonempty subsets of a
+  metric space of arbitrary size.  The assignment metric can be used to
   compare partitions while taking into account the underlying metric space of
-  the data, which is a major improvement on current methods for comparison,
-\item Developed an algorithm for constructing a binary ultrametric tree from a
-  strong lasso, similar to the \textsc{Build} algorithm,
-\item Implemented the algorithm for testing purposes.
+  the data, which is a major improvement on current methods for comparison of
+  partitions,
+\item Implemented the Assignment Metric for testing and comparison with other
+  existing metrics,
+\item Proved that a particular type of cover for a tree is a strong lasso,
+\item Developed an algorithm for constructing a tree from a strong lasso,
+  similar to the \textsc{Build} algorithm,
+\item Implemented a simple framework for working with trees and the strong
+  lasso construction algorithm for testing purposes.
 \end{itemize}
 
 %%% Local Variables:

@@ -1,50 +1,75 @@
 \chapter{Introduction}
 \label{cha:introduction}
 
-\pagenumbering{arabic}
+Metric spaces are a generalisation of the world in which we live where
+physical objects appear to exist in 3-dimensional space and we have a notion
+of the distance between pairs of objects.  The distance that many people think
+of is the Euclidean distance, the length of the straight line between the
+objects that one would measure with a ruler.  Others may be more familiar with
+the Manhattan distance, the distance one must travel between locations by
+traversing the grid-like streets of a city.  These distances share a few key
+properties; these are the properties of a metric.  We therefore live in a
+metric space, or at least a close approximation of one.
 
-Metric spaces arise in a wide variety of contexts.  Whenever we are presented
-with information, one of the first things we would like to do is make
-comparisons.  A metric supplies us with a distance between objects that fits
-our intuition about distances.  This is probably because we live in a metric
-space---or at least a good approximation of one!
+Increasingly, our world is becoming filled with another, more abstract type of
+object that ``lives'' outside of the physical space: data.  Regardless of the
+form that data takes, be it numbers, text or pictures, the presence of data
+always comes with the need for a method of comparison.  Since we are most at
+ease with thinking about our own world, it seems natural that we should
+imagine data points as ``living'' in a space with a distance defined which
+holds the same key properties as the distances we use every day.  Thus, the
+data points become members of their own metric space.
 
 There are a number of problems that present themselves when we have a metric
 space.  The problem of identifying groups of similar objects based on their
-relative proximity is called cluster analysis.  The problem is very old,
-ubiquitous and has a rich and diverse set of applications.  Despite the fact
-that intelligent beings seem to be naturally adept at the task, it is a
-well-known hard problem for a computer, and in more than one sense.  The first
-difficulty is in defining precisely what one actually expects in terms of a
-metric, rather than the vague objective of ``groups of similar objects''.  The
-second difficulty is in the sense of computational complexity.  Indeed, as we
-will see, efficient generation of exact solutions to the problem is unlikely
-to be possible in general.
+relative proximity is called clustering.  The problem is very old, ubiquitous
+and has a rich and diverse set of applications.  Despite the fact that
+intelligent beings seem to be naturally adept at the task, it is a well-known
+hard problem for a computer, and in more than one sense.  The first difficulty
+is in defining precisely what one actually expects in terms of a metric,
+rather than the vague objective of ``groups of similar objects''.  The second
+difficulty is in the sense of computational complexity.  In the first part of
+this thesis we focus mainly on the first difficulty in the context of
+partitional clustering, which seeks to partition a set into a given number of
+subsets.  Many objective criteria have been developed to measure the
+usefulness of a partition as a solution to a given clustering problem, but we
+show that even seemingly similar optimisation criteria can produce vastly
+different results (see Section~\ref{sec:worst-case-perf}).
+
+In order to show that criteria can produce vastly different partitions it is
+necessary to be able to compare partitions.  Many metrics have been devised
+for that purpose already.  We find ourselves with several layers of metric
+spaces and we introduce the concept of ``lifting'' a metric space to the space
+of its power set.  In this way we introduce a new metric for comparing
+partitions that can take into account the fact that the data lives in a metric
+space (see Section~\ref{sec:assignment-metric}).
 
 Metrics present themselves in the context of that most well-known and useful
-data structure: the tree.  It is well-established that an edge-weighted tree
-is essentially defined by the distances between its leaf nodes.  But in
-practice, we may not always have access to the complete matrix of distances.
-An interesting problem arises in constructing trees from only a sparse
-distance matrix.  We investigate the circumstances under which a sparse matrix
-uniquely defines an edge-weighted tree.  We say that such a matrix ``lassos''
-the tree.  We focus on a special type of commonly occurring tree that has
-distances between leaves satisfying a stronger version of a metric: an
-ultrametric.  A further problem is then the construction of ultrametric
-supertrees from two or more lassoed subtrees.
+data structure: the tree.
 
-In Chapter~\ref{cha:background} we introduce the concept of metric spaces and
-review various metrics that have been used over the years.  We then introduce
-partitions and review metrics for comparing partitions.  This leads to a
-review of partitional clustering, the problem of finding partitions of a
-dataset.  Finally, we introduce trees and their applications.  In
-Chapter~\ref{cha:sum-squar-clust} we compare and contrast two closely related
-partitional clustering criteria, called sum-of-squares criteria, and in the
-process introduce a new metric for comparing partitions.
-Chapter~\ref{cha:constr-ultr-supertr} looks at metrics from the perspective of
-trees and considers the problem of constructing supertrees from partial
-distance matrices.
+In a rooted edge-weighted tree with leaf set $X$, the graph-theoretic distance
+between the leaves is a metric.  It is well-known that such a tree can be
+reconstructed uniquely from a distance on the elements of $X$ that is a
+stronger version of a metric: an ultrametric.  But in practice, we may not
+always have access to the complete matrix of distances.  The problem arises of
+constructing trees from only an incomplete matrix of distances.  In the second
+part of this thesis we investigate the circumstances under which such an
+incomplete matrix uniquely determines a rooted edge-weighted tree.  We call
+this ``lassoing'' the tree.  We then look at the circumstances under which a
+supertree can be constructed from two or more lassoed subtrees.
 
+We next present an outline of this thesis. In Chapter~\ref{cha:background} we
+introduce the concept of metric spaces and review various metrics that have
+been used over the years.  We then introduce partitions and review metrics for
+comparing partitions.  This leads to a review of partitional clustering, the
+problem of finding partitions of a dataset.  Finally, we introduce trees and
+their applications.  In Chapter~\ref{cha:sum-squar-clust} we focus on
+partitional clustering and its difficulties by comparing and contrasting two
+closely related partitional clustering criteria, called sum-of-squares
+criteria.  We show that the two criteria can produce completely different
+results.  Chapter~\ref{cha:hier-clust-backgr} concerns the problem of
+reconstructing rooted edge-weighted trees from subtrees for which only partial
+distance information is available.
 
 
 %%% Local Variables:
