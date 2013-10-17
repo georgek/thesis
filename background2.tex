@@ -1,8 +1,48 @@
 \chapter{Hierarchical Clustering Background}
 \label{cha:background2}
 
+
+
 \section{Trees}
 \label{sec:trees}
+
+\subsection{History}
+\label{sec:history}
+
+Trees have been used to represent hierarchical structures for many hundreds of
+years.  One of the most well-known and ubiquitous occurrences is that of the
+family tree.  The use of a tree to represent lineages seems to have begun with
+Christian artwork of the 12th Century depicting the ancestors of Jesus of
+Nazareth.  This tree is known as the Tree of Jesse.
+
+Darwin would later popularise the concept of a ``tree of life'' in his seminal
+work \textit{The Origin of Species}.  Instead of representing the lineages of
+individuals, Darwin's trees showed the lineages of species and the hierarchies
+formed by the process called natural selection.
+
+Trees as a mathematical entity, such that we will see in the next section,
+appeared as early as 1847 \citep{knuth97taocp1} although the more general
+theory of graphs began earlier with Euler in 1736 \citep{bigg1976graph}.
+
+Tree structures have been of great importance in computer programming.  They
+were first used explicitly to represent algebraic formulae for the purpose of
+symbolic differentiation \citep{kahrimanian53differentiation}.  This would
+later become the field of computer algebra which would drive the development
+of computer science and especially programming languages for many years.
+
+It should be clear that it makes sense to organise many different types of
+information into trees.  This presents a number of problems.  First we may ask
+whether there exists a unique tree representation of a given dataset.  Unlike
+the partition problem there are some datasets for which a unique and
+well-defined tree representation exists.  It is possible both to construct the
+tree from the dataset, and to recover the dataset from the tree.
+
+And if it is
+unique, how may we find it.  These issues will be the subject of the remainder
+of this thesis.
+
+\subsection{Definitions}
+\label{sec:definitions}
 
 In this section we introduce much of the terminology that is required for
 dealing with trees.  Since trees are special cases of graphs, we begin with
@@ -35,13 +75,16 @@ for short) is a rooted tree with no degree 2 vertices except possibly the root
 and with leaf set $X$.
 
 An \textit{edge-weighted graph} is a graph $(V,E)$ paired with an
-edge-weighting function $\omega \colon E \to \rr_{\geq 0}$.
+edge-weighting function $\omega \colon E \to \rr$.  For an edge-weighted tree
+$T$ we call an edge-weighting \textit{proper} if $w(e) > 0$ for every interior
+edge $e$ of $T$.
 
 A rooted tree has a natural partial order on the vertices.  A vertex $v$ is an
 \textit{ancestor} of a vertex $v'$ if and only if $v$ is on the path from $v'$
 to the root.  $v'$ is then said to be a \textit{descendant} of $v$.  If $v$
 and $v'$ are adjacent then we also call $v$ the \textit{parent} of $v'$ and
-$v'$ a \textit{child} of $v$.
+$v'$ a \textit{child} of $v$.  The number of children of a particular vertex
+is called the \textit{out degree} of that vertex.
 
 Two graphs $(V,E)$ and $(V',E')$ are called \textit{isomorphic} if there
 exists a bijection $\phi \colon V \to V'$ such that whenever $\{v,v'\} \in E$
@@ -57,7 +100,7 @@ $v$ to the root and the path from $v'$ to the root.  The lowest common
 ancestor of $v$ and $v'$ is denoted $\lca(v,v')$.
 
 A tree in which all vertices have degree 3 is called \textit{binary}.  Rooted
-binary trees are often defined with the root having degree 2; we defined a
+binary trees are often defined with the root having degree 2; we define a
 \textit{rooted binary $X$-tree} to be an $X$-tree where each vertex has degree
 3 apart from the root which has degree 2.
 
@@ -73,6 +116,472 @@ V$ and $E' \subseteq E$.  A connected subgraph of a tree is called a
 by $T|X'$ the minimal subtree of $X$ whose vertex set contains $X'$, with
 degree 2 vertices suppressed.  $T|X'$ is then called a \textit{restricted
   subtree}.  If $T$ is binary and $|X'| = 3$ then $T|X'$ is a triplet.
+
+\subsection{Applications and interpretations of trees}
+\label{sec:appl-interpr-trees}
+
+
+\section{Tree Metrics}
+\label{sec:tree-metrics}
+
+Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
+\colon E \to \rr$ we can construct a distance function $D_{(T,\omega)} \colon
+X \times X \to \rr$ by setting for all $x,y \in X$:
+\begin{equation*}
+  D_{(T,\omega)}(x,y) =
+  \begin{cases}
+    \displaystyle
+    \sum_{e \in P(x,y)} \omega(e) & \text{if $x \neq y$},\\
+    0 & \text{otherwise,}
+  \end{cases}
+\end{equation*}
+where $P(x,y)$ is the set of edges on the path from $x$ to $y$.  We call this
+the distance induced by $(T,\omega)$.  A distance function $\delta \colon X
+\times X \to \rr$ is called a \textit{tree metric} if there exists a tree $T$
+with edge-weighting $\omega$ such that $\delta(x,y) = D_{(T,\omega)}$ for all
+$x,y \in X$.
+
+A distance function $\delta \colon X \times X \to \rr$ satisfies the
+\textit{four-point condition} if for every $w,x,y,z \in X$ the following
+holds:
+\begin{equation*}
+  \delta(w,x) + \delta(y,z) \leq \max(\delta(w,y)+\delta(x,z),
+                                      \delta(w,z)+\delta(x,y)).
+\end{equation*}
+Since$w,x,y,z$ need not be distinct it is easy to see that if $\delta$
+satisfies the four-point condition then it satisfies the triangle inequality
+and is therefore a metric.  Further, $\delta$ is a tree metric on $X$ if and
+only if it satisfies the four-point condition \citep{semple2003phylogenetics}.
+This can be seen in the quartet tree shown in figure~\ref{fig:quartet}.
+
+An important property of tree metrics is that for any tree metric $\delta
+\colon X \times X \to \rr$ there is, up to isomorphism, a unique edge-weighted
+$X$-tree $(T,\omega)$ for which $\delta(x,y) = D_{(T,\omega)}(x,y)$ for all
+$x,y \in X$.  This tree can be recovered from the metric in polynomial time
+\citep{semple2003phylogenetics}.
+
+A distance function $\delta \colon X \times X \to \rr$ is called an
+\textit{ultrametric} if for every distinct $x,y,z \in X$ the following holds:
+\begin{equation*}
+  \delta(x,y) \leq \max(\delta(x,z),\delta(y,z)).
+\end{equation*}
+Any ultrametric satisfies the four-point condition and is therefore also a
+tree metric.
+
+An edge-weighting $\omega$ for a rooted $X$-tree $T=(V,E)$ is called
+\textit{equidistant} if it satisfies the following properties:
+\begin{itemize}
+\item[(i)] $D_{(T,\omega)}(\rho,x) = D_{(T,\omega)}(\rho,y)$ for all $x,y \in X$,
+\item[(ii)] $D_{(T,\omega)}(x,y) \geq D_{(T,\omega)}(x,v)$ for all $x \in X$
+  and any $u,v \in V$ whenever $v$ is encountered first on the path from $x$
+  to $\rho$.
+\end{itemize}
+If $\omega$ is an equidistant edge-weighting then $D_{(T,w)}$ is an
+ultrametric \citep{semple2003phylogenetics}.  Rooted $X$-trees with
+equidistant edge-weightings arise naturally in many places, for example in
+phylogenetics.
+
+For any ultrametric $\delta \colon X \times X \to \rr$ there is, up to
+isomorphism, a unique rooted $X$-tree $T$ with equidistant edge-weighting
+$\omega$ such that $\delta(x,y) = D_{(T,\omega)}(x,y)$ for all $x,y \in X$.
+As with a general tree metric, this tree can be recovered from the ultrametric
+in polynomial time.
+
+\section{Tree construction}
+\label{sec:tree-construction}
+
+In this section we look at various methods of constructing trees.  Of most
+interest to us is the problem of constructing an $X$-tree from a dissimilarity
+on $X$.  This is generally done by one of two broad classes of hierarchical
+clustering methods which we discuss in Section~\ref{sec:hier-clust-meth}.
+
+A further problem is that of constructing an edge-weighted $X$-tree from a
+dissimilarity on $X$.  This is desirable in many cases, for example in trees
+representing lineages the edge-weights might represent time.  Given a
+dissimilarity $d \colon X \times X \to \rr_{\geq 0}$ and a weighted $X$-tree
+$(T,\omega)$ produced by some construction method, we call that method
+\textit{consistent} if it satisfies the property that whenever $d$ is a tree
+metric $D_{(T,\omega)}(x,y) = d(x,y)$ for all $x,y \in X$.  In other words, if
+given a tree metric the construction method produced the unique tree
+identified by the tree metric.
+
+The next problem is constructing trees from only partial distance information.
+This means that we do not have the dissimilarity $d$, but rather only have the
+values $d(x,y)$ for some, but not all, pairs $x,y in X$.  This problem is
+motivated by the fact that accurate distance measurements are often difficult
+or impossible to obtain in practice but one would still like to build a tree
+given only what is known.
+
+As with complete distance information, it is possible for partial distance
+information to uniquely determine a tree.  This is the subject of
+Section~\ref{sec:lassoing-corralling}.  This means that we can essentially
+speak of consistency with regards to partial distance construction methods.
+Such methods are the subject of Chapter~\ref{cha:lasso-construction}.
+
+\subsection{Construction from subtrees}
+\label{sec:constr-from-subtr}
+
+We first describe a method of reconstructing a rooted tree from a set of
+restricted subtrees.  Let $T$ be an $X$-tree and $R$ be a set of trees
+$\{T|X_1,dotsc,T|X_n\}$ where $X_1 \cup \dotsb \cup X_n = X$.  The
+\textsc{Build} algorithm uses an auxiliary graph $[R,S]$, where $S \subset
+X$ which has vertex set $S$ and an edge $\{a,b\}$ for each $a,b \in S$
+whenever there exists a $c \in S$ and a $T' \in R$ such that $T'|\{a,b,c\} =
+ab|c$ (a triplet).
+
+\begin{algorithm}[h]
+  \caption{\textsc{Build} algorithm.}
+  \label{alg:build}
+
+  \begin{algorithmic}
+    \Require A set of rooted trees $R = \{T|X_1,\dotsc,T|X_n\}$.
+    \Ensure  An $X$-tree $T$ where $X = X_1 \cup \dotsb \cup X_n$.
+
+    \State $S = \{x_1,\dotsc,x_m\} \gets X_1 \cup \dotsb \cup X_n$.
+
+    \If{$|S| = 1$} \Return the tree $(\{x_1\},\emptyset)$. \EndIf
+
+    \If{$|S| = 2$} let $\rho$ be a new vertex and \Return the tree with root
+    node $\rho$ obtained by attaching $x_1$ and $x_2$ to $\rho$. \EndIf
+
+    \State Construct the graph $[R,S]$.
+
+    \State Let $S_1,\dotsc,S_k$ be the vertex sets of the connected components
+    of $[R,S]$.
+
+    \ForAll{$1 \leq i \leq k$}
+    \State Let $T_i$ be the output of \textsc{Build} on $R_i$ where $R_i =
+    \{T|S_i \colon T \in R\}$.
+    \EndFor
+
+    \State Let $\rho$ be a new vertex and \Return the tree with root node
+    $\rho$ obtained by attaching the root of each $T_i$ to $\rho$.
+    
+  \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Construction from distances}
+\label{sec:constr-from-dist}
+
+Hierarchical clustering methods build rooted trees which are generally binary
+and without edge-weightings.  UPGMA is similar but adds edge-weightings.
+Using Buneman indices and building from splits gives edge-weightings.
+Neighbour-joining, constructs an edge-weighted binary tree.
+
+Some, but not all, of the methods have the property that if the distance
+function is a tree metric or ultrametric, the tree constructed will be the
+unique tree for that metric.
+
+\subsubsection{Hierarchical clustering methods}
+\label{sec:hier-clust-meth}
+
+Hierarchical clustering is used for the classification of information in much
+the same way as partitional clustering.  The aim is to produce a rooted
+$X$-tree corresponding to a dataset $X$ and dissimilarity on $X$.  While a
+partition of a dataset is merely a set of subsets which cover the dataset, an
+$X$-tree can be viewed as a hierarchy of such clusters which induces several
+partitions on $X$.  This natural relationship between trees and partitions is
+shown in Figure~\ref{fig:tree-partitions}.
+
+There are two main methods in use for building hierarchies, these are the
+agglomerative or bottom-up method which begins with each element of the
+dataset in its own cluster and successively merges clusters until there is
+only one, and the divisive or top-down method which begins with a single
+cluster and successively splits clusters until each element is on its own.
+The resulting hierarchy depends upon which merges or splits have been chosen
+at each stage, and this depends on finding a local optimum according to some
+criterion.
+
+\begin{algorithm}[h]
+  \caption{Agglomerative hierarchical clustering algorithm.}
+  \label{alg:agglomerative}
+
+  \begin{algorithmic}
+    \Require A set $X$, a dissimilarity $d \colon X \times X \to \rr$, and a
+    linkage function $D \colon 2^X \times 2^X \to \rr$.
+    \Ensure  A rooted $X$-tree $T$.
+
+    \State Let $F$ be a forest of $|X|$ trees each containing a unique element
+    of $X$ as the only vertex, which is also the root.
+
+    \While{$|F| > 1$}
+
+       \State Let $v$ be a new vertex and $\displaystyle (x,y) \gets \argmin_{x,y
+         \in F} D(L(x),L(y))$.
+       \State Remove trees $x$ and $y$ from $F$ and add the tree obtained by
+         attaching the roots of $x$ and $y$ to $v$ and letting $v$ be the root.
+    
+    \EndWhile
+
+    \State \Return the single tree contained in $F$.
+    
+  \end{algorithmic}
+\end{algorithm}
+
+The general algorithm for agglomerative clustering is shown in
+Algorithm~\ref{alg:agglomerative}.  The choice of linkage function determines
+which trees are joined at each stage.  Given a set $X$ and dissimilarity $d
+\colon X \times X \to \rr$, some common choices for linkage functions include
+single-linkage:
+\begin{equation}
+  \label{eq:slink}
+  D_{SL}(X,Y) = \min_{x \in X, y \in Y} d(x,y),
+\end{equation}
+complete-linkage:
+\begin{equation}
+  \label{eq:clink}
+  D_{CL}(X,Y) = \max_{x \in X, y \in Y} d(x,y),
+\end{equation}
+and average-linkage:
+\begin{equation}
+  \label{eq:alink}
+  D_{AL}(X,Y) = \left( \sum_{x \in X} \sum_{y \in Y} d(x,y) \right) / |X| |Y|.
+\end{equation}
+
+The general algorithm for agglomerative clustering has runtime complexity of
+$O(n^3)$ where $n = |X|$ since there are $O(n)$ merges to be done and finding
+the $\argmin$ takes $O(n^2)$ time.  However, for all three of the linkage
+functions above there are special algorithms which run in only $O(n^2)$ time,
+these are SLINK \citep{sibson1973slink}, CLINK \citep{defays1977efficient} and
+UPGMA \citep{sokal1958statistical}.
+
+The divisive algorithm is very similar but it requires a more complicated
+decision about how to split a cluster.  A divisive algorithm may also
+terminate before $|X|$ clusters have been obtained in which case the order in
+which the clusters are split becomes important.  A naïve approach is to always
+split the largest cluster first, but there are more complicated approaches
+based instead on cluster homogeneity.  Once it has been decided to split a
+cluster, a partitional clustering algorithm can be used to perform the split
+\citep{ding2002cluster}.
+
+\subsubsection{UPGMA}
+\label{sec:upgma}
+
+The UPGMA algorithm is in fact a modified agglomerative clustering algorithm
+using average-linkage which constructs an edge-weighted rooted $X$-tree.  The
+edge-weighting constructed by UPGMA is always equidistant.  For any
+equidistant $X$-tree $T$, let $\height(T)$ be the length of the path from the
+root to any leaf, or 0 if the root is the sole vertex.  The algorithm for
+UPGMA is shown in Algorithm~\ref{alg:upgma}.
+
+\begin{algorithm}[h]
+  \caption{UPGMA algorithm.}
+  \label{alg:upgma}
+
+  \begin{algorithmic}
+    \Require A set $X$, and a dissimilarity $d \colon X \times X \to \rr$.
+    \Ensure  A rooted $X$-tree $T$ and equidistant edge-weighting $\omega$.
+
+    \State Let $F$ be a forest of $|X|$ trees each containing a unique element
+    of $X$ as the only vertex, which is also the root.
+
+    \While{$|F| > 1$}
+
+       \State Let $v$ be a new vertex, $\displaystyle m \gets \min_{x,y
+         \in F} D_{AL}(L(x),L(y))$, and $\displaystyle (x,y) \gets \argmin_{x,y
+         \in F} D_{AL}(L(x),L(y))$.
+       \State Remove trees $x$ and $y$ from $F$ and add the tree obtained by
+         attaching the root of $x$ to $v$ with an edge of length $m/2 -
+         \height(x)$, attaching the root of $y$ to $v$ with an edge of length
+         $m/2 - \height(y)$ and letting $v$ be the root.
+    
+    \EndWhile
+
+    \State \Return the single tree contained in $F$.
+  \end{algorithmic}
+\end{algorithm}
+
+Since only two trees are joined at once, the output of UPGMA is always a
+binary tree.  If $d$ is an ultrametric and identifies a binary tree, then the
+output of UPGMA is equivalent to this tree.
+
+\subsubsection{Neighbour joining}
+\label{sec:neighbour-joining}
+
+Neighbour joining an a method for building an edge-weighted unrooted $X$-tree
+which, like UPGMA, is consistent if the dissimilarity identifies a binary
+tree but, unlike UPGMA, the consistency holds for general tree metrics.  The
+algorithm works by replacing a cherry by a single vertex and recursively
+applying neighbour joining to the resulting tree.  Neighbour joining is shown
+in Algorithm~\ref{alg:neighbour-joining}.
+
+\begin{algorithm}[h]
+  \caption{Neighbour joining algorithm.}
+  \label{alg:neighbour-joining}
+
+  \begin{algorithmic}
+    \Require A set $X$, and a dissimilarity $d \colon X \times X \to \rr$.
+    \Ensure  A rooted $X$-tree $T$ and equidistant edge-weighting $\omega$.
+
+    \If{$|X| = 2$} Let $X = \{x,y\}$ and \Return the tree obtained by joining
+    $x$ and $y$ with an edge of length $d(x,y)$.
+    \EndIf
+
+    \State $\displaystyle (x,y) \gets \argmax_{x,y \in X} d(x,y) + \frac{1}{2}
+    \sum_{r \in X - \{x,y\}} (d(r,x)+d(r,y)-d(x,y))$.
+
+    \State $X' \gets X - \{x,y\} \cup \{v\}$ where $v \notin X$.
+
+    \State Define a dissimilarity $d' \colon X' \times X' \to \rr$ by:
+    \begin{equation*}
+      d'(p,q) =
+      \begin{cases}
+        0 & \text{if $p,q \notin X$} \\
+        (d(x,p)+d(y,p)-d(x,y))/2 & \text{if $p \in X, q \notin X$} \\
+        (d(x,q)+d(y,q)-d(x,y))/2 & \text{if $p \notin X, q \in X$} \\
+        d(p,q) & \text{otherwise.}
+      \end{cases}
+    \end{equation*}
+
+    \State Let $T'$ be the tree obtained by applying Neighbour joining to $X'$
+    and $d'$.
+
+    \State Attach $x$ and $y$ to the leaf vertex $v$ of $T'$.
+
+    \State Put $\displaystyle \omega(\{v,x\}) \gets \frac{1}{2} d(x,y) +
+    \frac{1}{2(|X|-2)} \sum_{u \in X} (d(u,x)-d(u,y))$.
+
+    \State Put $\omega(\{v,y\}) \gets d(x,y) - \omega(\{v,x\})$.
+
+    \State \Return $(T,\omega)$.
+  \end{algorithmic}
+\end{algorithm}
+
+\subsection{Construction from partial dissimilarities}
+\label{sec:constr-from-part}
+
+A partial dissimilarity is one defined for only a subset of all pairs of
+elements.  Let $M \subseteq \dset^2$ be the set of all pairs of elements for
+which we do not know the dissimilarity.  We have only a function $d^* \colon
+\dset^2 - M \to \rr$ or a $|\dset|^2$ dissimilarity matrix in which there are
+``holes'' or pairs labelled as ``unknown''.
+
+Partial dissimilarities arise often in practice.  It is sometimes difficult or
+impossible to make measurements between certain pairs and sometimes complete
+information may not be given by test subjects.
+
+For this reason it becomes useful to ask whether such a partial dissimilarity
+can be extended into a complete dissimilarity that is also a tree metric or
+ultrametric.  We would like to find some $d \colon \dset^2 \to \rr$ for which
+$d(x,y) = d^*(x,y)$ for all $(x,y) \in \dset^2 - M$ and which is a tree metric
+or ultrametric.  In \citep{farach1995robust} it was shown that the problem of
+deciding whether such an extension to a tree metric exists is NP-complete but
+the special case of an extension to an ultrametric is in P.
+
+Below we describe three different methods given in the literature for
+extending a partial dissimilarity to an ultrametric.  There are also many
+methods that have been devised for the more general problem of extension to a
+tree metric which we do not review but can be found in, for example,
+\citep{guenoche1999approximations}, \citep{farach1995robust},
+\citep{makarenkov2001nouvelle} and \citep{guenoche2004extension}.
+
+\subsubsection{An optimisation method}
+\label{sec:part-dist-optim-method}
+
+The approach taken by \citet{de1984ultrametric} is to consider a least squares
+constrained optimisation problem.  Given a partial dissimilarity $d^* \colon
+\dset^2 - M \to \rr$ we wish to find a function $d \colon \dset^2 \to \rr$
+such that
+\begin{equation}
+  \label{eq:partial-dist-least-squares}
+  L(d) = \sum_{(x,y) \in \dset^2 - M} (d^*(x,y)-d(x,y))^2
+\end{equation}
+is minimised and $d$ is an ultrametric.  The method used is a sequential
+unconstrained minimisation technique.  The constraint that $d$ must be an
+ultrametric is removed and instead we find a dissimilarity $d_n$ which minimises
+the augmented function:
+\begin{equation}
+  \label{eq:partial-dist-optimisation}
+  \Phi(d_n,\sigma) = L(d_n) + \sigma P(d_n), \qquad (\sigma > 0).
+\end{equation}
+The function $L$ is called the \textit{loss function} and $P$ is the
+\textit{penalty function} which is meant to enforce the ultrametric
+condition.  $P$ is defined as:
+\begin{equation}
+  \label{eq:penalty-function}
+  P(d_n) = \sum_{(i,j,k) \in \Omega(d_n)} (d_n(i,k) - d_n(j,k))^2
+\end{equation}
+where
+\begin{equation*}
+  \Omega(d_n) = \{(i,j,k) \in \dset^3 \colon d(i,j) \leq \min(d_n(i,k),d_n(j,k))
+  \text{ and } d_n(i,k) \neq d_n(j,k)\},
+\end{equation*}
+or, in other words, the set of triples for which the ultrametric condition is
+violated.  The unconstrained minimisation is performed successively with an
+increasing value for $\sigma$, each time using the previous result $d_{n-1}$
+to begin the search for the next $d_n$.  To perform the unconstrained
+minimisation of the augmented function, a method by \citet{powell1977restart}
+is used.
+
+\subsubsection{An agglomerative method}
+\label{sec:part-dist-agglom-method}
+
+The method used by \citet{schader1992mvl}, which they call Missing Values
+Linkage (MVL), is actually identical to the agglomerative algorithm shown in
+Section~\ref{sec:hier-clust-meth} but using a linkage criterion modified to
+take into account missing values.  For example, the modified average-linkage
+criterion is:
+\begin{equation*}
+  D_{MVL}(X,Y) =
+  \begin{cases}
+    \displaystyle
+    \frac{(\sum_{(x,y) \in X \times Y - M} d(x,y)}{|X \times Y - M|} & \text{if $X
+      \times Y - M \neq \emptyset$,} \\
+    \infty & \text{otherwise},
+  \end{cases}
+\end{equation*}
+where $M = \{(i,j) \in \dset^2 \colon d(i,j) \text{ is unknown}\}$.
+
+The authors do not provide an algorithm with better time complexity than that
+of the naïve agglomerative algorithm ($O(n^3)$).  They show that the MVL
+method produces very similar results to \citeauthor{de1984ultrametric}'s
+method.
+
+\subsubsection{A divisive method}
+\label{sec:part-dist-divisive-method}
+
+\citet{farach1995robust} use a top down, divisive approach.  Let $G=(V,E)$ be
+a graph with vertex set $\dset$ and an edge $\{x,y\}$ with $x,y \in \dset$
+whenever $x \neq y$ and $d(x,y)$ is known.  We also define an edge-weighting
+$\omega \colon E \to \rr$ by $\omega(\{x,y\}) = d(x,y)$ for all $x,y \in E$.
+
+The tree construction algorithm proceeds as follows:
+\begin{enumerate}
+\item If $E = \emptyset$, return the single element in $V$.
+\item Otherwise, put $m \gets max_{e \in E} \omega(e)$.
+\item Let $G* = (V,E^*)$ be a graph and put $E^* \gets \{e \in E \colon
+  \omega(e) < m\}$.
+\item Let $u$ be a new vertex and return the tree with root node $u$ obtained
+  by recursing on each connected component of $G^*$ and attaching the results
+  of each to $u$.
+\end{enumerate}
+This basic algorithm requires $O(|V||E|)$ time but a quicker algorithm
+requiring only $O(|E| + |V|\log |V|)$ is described also.
+
+\section{Lassoing and Corralling}
+\label{sec:lassoing-corralling}
+
+All of the methods for constructing a tree from a partial dissimilarity listed
+in Section~\ref{sec:constr-from-part} have one thing in common: the tree
+produced in undefined when more than one extension to an ultrametric is
+possible.
+
+In order to better understand when partial dissimilarities uniquely determine
+trees, the theory of lassos was developed.
+
+Certain partial distances also have uniqueness properties.  Lassos and corrals
+let us determine which partial distances uniquely determine trees.
+
+\subsection{Definitions and basic properties}
+\label{sec:defin-basic-prop}
+
+Stuff from \citep{DHS11}.
+
+\subsection{Lassoing rooted $X$-trees}
+\label{sec:lassoing-rooted-x}
+
+Stuff from \citep{HP13}.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"

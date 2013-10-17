@@ -1368,7 +1368,7 @@ for the criterion $f$ is fixed:
   \instance{An $n$-set $\dset$, the number of clusters desired $k \in [n]$, a
     criterion $f \colon \parts_{\dset} \to \mathbb{R}^+$, which involves $k$
     in some way, and a bound $B \in \mathbb{R}^+$.}
-  \question{Does there exist a partition $\clus \in \parts_{\dset}$ such that
+  \question{Does there exist a $k$-partition $\clus \in \parts_{\dset}$ such that
     $f(\clus) \leq B$?}
 \end{problem}
 
@@ -1863,15 +1863,6 @@ been mentioned is min-split which can be exactly solved using the SLINK
 algorithm \citep{johnson67hierarchical,sibson1973slink}.  This is actually a
 hierarchical clustering algorithm, but can be used to find partitions simply
 by taking the layer of the hierarchy with the desired number of clusters.
-
-\section{Hierarchies}
-\label{sec:hierarchies}
-
-This section is a place holder for work yet to be completed.  Hierarchical
-clustering is a more general form of partitional clustering in which a tree is
-sought containing a hierarchy of clusters.  Each layer of the tree is a
-partition.  We will review a few of the general techniques such as the
-agglomerative and divisive methods.
 
 % \chapter{The Assignment Metric}
 % \label{cha:assignment-metric}

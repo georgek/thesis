@@ -1,0 +1,55 @@
+\begin{picture}(0,0)%
+\includegraphics{figures/dist-min-lass/main-theorem.pdf}%
+\end{picture}%
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(1969,1425)(8714,-1201)
+\put(8776, 89){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$T$}%
+}}}}
+\put(9826, 89){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\rho_T$}%
+}}}}
+\put(10651,-736){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_1$}%
+}}}}
+\put(9301,-736){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_2$}%
+}}}}
+\put(10501,-511){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_3$}%
+}}}}
+\put(8851,-511){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_4$}%
+}}}}
+\put(9601,-511){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_5$}%
+}}}}
+\put(10201,-286){\makebox(0,0)[b]{\smash{{\SetFigFont{11}{13.2}{\familydefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_6$}%
+}}}}
+\put(10426,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}12}%
+}}}}
+\put(10576,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}13}%
+}}}}
+\put(10276,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}11}%
+}}}}
+\put(10126,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}10}%
+}}}}
+\put(9976,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}9}%
+}}}}
+\put(8776,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(8926,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\put(9076,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}}
+\put(9226,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}4}%
+}}}}
+\put(9376,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}5}%
+}}}}
+\put(9526,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}6}%
+}}}}
+\put(9676,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}7}%
+}}}}
+\put(9826,-1186){\makebox(0,0)[b]{\smash{{\SetFigFont{7}{8.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}8}%
+}}}}
+\end{picture}%

@@ -5,7 +5,7 @@
 \usepackage[T2A,OT1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{setspace}
-\usepackage{graphicx}
+\usepackage[pdftex]{graphicx,color}
 \usepackage{tikz}
 \usepackage{booktabs}
 \usepackage[format=hang,font=small,labelfont=bf]{caption}
@@ -16,7 +16,6 @@
 \usepackage{upgreek}
 \usepackage{nbaseprt}
 \usepackage{appendix}
-\usepackage{color}
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{underscore}
@@ -29,7 +28,8 @@
 % \renewcommand{\baselinestretch}{1.62}
 \onehalfspacing
 
-\newcommand{\reporttitle}{Metric Based Data Analysis Techniques}
+\newcommand{\reporttitle}{New Algorithms and Methodology for Analysing
+  Distances}
 \newcommand{\reportauthor}{George Kettleborough}
 
 \usepackage[nottoc,numbib]{tocbibind}
@@ -73,10 +73,6 @@
 
 % --- End TikZ stuff ---
 
-
-% the figures location
-\graphicspath{./figures/}
-
 % make equations and figures numbered (sec.eq)
 % \numberwithin{equation}{section}
 % \numberwithin{figure}{section}
@@ -99,6 +95,9 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\tr}{tr}
 \DeclareMathOperator{\lca}{lca}
+\DeclareMathOperator{\height}{height}
+\DeclareMathOperator*{\Block}{Block}
+\DeclareMathOperator*{\Cut}{Cut}
 
 % use bold vectors
 \let\oldhat\hat
@@ -127,6 +126,7 @@
 \newcommand{\nn}{{\mathbb N}}
 \newcommand{\F}{{\mathbb F}}
 \newcommand{\RR}{{\mathbb R}}
+\newcommand{\cA}{{\mathcal A}}
 \newcommand{\cQ}{{\mathcal Q}}
 \newcommand{\cP}{{\mathcal P}}
 \newcommand{\cD}{{\mathcal D}}
@@ -137,6 +137,7 @@
 %\newcommand{\cl}{{\mathcal B}}
 \newcommand{\ra}{{\rightarrow}}
 \newcommand{\Ra}{{\Rightarrow}}
+\newcommand{\iV}{\mathring{V}}
 
 %\newcommand{\pf}{\noindent{\em Proof: }}
 %\newcommand{\epf}{\hfill\hbox{\rule{3pt}{6pt}}\\}
@@ -173,6 +174,7 @@
 % theorems
 \newtheorem{thm}{Theorem}
 \newtheorem{lem}{Lemma}
+\newtheorem{pro}{Proposition}
 \newtheorem{cor}{Corollary}
 \newtheorem{dfn}{Definition}
 
@@ -272,11 +274,15 @@ June 2012
 
 \include{background2}
 
-% \include{supertrees}
+\include{distinguished-lassos}
+
+\include{lasso-construction}
 
 \include{contributions}
 
 \include{further}
+
+\include{conclusion}
 
 \bibliographystyle{plainnat}
 \bibliography{metrics.bib,comp-clustering.bib,clustering.bib,phylogenetics.bib}
