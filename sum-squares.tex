@@ -5,14 +5,24 @@
 \label{sec:summary-sum-squar}
 
 In this chapter we examine two sum-of-squares criteria for clustering in a
-metric space and compare their performance.  This chapter consists of the
-following paper, which has been submitted for publication:
+metric space and compare their performance.  This chapter is based on the
+following paper:
 
 \begin{itemize}
 \item George Kettleborough and V.J. Rayward-Smith. Optimising sum-of-squares
-  measures for clustering multisets over a metric space. In press,
+  measures for clustering multisets over a metric space.
   \textit{Discrete Applied Mathematics}, 2013.
 \end{itemize}
+
+Contributions by the author include: the examples showing that
+equations~(\ref{eq:cd-sep-eq}) and (\ref{eq:as-cd-eq}) do not hold for all
+metrics, the example to show that linear separability does not hold for
+all-squares clustering in Section~\ref{sec:linear-separability}, the proof for
+Lemma~\ref{lem:eq-dis}, the proof of Theorems~\ref{thm:np-complete-3-val},
+\ref{thm:asc-np-complete-n-val} and \ref{thm:cdc-np-complete-n-val}, the
+examples of using the assignment metric in
+Section~\ref{sec:assignment-metric}, and the examples leading to
+Theorem~\ref{thm:worst-case}.
 
 \subsection{Multiset datasets}
 \label{sec:datasets}
@@ -458,48 +468,48 @@ which is greater whenever $n>6$.  Similarly if we move two of $b,c,d$ into the
 first cluster we get a cost of $16n+24$.  So whenever $n>6$ the all-squares
 optimal clustering is $\clus$ and hence is not linearly separable.
 
-\subsection{Methods for finding optimal clusterings}
-\label{sec:meth-find-optim}
+% \subsection{Methods for finding optimal clusterings}
+% \label{sec:meth-find-optim}
 
-In this paper we do not present any new methods for computing optimal
-clusterings, but we will briefly discuss existing methods and other
-possibilities here.  Optimal clustering is intuitively a hard problem.
-Centroid-distance clustering in Euclidean space was taken to be NP-complete
-for decades although this was proved only relatively
-recently\citep{aloise09exact}.  In the next section we will see that
-all-squares clustering is also NP-complete and for both problems we
-investigate the complexity for specific, very simple metric spaces.
+% In this paper we do not present any new methods for computing optimal
+% clusterings, but we will briefly discuss existing methods and other
+% possibilities here.  Optimal clustering is intuitively a hard problem.
+% Centroid-distance clustering in Euclidean space was taken to be NP-complete
+% for decades although this was proved only relatively
+% recently\citep{aloise09exact}.  In the next section we will see that
+% all-squares clustering is also NP-complete and for both problems we
+% investigate the complexity for specific, very simple metric spaces.
 
-The consequence of the complexity of the problems is that heuristic algorithms
-for estimating optimal solutions are very prevalent; indeed, the $k$-means
-heuristic algorithm (also known as Lloyd's algorithm, although it was
-independently discovered by many different authors\citep{jain2010data}) for
-estimating the centroid-distance optimal $k$-clustering is probably the most
-well-known and widely-used clustering algorithm today.  Assuming that
-centroids are easy to compute, this algorithm is simple and, generally,
-quickly converges to a local optimum.  However, in the worst case, $k$-means
-requires exponentially many iterations in order to converge on a solution,
-even in the plane\citep{vattani2009exponential}.  There are many more
-heuristic methods for the problem; nine prominent methods are compared in
-\citep{brusco2007comparison}.
+% The consequence of the complexity of the problems is that heuristic algorithms
+% for estimating optimal solutions are very prevalent; indeed, the $k$-means
+% heuristic algorithm (also known as Lloyd's algorithm, although it was
+% independently discovered by many different authors\citep{jain2010data}) for
+% estimating the centroid-distance optimal $k$-clustering is probably the most
+% well-known and widely-used clustering algorithm today.  Assuming that
+% centroids are easy to compute, this algorithm is simple and, generally,
+% quickly converges to a local optimum.  However, in the worst case, $k$-means
+% requires exponentially many iterations in order to converge on a solution,
+% even in the plane\citep{vattani2009exponential}.  There are many more
+% heuristic methods for the problem; nine prominent methods are compared in
+% \citep{brusco2007comparison}.
 
-Some algorithms for exactly solving the centroid-distance problem are known
-including methods using branch-and-bound \citep{brusco2006repetitive},
-branch-and-cut \citep{aloise09exact} and column generation
-\citep{merle1999interior}.  Some of these algorithms are able to exactly solve
-instances in the plane of around 2000 elements in reasonable time
-\citep{aloise09exact}.
+% Some algorithms for exactly solving the centroid-distance problem are known
+% including methods using branch-and-bound \citep{brusco2006repetitive},
+% branch-and-cut \citep{aloise09exact} and column generation
+% \citep{merle1999interior}.  Some of these algorithms are able to exactly solve
+% instances in the plane of around 2000 elements in reasonable time
+% \citep{aloise09exact}.
 
-The all-squares problem, or more generally sum-of-cliques, has received less
-attention but there are, nonetheless, a number of algorithms described in the
-literature.  An exact algorithm using branch-and-bound
-\citep{klein1991optimal} can be used to solve problems with $n \leq 50, k \leq
-5$ \citep{hansen1997mathprog}.  Cutting planes have also been applied with
-problems with $n \leq 158$ solved quickly
-\citep{hansen1997mathprog,palubeckis1997branch}.  In terms of heuristic
-approaches, there is an obvious iterative agglomerative technique that can be
-applied.  We have a simple randomised version that is showing some promise
-\citep{gk2012agglomerative}.
+% The all-squares problem, or more generally sum-of-cliques, has received less
+% attention but there are, nonetheless, a number of algorithms described in the
+% literature.  An exact algorithm using branch-and-bound
+% \citep{klein1991optimal} can be used to solve problems with $n \leq 50, k \leq
+% 5$ \citep{hansen1997mathprog}.  Cutting planes have also been applied with
+% problems with $n \leq 158$ solved quickly
+% \citep{hansen1997mathprog,palubeckis1997branch}.  In terms of heuristic
+% approaches, there is an obvious iterative agglomerative technique that can be
+% applied.  We have a simple randomised version that is showing some promise
+% \citep{gk2012agglomerative}.
 
 \section{Complexity issues}
 \label{sec:complexity-issues}
@@ -1476,6 +1486,7 @@ $\clus_1$ and $\clus_2$ are not just slightly different clusterings, they are
 in fact optimally different according to both the VI metric and assignment
 metric, as well as our basic intuition.  This leads us to:
 \begin{thm}
+  \label{thm:worst-case}
   A centroid-distance optimal clustering and an all-squares optimal clustering
   can be optimally different under both the VI metric and the assignment
   metric.
