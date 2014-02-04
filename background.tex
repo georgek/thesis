@@ -5,9 +5,11 @@
 \label{sec:summary-backgd}
 
 In this chapter we first introduce the relevant terminology that is required
-for the work presented later.  We then review the current state of two broad
-categories of data analysis techniques, namely partitional clustering and
-hierarchical clustering.
+for the work presented in this thesis including metrics and partitions.  We
+then review the field of partitional clustering including the various criteria
+which have been developed, the computational complexity issues associated with
+the clustering problem and finally various methods which have been developed
+to perform partitional clustering.
 
 \section{Datasets and metric spaces}
 \label{sec:datas-metr-spac}
@@ -390,8 +392,8 @@ with elements in a metric space.  In Chapter~\ref{cha:sum-squar-clust} we
 present a new metric on $\mathcal{M}$.
 
 We conclude by remarking that the linkage functions, which are used in
-hierarchical clustering, the topic of Section~\ref{sec:hierarchies}, are not
-generally metrics.  For a metric space, $(M,d)$, and $\mathcal{M}=2^M
+hierarchical clustering, the topic of Section~\ref{sec:hier-clust-meth}, are
+not generally metrics.  For a metric space, $(M,d)$, and $\mathcal{M}=2^M
 \setminus \emptyset$, the \textit{single-linkage distance}, $\delta_{SL}
 \colon \mathcal{M} \times \mathcal{M} \to \mathbb{R}^{\geq 0}$ is defined as:
 \begin{equation*}
@@ -401,7 +403,7 @@ for all $X,Y \in \mathcal{M}$.  While single-linkage is a simple and intuitive
 distance between sets, it is not a metric since distinct sets can have a
 distance of zero.  The \textit{complete-linkage} and \textit{average-linkage}
 dissimilarities are, in fact, not even distances.  These measures will be
-discussed further in Section~\ref{sec:hierarchies}.
+discussed further in Section~\ref{sec:hier-clust-meth}.
 
 % \subsection{Multiset datasets}
 % \label{sec:multiset-datasets}
@@ -441,16 +443,16 @@ discussed further in Section~\ref{sec:hierarchies}.
 
 In this section we look at the properties of partitions of sets, how we can
 compare partitions and how we can find partitions.  Throughout, we assume that
-$n > 0$ and refer to a set of $n$ elements as an \textit{$n$-set}.  We also
-denote the set $\{1,\dotsc,n\}$ by $[n]$.
+$n > 0$ and refer to a set of $n$ elements as an \textit{$n$-set}.
 
 \subsection{The space of partitions}
 \label{sec:space-partitions}
 
 Given an $n$-set $\dset$, a $k$-partition $\clus = \{C_1,C_2,\dotsc,C_k\}$ of
-$\dset$ is a set of $k \in [n]$ nonempty, pairwise-disjoint subsets of $\dset$
-such that $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$.  Following common
-practice, we will refer to the elements of $\clus$ as \textit{clusters}.
+$\dset$ is a set of $k \in \{1,\dotsc,n\}$ nonempty, pairwise-disjoint subsets
+of $\dset$ such that $C_1 \cup C_2 \cup \dotsb \cup C_k = \dset$.  Following
+common practice, we will refer to the elements of $\clus$ as
+\textit{clusters}.
 
 \begin{figure}
   \centering
@@ -593,12 +595,12 @@ underlying set $C$ and a membership function $\mu_{C} \colon C \to (0,1]$.
 Note that in our definition, all members of the underlying set are members of
 the fuzzy set to some extent since the grades of membership cannot be zero.
 
-A \textit{$k$-fuzzy-partition} of an $n$-set $\dset$ is a set of $k \in [n]$
-fuzzy sets: \[\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}\] where $C_1 \cup
-\dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $i \in [k]$ and
-$\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.  Note that the underlying
-sets of the fuzzy sets $(C_i,\mu_i)$ are not necessarily pairwise disjoint, so
-elements can belong to more than one cluster.
+A \textit{$k$-fuzzy-partition} of an $n$-set $\dset$ is a set of $k \in
+\{1,\dotsc,n\}$ fuzzy sets: \[\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}\]
+where $C_1 \cup \dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $i \in
+\{1,\dotsc,k\}$ and $\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.  Note
+that the underlying sets of the fuzzy sets $(C_i,\mu_i)$ are not necessarily
+pairwise disjoint, so elements can belong to more than one cluster.
 
 \subsection{Comparing partitions}
 \label{sec:comparing-partitions}
@@ -643,7 +645,7 @@ matching measures.
 
 To illustrate these definitions and the comparison measures we review below,
 we will use two example partitions $\clus^*_1$ and $\clus^*_2$ of the set
-$\dset^* = [9]$ throughout this section:
+$\dset^* = \{1,\dotsc,9\}$ throughout this section:
 \begin{equation}
   \label{eq:example-parts}
   \clus^*_1 = \{C^*_{11},C^*_{12},C^*_{13}\},\qquad
@@ -892,7 +894,7 @@ A second metric on $\parts_{\dset}$ denoted by $\partcomparen{CE}$ is due to
 \citet{meila-2005} and is known by the name \textit{classification error}.
 Like $\partcomparen{H}$, this measure computes an injection for $\sigma$, but
 instead of using a heuristic finds a globally optimal injection in the set
-$S_k$ of all possible injections from $[k]$ to $[k']$:
+$S_k$ of all possible injections from $\{1,\dotsc,k\}$ to $\{1,\dotsc,k'\}$:
 \begin{equation*}
   \partcompare{CE} = 1 - \frac{1}{n} \max_{\sigma \in S_k}
                                      \sum_{i=1}^{k} n_{i \sigma(i)}.
@@ -940,7 +942,7 @@ However,
 \end{align*}
 whenever $0< f < 1/2$.
 
-To give a numerical example, let $\dset = [15]$,
+To give a numerical example, let $\dset = \{1,\dotsc,15\}$,
 \begin{equation*}
   \clus = \{\{1,2,3,4,5\},\{6,7,8,9,10\},\{11,12,13,14,15\}\}
 \end{equation*}
@@ -1365,11 +1367,11 @@ problem.  The general decision problem version of \textsc{Clustering} is
 simply stated, the specific clustering problems are identical except the value
 for the criterion $f$ is fixed:
 \begin{problem}{Clustering}
-  \instance{An $n$-set $\dset$, the number of clusters desired $k \in [n]$, a
-    criterion $f \colon \parts_{\dset} \to \mathbb{R}^+$, which involves $k$
-    in some way, and a bound $B \in \mathbb{R}^+$.}
-  \question{Does there exist a $k$-partition $\clus \in \parts_{\dset}$ such that
-    $f(\clus) \leq B$?}
+  \instance{An $n$-set $\dset$, the number of clusters desired $k \in
+    \{1,\dotsc,n\}$, a criterion $f \colon \parts_{\dset} \to \mathbb{R}^+$,
+    which involves $k$ in some way, and a bound $B \in \mathbb{R}^+$.}
+  \question{Does there exist a $k$-partition $\clus \in \parts_{\dset}$ such
+    that $f(\clus) \leq B$?}
 \end{problem}
 
 Optimisation problems also have corresponding \textit{approximation problems}.
@@ -1716,7 +1718,7 @@ sum-of-stars criterion.  The oldest and simplest heuristic method for
 sum-of-stars clustering is Partitioning Around Medoids (PAM), shown in
 Algorithm~\ref{alg:pam}, was introduced by \citet{kaufman2005finding}.
 \begin{algorithm}[h]
-  \caption{Partition Around Medoids (PAM)}
+  \caption{Partition Around Medoids (PAM).}
   \label{alg:pam}
   \begin{algorithmic}
     \Require A dataset, $\dset = \{x_1,\dotsc,x_n\}$ with a dissimilarity $d
@@ -1781,7 +1783,7 @@ than PAM while producing partitions with a smaller sum-of-stars value than
 those produced by CLARA \citep{ng2002clarans}.
 
 \begin{algorithm}[h]
-  \caption{CLARANS}
+  \caption{CLARANS.}
   \label{alg:clarans}
   \begin{algorithmic}
     \Require A dataset, $\dset = \{x_1,\dotsc,x_n\}$, with a dissimilarity $d

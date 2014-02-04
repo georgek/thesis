@@ -45,20 +45,37 @@ partitions that can take into account the fact that the data lives in a metric
 space (see Section~\ref{sec:assignment-metric}).
 
 Metrics present themselves in the context of that most well-known and useful
-data structure: the tree.
+data structure: the tree.  In a rooted edge-weighted tree with leaf set $X$,
+the graph-theoretic distance between the leaves is a metric called a tree
+metric.  It is well known that a tree is uniquely defined by and can be
+reconstructed from its tree metric.  Tree construction is appropriate and
+desirable in many areas such as in evolutionary biology.  For example, if we
+had a dataset corresponding to varieties of some organism, we could find a
+partitional clustering in which each cluster corresponds to a continent,
+reflecting the expected result that organisms on the same continent are more
+closely related, and those on different continents are more distantly related.
+However, a tree can show us not only this information but the relationships
+and lineages of each variety in our set.  In this way, trees can be considered
+hierarchical clusterings and a step up from partitional clusterings.
 
-In a rooted edge-weighted tree with leaf set $X$, the graph-theoretic distance
-between the leaves is a metric.  It is well-known that such a tree can be
-reconstructed uniquely from a distance on the elements of $X$ that is a
-stronger version of a metric: an ultrametric.  But in practice, we may not
-always have access to the complete matrix of distances.  The problem arises of
-constructing trees from only an incomplete matrix of distances.  In the second
-part of this thesis we investigate the circumstances under which such an
-incomplete matrix uniquely determines a rooted edge-weighted tree.  We call
-this ``lassoing'' the tree.  We then look at the circumstances under which a
-supertree can be constructed from two or more lassoed subtrees.
+In practice, though, we may not always have access to the full tree metric.
+Rather we might be presented with a partial distance between pairs of leaves,
+that is where the distance between some pairs elements is unknown.  Studying
+the properties of partial distances and their ability to uniquely identify a
+tree has given rise to the theory of ``lassoing'' a tree.  It turns out that
+certain subsets of all pairwise distances do indeed contain enough information
+to uniquely identify either the topology of a tree, its edge weights, or
+both.  This theory is reviewed in Section~\ref{sec:lassoing-corralling}.
 
-We next present an outline of this thesis. In Chapter~\ref{cha:background} we
+We therefore investigate the problem of constructing an edge-weighted tree
+from a given partial distance.  We begin by investigating the properties of a
+special type of lasso and then we present an algorithm for constructing the
+unique tree which corresponds to such a lasso.  We then turn to the more
+general problem and present an algorithm which constructs a tree from a
+partial distance and returns the set of given distances which uniquely
+determine the constructed tree.
+
+This thesis is organised as follows: in Chapter~\ref{cha:background} we
 introduce the concept of metric spaces and review various metrics that have
 been used over the years.  We then introduce partitions and review metrics for
 comparing partitions.  This leads to a review of partitional clustering, the
@@ -67,10 +84,14 @@ their applications.  In Chapter~\ref{cha:sum-squar-clust} we focus on
 partitional clustering and its difficulties by comparing and contrasting two
 closely related partitional clustering criteria, called sum-of-squares
 criteria.  We show that the two criteria can produce completely different
-results.  Chapter~\ref{cha:background2} concerns the problem of
-reconstructing rooted edge-weighted trees from subtrees for which only partial
-distance information is available.
-
+results.  In Chapter~\ref{cha:background2} we introduce trees, tree metrics,
+tree construction and lassos.  In Chapter~\ref{cha:dist-minim-topl} we
+investigate the properties of a special kind of lasso which we call a
+distinguished minimal topological lasso and present an algorithm for tree
+construction from such a lasso.  In Chapter~\ref{cha:lasso-construction} we
+present a general algorithm for tree reconstruction from partial distances
+which is consistent according to the theory of lassos.  Finally we conclude
+the thesis and suggest further work in Chapter~\ref{cha:conclusion}.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"

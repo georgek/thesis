@@ -1,18 +1,19 @@
 \chapter{Sum-of-Squares Clustering}
 \label{cha:sum-squar-clust}
 
-\section{Summary}
-\label{sec:summary-sum-squar}
+This chapter is largely based on the following paper:
+\vspace{0.5em}
 
-In this chapter we examine two sum-of-squares criteria for clustering in a
-metric space and compare their performance.  This chapter is based on the
-following paper:
+\noindent
+\bibentry{kettleborough13sumsquares}\\
 
-\begin{itemize}
-\item George Kettleborough and V.J. Rayward-Smith. Optimising sum-of-squares
-  measures for clustering multisets over a metric space.
-  \textit{Discrete Applied Mathematics}, 2013.
-\end{itemize}
+% \begin{itemize}
+% \item 
+
+%   % George Kettleborough and V.J. Rayward-Smith. Optimising sum-of-squares
+%   % measures for clustering multisets over a metric space.
+%   % \textit{Discrete Applied Mathematics}, 2013.
+% \end{itemize}
 
 Contributions by the author include: the examples showing that
 equations~(\ref{eq:cd-sep-eq}) and (\ref{eq:as-cd-eq}) do not hold for all
@@ -22,7 +23,31 @@ Lemma~\ref{lem:eq-dis}, the proof of Theorems~\ref{thm:np-complete-3-val},
 \ref{thm:asc-np-complete-n-val} and \ref{thm:cdc-np-complete-n-val}, the
 examples of using the assignment metric in
 Section~\ref{sec:assignment-metric}, and the examples leading to
-Theorem~\ref{thm:worst-case}.
+Theorem~\ref{thm:worst-case}.  The author was also responsible for preparation
+of the published manuscript and implementation of the assignment metric for
+testing.
+
+\newpage
+
+\section{Introduction}
+\label{sec:ss-introduction}
+
+\subsection{Summary}
+\label{sec:summary-sum-squar}
+
+In this chapter we examine two sum-of-squares criteria for clustering in a
+metric space and compare their performance.  It has recently been shown that
+partitional clustering under the centroid-distance criterion is an NP-hard
+problem in Euclidean space.  We show that the associated decision problem
+is NP-complete even in a highly constrained 2-valued metric space, as well as
+general $p$-valued metric spaces.  We also show that the problem is
+NP-complete under the related all-squares criterion both in Euclidean space
+and for a $p$-valued metric.  We propose a new metric for comparing clustering
+called the assignment metric which allows us to use information about the
+underlying metric space of a clustering to help distinguish different
+clustering solutions.  Using this metric we finally show that optimal
+clustering solutions under our two different sum-of-squares criteria can be as
+different as any two solutions can possibly be.
 
 \subsection{Multiset datasets}
 \label{sec:datasets}
@@ -51,89 +76,25 @@ $k$-clustering of $(\dset,\mu_{\dset})$ is therefore $\clus =
 $C_{1} \cup C_{2} \cup \dotsb \cup C_{k} = \dset$ and for all $x \in
 \dset$, $\sum_{i=1}^{k} \mu_{i}(x) = \mu_{\dset}(x)$.
 
-\subsection{Metrics}
-\label{sec:metrics}
-
-This paper is not about metrics but, nevertheless, we introduce a few metrics
-here to facilitate later discussion.  Given a dataset consisting of points in
-$n$-dimensional Euclidean space, one of the most commonly used metrics is the
-Euclidean metric defined as
-\begin{equation*}
-  d_{E}(x,y) = \sqrt{\sum_{i=1}^{n} (x_i-y_i)^2}
-\end{equation*}
-where $x_i,y_i$ are the $i$th components of $x,y$ respectively.
-
-Given purely categorical data a simple metric is the 0/1 metric, or overlap
-metric, defined as
-\begin{equation*}
-  overlap(x,y) =
-  \begin{cases}
-    0 & \text{if $x=y$,}\\
-    1 & \text{otherwise.}
-  \end{cases}
-\end{equation*}
-
-A frequently occurring type of data is mixed data, which contains both
-numerical and categorical attributes.  The heterogeneous Euclidean-overlap
-metric uses normalised Euclidean distance on the numerical attributes and the
-overlap metric on categorical attributes.  It is defined as
-\begin{equation*}
-  HEOM(x,y) = \sqrt{\sum_{i=1}^{k} d_i^2(x_i,y_i)},
-\end{equation*}
-where
-\begin{equation*}
-  d_i(x_i,y_i) =
-  \begin{cases}
-    overlap(x_i,y_i) & \text{if $i$ is a categorical attribute,}\\
-    \displaystyle \frac{|x_i-y_i|}{range_i} & \text{otherwise,}
-  \end{cases}
-\end{equation*}
-where $range_i$ is the difference between the maximum and minimum values of
-attribute $i$ observed in the data.
-
-Many other metrics are possible: for points in Euclidean space we have,
-amongst others, the Mahalanobis, Manhattan and Minkowsky metrics
-\citep{jain-1999}; for mixed data we have the heterogeneous, interpolated and
-windowed value difference metrics \citep{wilson97improvedheterogeneous}.  The
-dataset may even contain more complex structures in which case special metrics
-may be defined---we will see some examples of these in
-section~\ref{sec:metr-comp-clust}.
-
 \section{Clustering criteria}
 \label{sec:clustering-criteria}
 
-There are a large number of possible $k$-clustering solutions for any given
-dataset; the problem of clustering is finding a solution where the clusters
-are both homogeneous, meaning elements belonging to the same cluster are
-similar, and well-separated, meaning elements belonging to different clusters
-are dissimilar.  Since we are concerned with metric spaces only, the words
-similar and dissimilar may be replaced with close and distant.
+As discussed in Section~\ref{sec:criteria}, the problem of clustering is
+finding a solution where the clusters are both homogeneous, meaning elements
+belonging to the same cluster are similar, and well-separated, meaning
+elements belonging to different clusters are dissimilar.  We have seen that
+there are a large number of possible $k$-clustering solutions for any given
+dataset and many criteria for judging the homogeneity, separation or both of a
+given solution.
 
-We will look at two criteria which judge the suitability of a $k$-clustering
-based on both homogeneity and separation.  The first of these may be defined
-generally using dissimilarity measures rather than metrics.  Let $s \colon
-\dset \times \dset \to \mathbb{R}$ be a dissimilarity measure, the
-\textit{sum-of-cliques} criterion for homogeneity is defined as
-\begin{equation*}
-  scl(\clus) = \sum_{i=1}^{k} \sum_{x,y \in C_i} \mu_i(x) \mu_i(y) s(x,y).
-\end{equation*}
-Minimising this criterion is equivalent to maximising the
-\textit{sum-of-cuts}, a criterion for separation:
-\begin{equation*}
-  scu(\clus) = \sum_{i=1}^{k}
-  \sum_{x \in C_i, y \in \dset \setminus C_i}
-  \mu_i(x) \mu_{\dset \setminus i}(y) s(x,y)
-\end{equation*}
-where $\mu_{\dset \setminus i}(y) = \mu_{\dset}(y) - \mu_{i}(y)$.  This
-follows from the fact that
-\begin{equation*}
-  scl(\clus) + scu(\clus) = \sum_{x,y \in \dset} \mu_{\dset}(x) \mu_{\dset}(y) s(x,y)
-\end{equation*}
-which is a constant.
+In this chapter we will look at the two sum-of-squares criteria which judge
+the suitability of a $k$-clustering based on both homogeneity and separation.
+We derived the two criteria, called centroid-distance and all-squares, from
+the scatter matrix in Section~\ref{sec:scatter-matrix-based}.  We state them
+again here defined as cost functions along with definitions of their
+corresponding optimal partitions.
 
-Since we are concerned here with metric spaces, an intuitive dissimilarity
-measure to use is the metric squared.  This gives us the \textit{all-squares
-  cost} of a clustering:
+The \textit{all-squares cost} of a clustering is defined as:
 \begin{equation}
   \label{eq:ASC}
   cost_{as}(\clus) = \sum_{i=1}^{k} \sum_{x,y \in C_i} \mu_i(x) \mu_i(y) d^2(x,y).
@@ -145,19 +106,19 @@ measure to use is the metric squared.  This gives us the \textit{all-squares
   $\dset$.
 \end{dfn}
 
-Our second criterion for homogeneity we call the \textit{centroid-distance
-  cost}:
+The \textit{centroid-distance cost} is defined as:
 \begin{equation}
   \label{eq:CDC}
   cost_{cd}(\clus) = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d^2(x,c_i),
 \end{equation}
 where $c_i$ is the centroid of $C_i$ and is defined as
 \begin{equation*}
-  c_i = \min_{c \in M} \sum_{x \in C_i} \mu_i(x) d^2(x,c).
+  c_i = \argmin_{c \in M} \sum_{x \in C_i} \mu_i(x) d^2(x,c).
 \end{equation*}
 Calculation of the centroid depends on the metric; for example, with the
 Euclidean metric the centroid is the mean, with the overlap metric it is the
-mode and with the HEOM it is a mixture of means and modes.
+mode and with the heterogeneous Euclidean-overlap metric (HEOM, as defined in
+Section~\ref{sec:mixed-data-metrics}) it is a mixture of means and modes.
 
 \begin{dfn}
   A multiset $k$-clustering which minimises the centroid-distance cost for a
@@ -1531,9 +1492,9 @@ say that optimal fuzzy clusterings according to either criteria need not have
 been fuzzy in the first place.  The assignment metric also applies to fuzzy
 clusterings simply by using a metric for fuzzy sets.
 
-Further work will be done on methods for approximating the optimal clustering
-according to all-squares.  Further applications for the assignment metric and
-new bounds will also be investigated.
+% Further work will be done on methods for approximating the optimal clustering
+% according to all-squares.  Further applications for the assignment metric and
+% new bounds will also be investigated.
 
 
 

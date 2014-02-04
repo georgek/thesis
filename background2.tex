@@ -23,7 +23,7 @@ of species and the hierarchies formed by the process called natural selection
 
 \begin{figure}
   \centering
-  \includegraphics[width=20em]{figures/darwin-tree.png}
+  \includegraphics[width=20em]{figures/background2/darwin-tree.png}
   \caption{Charles Darwin's first diagram of an evolutionary tree from his
     \textit{First notebook on transmutation of species}, 1837.}
   \label{fig:darwin-tree}
@@ -69,31 +69,42 @@ A \textit{graph} is an ordered pair $(V,E)$ where $V$ is a set of
 the form $\{x,y\}$ such that $x,y \in V$ are distinct.  Unless specified
 otherwise, all graphs in this thesis are \textit{simple} and finite meaning
 that $V$ and $E$ are finite sets.  Two vertices $v,v' \in V$ are said to be
-\textit{adjacent} if there exists an edge $\{v,v'\} \in E$.  A \textit{path}
-is a sequence of vertices $v_1,v_2,\dotsc,v_k$ such that for all $i \in
-\{1,2,\dotsc,k-1\}, v_i$ and $v_{i+1}$ are adjacent.  If $v_1$ and $v_k$ are
-also adjacent then the path is called a \textit{cycle}.  A graph is
+\textit{adjacent} if there exists an edge $\{v,v'\} \in E$.  An edge $\{x,y\}
+\in E$ is said to be \textit{incident} with the vertices $x$ and $y$.  The
+\textit{degree} of a vertex is the number of edges in the graph incident with
+it.
+
+\begin{figure}
+  \centering
+  \input{figures/background2/graph-ex.pdft}
+  \caption{A graph (left) and a directed graph (right).}
+  \label{fig:graph-ex}
+\end{figure}
+
+A \textit{path} is a sequence of vertices $v_1,v_2,\dotsc,v_k$ such that for
+all $i \in \{1,\dotsc,k-1\}, v_i$ and $v_{i+1}$ are adjacent.  If $v_1$ and
+$v_k$ are also adjacent then the path is called a \textit{cycle}.  A graph is
 \textit{connected} if there exists a path joining each pair of vertices in
-$V$.
+$V$.  Figure~\ref{fig:graph-ex} helps to illustrate these definitions.  In the
+graph shown in the figure an example of a path is $g,f,e,d$ and an example of
+a cycle is $g,f,a,b$.
 
-An edge $\{x,y\} \in E$ is said to be \textit{incident} with the vertices $x$
-and $y$.  The \textit{degree} of a vertex is the number of edges in the graph
-incident with it.
-
-Directed graphs, in/out degree. in+out = degree.
-
-Figure~\ref{graph-examples} illustrates these definitions.
-
-An \textit{edge-weighted graph} is a graph $(V,E)$ paired with an
-edge-weighting function $\omega \colon E \to \rr$.
+A \textit{directed graph} is a set of vertices $V$ and a set of \textit{arcs}
+which are similar to edges but also have a direction.  Each arc leads from one
+vertex $v \in V$ to another vertex $v' \in V$.  The \textit{out-degree} of a
+vertex is the number of arcs leading out from it and the \textit{in-degree} is
+the number leading in.  The degree of a vertex is therefore the sum of its
+out-degree and in-degree.  An \textit{oriented path} is a sequence of vertices
+$v_1,\dotsc,v_k$ such that there exists an arc from $v_i$ to $v_j$ for all $1
+\leq i \leq k-1$.  Figure~\ref{fig:graph-ex} shows a directed graph to help
+illustrate these definitions.  Vertex $f$ has out-degree 3, in-degree 1 and
+therefore degree 4.  An example of an oriented path is $e,f,b,c$.
 
 Two graphs $(V,E)$ and $(V',E')$ are called \textit{isomorphic} if there
 exists a bijection $\phi \colon V \to V'$ such that $\{v,v'\} \in E$ if and
 only if $\{\phi(v),\phi(v')\} \in E'$.  So, in other words, adjacency of
-vertices is preserved.
-
-A graph $(V',E')$ is a \textit{subgraph} of a graph $(V,E)$ if $V' \subseteq
-V$ and $E' \subseteq E$.
+vertices is preserved.  A graph $(V',E')$ is a \textit{subgraph} of a graph
+$(V,E)$ if $V' \subseteq V$ and $E' \subseteq E$.
 
 \subsubsection{Trees}
 \label{sec:trees}
@@ -115,18 +126,33 @@ characterised in other ways, some of which are given in the following theorem
   \end{enumerate}
 \end{thm}
 
-A \textit{forest} is a disjoint union of trees or, equivalently, a graph with
-no cycles.  A \textit{rooted tree} is a tree with one distinguished vertex
-called the root which we usually denote by $\rho$.  A vertex in a tree is
-called a \textit{leaf} if it has degree 1.  Figure~\ref{tree-examples}
-illustrates these definitions.
+A \textit{rooted tree} (or \textit{oriented tree}) is a directed graph $(V,E)$
+with a distinguished vertex $\rho$ (the root) such that \cite{knuth97taocp1}:
+\begin{enumerate}[label=\alph*)]
+\item Each vertex $v \in V$ apart from $\rho$ has in-degree 1,
+\item The root $\rho$ has in-degree 0,
+\item There is an oriented path between $\rho$ and any $v \neq \rho$.
+\end{enumerate}
+Although a rooted tree is a directed graph, we follow common practice and call
+the arcs in a rooted tree edges as with unrooted trees.
 
-Suppose $X$ is a finite, nonempty set, a \textit{phylogenetic $X$-tree} is a
-tree with no degree 2 vertices and set of leaves $X$.  A \textit{rooted
-  phylogenetic $X$-tree} (henceforth $X$-tree for short) is a rooted tree with
-no degree 2 vertices except possibly the root and with leaf set $X$.
+\begin{figure}
+  \centering
+  \input{figures/background2/x-tree-ex.pdft}
+  \caption{An $X$-tree (left) and a rooted $X'$-tree (right).}
+  \label{fig:x-tree-ex}
+\end{figure}
 
-For an edge-weighted tree
+A vertex in a tree is called a \textit{leaf} if it has degree 1.  Suppose $X$
+is a finite, nonempty set, a \textit{phylogenetic $X$-tree} ($X$-tree for
+short) is a tree with no degree 2 vertices and set of leaves $X$.  A
+\textit{rooted phylogenetic $X$-tree} (rooted $X$-tree for short) is a rooted
+tree with no degree 2 vertices except possibly the root and with leaf set
+$X$.  Figure~\ref{fig:x-tree-ex} shows an $X$-tree with $X = \{a,\dotsc,g\}$
+and a rooted $X'$-tree with $X' = \{a,\dotsc,f\}$.
+
+An \textit{edge-weighted graph} is a graph $(V,E)$ paired with an
+edge-weighting function $\omega \colon E \to \rr$.  For an edge-weighted tree
 $T$ we call an edge-weighting \textit{proper} if $w(e) > 0$ for every interior
 edge $e$ of $T$.
 
@@ -135,19 +161,22 @@ $T=(V,E)$, a vertex $v \in E$ is an \textit{ancestor} of a vertex $v' \in E$
 if and only if $v$ is on the path from $v'$ to the root.  The vertex $v'$ is
 then said to be a \textit{descendant} of $v$.  If $v$ and $v'$ are adjacent
 then we also call $v$ the \textit{parent} of $v'$ and $v'$ a \textit{child} of
-$v$.  The number of children of a particular vertex is also its out degree.
+$v$.  The number of children of a particular vertex is equivalent to its
+out-degree.
 
 We call two $X$-trees $T,T'$ \textit{equivalent} (written $T \simeq T'$) if
 there exists a bijection $\phi \colon V(T) \to V(T')$ which preserves
 adjacency, is the identity on $X$ and maps the root of one tree to the root of
 the other.  This means that, in addition to adjacency, the parent and child
-relationships are preserved.  Figure~\ref{graph-isomorphism} illustrates these
-concepts using trees.
+relationships are preserved.
 
 The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in a rooted
-tree is the unique vertex that lies on the pat from $v$ to $v'$, the path from
-$v$ to the root and the path from $v'$ to the root.  The lowest common
-ancestor of $v$ and $v'$ is denoted $\lca(v,v')$.
+tree is the unique vertex $u$ such that $u$ is an ancestor of both $v$ and
+$v'$ and the path from the root $\rho$ to $u$ is longer than the path to any
+other ancestor of both $v$ and $v'$.  The lowest common ancestor of $v$ and
+$v'$ is denoted $\lca(v,v')$.  In the rooted $X'$-tree in
+Figure~\ref{fig:x-tree-ex}, the lowest common ancestor of $a$ and $d$ is the
+root $\rho$.
 
 A tree in which all vertices have degree 3 is called \textit{binary}.  Rooted
 binary trees are often defined with the root having degree 2; we define a
@@ -163,10 +192,9 @@ then $T|X'$ is a triplet.
 \subsubsection{Distances}
 \label{sec:distances}
 
-Given an edge-weighted (unrooted) pyhlogenetic $X$-tree $(T,\omega)$ where
-$T=(V,E)$ and $\omega \colon E \to \rr$ we can associate a distance
-$D_{(T,\omega)} \colon X \times X \to \rr$ to $(T,\omega)$ by setting for all
-$x,y \in X$:
+Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
+\colon E \to \rr$ we can associate a distance $D_{(T,\omega)} \colon X \times
+X \to \rr$ to $(T,\omega)$ by setting for all $x,y \in X$:
 \begin{equation*}
   D_{(T,\omega)}(x,y) =
   \begin{cases}
@@ -183,6 +211,13 @@ exists a phylogenetic tree $T=(V,E)$ with edge-weighting $\omega \colon E \to
 edge-weighted phylogenetic $X$-tree $(T,\omega)$, the distance
 $D_{(T,\omega)}$ is a tree metric.
 
+\begin{figure}
+  \centering
+  \input{figures/background2/quartet.pdft}
+  \caption{A quartet tree used to illustrate the four-point condition.}
+  \label{fig:quartet-tree}
+\end{figure}
+
 The \textit{four-point condition} allows us to decide whether a given metric
 is in fact a tree metric.  A distance $\delta \colon X \times X \to \rr$
 satisfies the four-point condition if for every $w,x,y,z \in X$ the following
@@ -195,7 +230,12 @@ Since$w,x,y,z$ need not be distinct it is easy to see that if $\delta$
 satisfies the four-point condition then it satisfies the triangle inequality
 and is therefore a metric.  Further, $\delta$ is a tree metric on $X$ if and
 only if it satisfies the four-point condition \citep{semple2003phylogenetics}.
-This can be seen in the quartet tree shown in figure~\ref{fig:quartet}.
+
+This can be seen with an example, let $T$ be the quartet tree shown in
+figure~\ref{fig:quartet-tree} and $\omega$ be any proper edge-weighting for
+it, then it is easy to see that $\DTw(w,x)+\DTw(y,z) < \DTw(w,y)+\DTw(x,z)$
+and $\DTw(w,y)+\DTw(x,z) = \DTw(w,z)+\DTw(x,y)$, so the distanced induced by
+$T$ and $\omega$ on $\{w,x,y,z\}$ satisfies the four-point condition.
 
 An important property of tree metrics is that for any tree metric $\delta
 \colon X \times X \to \rr$ there is, up to isomorphism, a unique edge-weighted
@@ -211,6 +251,54 @@ A distance $\delta \colon X \times X \to \rr$ is called an
 Any ultrametric satisfies the four-point condition and is therefore also a
 tree metric.
 
+\begin{figure}
+  \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+      \centering
+      \input{figures/background2/treeconstruct1.pdft}
+    \end{subfigure}%
+    ~
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[yscale=0.35]
+    \node (r) at (0.0,0.0) {};
+\node (rr) at (-0.2,0.0) {};
+\draw (r.center) -- (rr.center);
+\node (r1) at (2.0,-3.5) {};
+\node[label=right:{$j$}] (r11) at (3.0,-4.5) {};
+\draw (r1.center) |- (r11.center);
+\node[label=right:{$i$}] (r12) at (3.0,-3.5) {};
+\draw (r1.center) |- (r12.center);
+\node[label=right:{$h$}] (r13) at (3.0,-2.5) {};
+\draw (r1.center) |- (r13.center);
+\draw (r.center) |- (r1.center);
+\node (r2) at (1.0,0.0) {};
+\node[label=right:{$g$}] (r21) at (3.0,-1.5) {};
+\draw (r2.center) |- (r21.center);
+\node (r22) at (2.0,0.5) {};
+\node[label=right:{$f$}] (r221) at (3.0,-0.5) {};
+\draw (r22.center) |- (r221.center);
+\node[label=right:{$e$}] (r222) at (3.0,0.5) {};
+\draw (r22.center) |- (r222.center);
+\node[label=right:{$d$}] (r223) at (3.0,1.5) {};
+\draw (r22.center) |- (r223.center);
+\draw (r2.center) |- (r22.center);
+\draw (r.center) |- (r2.center);
+\node (r3) at (2.0,3.5) {};
+\node[label=right:{$c$}] (r31) at (3.0,2.5) {};
+\draw (r3.center) |- (r31.center);
+\node[label=right:{$b$}] (r32) at (3.0,3.5) {};
+\draw (r3.center) |- (r32.center);
+\node[label=right:{$a$}] (r33) at (3.0,4.5) {};
+\draw (r3.center) |- (r33.center);
+\draw (r.center) |- (r3.center);
+     \end{tikzpicture}
+   \end{subfigure}
+
+   \caption{Two different ways to draw an edge-weighted $X$-tree.}
+   \label{fig:example-equidistant}
+\end{figure}
+
 An edge-weighting $\omega \colon E \to \rr$ for a rooted $X$-tree $T=(V,E)$ is
 called \textit{equidistant} if it satisfies the following properties:
 \begin{itemize}
@@ -222,7 +310,7 @@ called \textit{equidistant} if it satisfies the following properties:
 If $\omega$ is an equidistant edge-weighting then $D_{(T,w)}$ is an
 ultrametric \citep{semple2003phylogenetics}.  Rooted $X$-trees with
 equidistant edge-weightings arise naturally in many places, for example in
-phylogenetics.
+phylogenetics.  Figure
 
 For any ultrametric $\delta \colon X \times X \to \rr$ there is, up to
 isomorphism, a unique rooted $X$-tree $T$ with equidistant edge-weighting
@@ -244,17 +332,16 @@ dissimilarity on $X$.
 This is desirable in many cases, for example in
 phylogenetics the edge-weights might represent the time 
 
-Given a
-dissimilarity $d \colon X \times X \to \rr_{\geq 0}$ and a weighted $X$-tree
-$(T,\omega)$ produced by some construction method, we call that method
-\textit{consistent} if it satisfies the property that whenever $d$ is a tree
-metric on $X$ then $D_{(T,\omega)}(x,y) = d(x,y)$ for all $x,y \in X$.  In
-other words, if given a tree metric the construction method produced the
+Given a dissimilarity $d \colon X \times X \to \rr_{\geq 0}$ and a weighted
+$X$-tree $(T,\omega)$ produced by some construction method, we call that
+method \textit{consistent} if it satisfies the property that whenever $d$ is a
+tree metric on $X$ then $D_{(T,\omega)}(x,y) = d(x,y)$ for all $x,y \in X$.
+In other words, if given a tree metric the construction method produced the
 unique tree identified by the tree metric.
 
 The next problem is constructing trees from only partial distance information.
 This means that we do not have the dissimilarity $d$, but rather only have the
-values $d(x,y)$ for some, but not all, pairs $x,y in X$.  This problem is
+values $d(x,y)$ for some, but not all, pairs $x,y \in X$.  This problem is
 motivated by the fact that accurate distance measurements are often difficult
 or impossible to obtain in practice but one would still like to build a tree
 given only what is known.
@@ -277,19 +364,18 @@ A pair of leaves of a rooted $X$-tree that share the same parent is called a
 \textit{cherry}.  A rooted $X$-tree with $|X| = 3$ that contains a cherry is
 called a \textit{triplet}.  If $X = \{a,b,c\}$ and $a,b$ is a cherry then we
 denote the triplet by $ab|c$.  We say that a triplet $ab|c$ is
-\textit{displayed} by a tree $T$ if $T|{a,b,c}$ is binary and $lca_T(a,c) =
+\textit{displayed} by a tree $T$ if $T|_{\{a,b,c\}}$ is binary and $lca_T(a,c) =
 lca_T(b,c)$ is an ancestor of $lca_T(a,b)$ in $T$.
 
 The \textsc{Build} algorithm can reconstruct a tree from the set of all
 triplets displayed by it.  Let $T$ be an $X$-tree and $R$ be a set of trees
-$\{T|X_1,dotsc,T|X_n\}$ where $X_1 \cup \dotsb \cup X_n = X$.  The
-\textsc{Build} algorithm uses an auxiliary graph $[R,S]$, where $S \subset X$
-which has vertex set $S$ and an edge $\{a,b\}$ for each $a,b \in S$ whenever
-there exists a $c \in S$ and a $T' \in R$ such that $T'|\{a,b,c\} = ab|c$ (a
-triplet).
+$\{T|X_1,\dotsc,T|X_n\}$ where $X_1 \cup \dotsb \cup X_n = X$.  The
+\textsc{Build} algorithm uses an auxiliary graph $[R,S]$ which has vertex set
+$S \subseteq X$ and an edge $\{a,b\}$ for each $a,b \in S$ whenever there exists a $c \in
+S$ and a $T' \in R$ such that $T'|\{a,b,c\} = ab|c$ (a triplet).
 
 \begin{algorithm}[h]
-  \caption{\textsc{Build} algorithm.}
+  \caption{\textsc{Build}.}
   \label{alg:build}
 
   \begin{algorithmic}
@@ -319,6 +405,22 @@ triplet).
   \end{algorithmic}
 \end{algorithm}
 
+\begin{figure}
+  \centering
+  \input{figures/background2/build-ex.pdft}
+  \caption{An illustration of the \textsc{Build} algorithm.}
+  \label{fig:build-ex}
+\end{figure}
+
+The \textsc{Build} algorithm is shown in Algorithm~\ref{alg:build}.  We
+illustrate the algorithm in Figure~\ref{fig:build-ex} with an input of $R =
+\{T_1,T_2\}$, auxiliary graph $[R,S]$ and output $T$.
+
+The \textsc{Build} algorithm returns a tree whenever the inputted set of
+triplets are compatible.  If we input the set of all triplets displayed by a
+tree $T$, then \textsc{Build} will output $T$ \cite{semple2003phylogenetics}.
+The case where the inputted set of triplets is some subset of all the triplets
+displayed by a tree is discussed in \cite[Section 2.5.2]{bryant97buildingtrees}.
 
 \subsection{Construction from distances}
 \label{sec:constr-from-dist}
@@ -335,13 +437,20 @@ that metric.
 \subsubsection{Hierarchical clustering methods}
 \label{sec:hier-clust-meth}
 
+\begin{figure}
+  \centering
+  \input{figures/background2/tree-clust-ex.pdft}
+  \caption{A tree can be viewed as a hierarchy of partitions.}
+  \label{fig:tree-clust-ex}
+\end{figure}
+
 Hierarchical clustering is used for the classification of information in much
 the same way as partitional clustering.  The aim is to produce a rooted
 $X$-tree corresponding to a dataset $X$ and dissimilarity on $X$.  While a
 partition of a dataset is merely a set of subsets which cover the dataset, an
 $X$-tree can be viewed as a hierarchy of such clusters which induces several
 partitions on $X$.  This natural relationship between trees and partitions is
-shown in Figure~\ref{fig:tree-partitions}.
+shown in Figure~\ref{fig:tree-clust-ex}.
 
 There are two main methods in use for building hierarchies, these are the
 agglomerative or bottom-up method which begins with each element of the
@@ -425,7 +534,7 @@ root to any leaf, or 0 if the root is the sole vertex.  The algorithm for
 UPGMA is shown in Algorithm~\ref{alg:upgma}.
 
 \begin{algorithm}[h]
-  \caption{UPGMA algorithm.}
+  \caption{UPGMA.}
   \label{alg:upgma}
 
   \begin{algorithmic}
@@ -466,7 +575,7 @@ applying neighbour joining to the resulting tree.  Neighbour joining is shown
 in Algorithm~\ref{alg:neighbour-joining}.
 
 \begin{algorithm}[h]
-  \caption{Neighbour joining algorithm.}
+  \caption{Neighbour joining.}
   \label{alg:neighbour-joining}
 
   \begin{algorithmic}
@@ -657,18 +766,19 @@ define $\cL$ to be:
 For further information and discussion about lassos, especially those
 concerning general $X$-trees, the reader is referred to \citep{DHS11}.
 
-\subsection{Lassoing rooted $X$-trees}
+\subsection{Characterising lassos: the child-edge graph}
 \label{sec:lassoing-rooted-x}
 
 Lassos for rooted $X$-trees can be characterised using a graph associated to
-each interior vertex of a tree \citep{HP13}.  Given an $X$-tree $T$, some $v
-\in \iV(T)$, and a set of cords $\cL \subseteq {X \choose 2}$, we associate a
-graph called $G(\cL,v)$.  The vertex set of the graph $V_V$ is the set of all
-child edges of $v$.  The edge set is the set of all $\{e,e'\} \subseteq {V_v
-  \choose 2}$ for which there exist leaves $a,b \in X$ and a cord $ab \in \cL$
-such that $e$ and $e'$ are edges on the path from $a$ to $b$ in $T$.  We call
-the graph $G(\cL,v)$ the \textit{child-edge graph} (\textit{of $v$ with
-  respect to $T$ and $\cL$}.
+each interior vertex of a tree \citep{HP13}.  First, a lasso which satisfies
+the property that $\bigcup_{c \in \cL} c = X$ is called a \textit{covering} of
+$X$.  Now, given an $X$-tree $T$, some $v \in \iV(T)$, and a set of cords $\cL
+\subseteq {X \choose 2}$, we associate a graph called $G(\cL,v)$.  The vertex
+set of the graph $V_v$ is the set of all child edges of $v$.  The edge set is
+the set of all $\{e,e'\} \subseteq {V_v \choose 2}$ for which there exist
+leaves $a,b \in X$ and a cord $ab \in \cL$ such that $e$ and $e'$ are edges on
+the path from $a$ to $b$ in $T$.  We call the graph $G(\cL,v)$ the
+\textit{child-edge graph} (\textit{of $v$ with respect to $T$ and $\cL$}.
 
 We have the following important result due to \cite{HP13}:
 \begin{lem}
@@ -707,7 +817,7 @@ equidistant.  For convenience we denote a cord $\{a,b\}$ simply as $ab$.  If
 we have the set of cords $\cL=\{ac,de,bc,ce,cd\}$ then notice that the
 distances between each of these pairs of leaves is the same for both trees.
 Therefore $\cL$ is not a topological lasso.  Notice that this property of
-$\cL$ is dependant solely on the structure of the set itself and not on the
+$\cL$ is dependent solely on the structure of the set itself and not on the
 actual distances on the trees.
 
 %%% Local Variables:

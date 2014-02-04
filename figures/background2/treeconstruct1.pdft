@@ -1,0 +1,26 @@
+\begin{picture}(0,0)%
+\includegraphics{figures/background2/treeconstruct1.pdf}%
+\end{picture}%
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(1886,1532)(8358,-1100)
+\put(8401,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$a$}}}}
+\put(8551,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$b$}}}}
+\put(8701,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$c$}}}}
+\put(9001,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$d$}}}}
+\put(9151,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$e$}}}}
+\put(9301,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$f$}}}}
+\put(9601,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$g$}}}}
+\put(9901,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$h$}}}}
+\put(10051,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$i$}}}}
+\put(10201,-1036){\makebox(0,0)[b]{\smash{{\SetFigFont{12}{14.4}{\familydefault}{\mddefault}{\updefault}$j$}}}}
+\put(9826,-61){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{14.4}{\familydefault}{\mddefault}{\updefault}2}}}}
+\put(9526,-511){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{14.4}{\familydefault}{\mddefault}{\updefault}2}}}}
+\put(8776,-61){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{14.4}{\familydefault}{\mddefault}{\updefault}2}}}}
+\end{picture}%
