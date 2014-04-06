@@ -108,9 +108,11 @@ A \textit{path} is a sequence of distinct vertices $v_1,v_2,\dotsc,v_k$ where
 $k \geq 2$ such that for all $i \in \{1,\dotsc,k-1\}, v_i$ and $v_{i+1}$ are
 adjacent.  If $k \geq 3$ and $v_1$ and $v_k$ are also adjacent then the path
 is called a \textit{cycle}.  A graph is \textit{connected} if there exists a
-path joining each pair of distinct vertices.  Figure~\ref{fig:graph-ex} helps
-to illustrate these definitions.  In the graph shown in the figure an example
-of a path is $g,f,e,d$ and an example of a cycle is $g,f,a,b,g$.
+path joining each pair of distinct vertices.  A graph is \textit{complete} if
+there is an edge joining each pair of distinct vertices.
+Figure~\ref{fig:graph-ex} helps to illustrate these definitions.  In the graph
+shown in the figure an example of a path is $g,f,e,d$ and an example of a
+cycle is $g,f,a,b,g$.  Both graphs are connected, but are not complete.
 
 A \textit{directed graph} is an ordered pair $(V,E)$ where $V$ is a set of
 \textit{directed edges} or \textit{arcs}.  An arc $(v,v') \in E$ is said to
@@ -355,14 +357,15 @@ called \textit{equidistant} if it satisfies the following properties:
 If $\omega$ is an equidistant edge-weighting then $D_{(T,w)}$ is an
 ultrametric \citep{semple2003phylogenetics}.  Rooted $X$-trees with
 equidistant edge-weightings arise naturally in many places, for example in
-phylogenetics.  Figure~\ref{fig:example-equidistant} shows an example of a
-tree with an equidistant edge-weighting using two common display formats.
+phylogenetics.  For convenience we will from now on refer to such a rooted
+$X$-tree with equidistant edge-weighting as simply an \textit{equidistant
+  $X$-tree}.  Figure~\ref{fig:example-equidistant} shows an example of an
+equidistant $X$-tree using two common display formats.
 
 For any ultrametric $\delta \colon X \times X \to \rr$ there is, up to
-isomorphism, a unique rooted $X$-tree $T$ with equidistant edge-weighting
-$\omega$ such that $\delta(x,y) = D_{(T,\omega)}(x,y)$ for all $x,y \in X$.
-As with a general tree metric, this tree can be recovered from the ultrametric
-in polynomial time.
+isomorphism, a unique equidistant $X$-tree $(T,\omega)$ such that $\delta(x,y)
+= D_{(T,\omega)}(x,y)$ for all $x,y \in X$.  As with a general tree metric,
+this tree can be recovered from the ultrametric in polynomial time.
 
 \section{Tree construction}
 \label{sec:tree-construction}
@@ -456,14 +459,15 @@ triplet).
 
 \begin{figure}
   \centering
-  \input{figures/background2/build-ex.pdft}
+  \input{figures/background2/build-ex2.pdft}
   \caption{An illustration of the \textsc{Build} algorithm.}
   \label{fig:build-ex}
 \end{figure}
 
 The \textsc{Build} algorithm is shown in Algorithm~\ref{alg:build}.  We
 illustrate the algorithm in Figure~\ref{fig:build-ex} with an input of $R =
-\{T_1,T_2\}$, auxiliary graph $[R,S]$ and output $T$.
+\{T_1,T_2\}$.  $[R,S]$ is the auxiliary graph built in the first iteration of
+the algorithm and $T$ is the final tree constructed.
 
 If \textsc{Build} returns a tree then the set of input trees is said to be
 \textit{compatible}.  If we input the set of all triplets displayed by a tree
@@ -472,17 +476,32 @@ case where the inputted set of triplets is some subset of all the triplets
 displayed by a tree is discussed in \cite[Section
 2.5.2]{bryant97buildingtrees}.
 
+The \textsc{Build} algorithm was initially developed to construct a tree
+satisfying a given set of lineage constraints and was applied to problems
+arising in the theory of relational databases.  It was later applied to
+phylogenetics but remained relatively unknown in the field for a number of
+years \cite{steel1992complexity,bryant04supertree}.
+
 \subsection{Construction from distances}
 \label{sec:constr-from-dist}
 
-Hierarchical clustering methods build rooted trees which are generally binary
-and without edge-weightings.  UPGMA is similar but adds edge-weightings.
-Using Buneman indices and building from splits gives edge-weightings.
-Neighbour-joining, constructs an edge-weighted binary tree.
+We now turn to the problem of constructing a tree from a distance function.
+We begin by looking at the problem of constructing rooted trees and then look
+at one method for the more general problem of constructing unrooted trees.
 
-Some, but not all, of the methods have the property that if the distance is a
-tree metric or ultrametric, the tree constructed will be the unique tree for
-that metric.
+The hierarchical clustering methods build rooted trees which are generally
+binary and without edge-weightings.  UPGMA \cite{sokal1958statistical} can be
+considered an extension which also builds an equidistant edge-weighting.
+Neighbor-joining \cite{saitou1987nj} is a popular method which constructs an
+edge-weighted binary unrooted tree.
+
+For a distance-based construction method the following property is desirable:
+if we input a distance function $D_{(T,\omega)}$ we get the tree $T$ and its
+edge-weighting $\omega$.  If a method holds this property then we call it
+\textit{consistent}.  For many methods this property holds only under certain
+conditions.  For UPGMA this holds only if $(T,\omega)$ is a binary equidistant
+$X$-tree and for Neighbor-joining only if $(T,\omega)$ is binary
+\cite{semple2003phylogenetics}.
 
 \subsubsection{Hierarchical clustering methods}
 \label{sec:hier-clust-meth}
@@ -503,13 +522,12 @@ partitions on $X$.  This natural relationship between trees and partitions is
 shown in Figure~\ref{fig:tree-clust-ex}.
 
 There are two main methods in use for building hierarchies, these are the
-agglomerative or bottom-up method which begins with each element of the
-dataset in its own cluster and successively merges clusters until there is
-only one, and the divisive or top-down method which begins with a single
-cluster and successively splits clusters until each element is on its own.
-The resulting hierarchy depends upon which merges or splits have been chosen
-at each stage, and this depends on finding a local optimum according to some
-criterion.
+agglomerative or bottom-up method which begins with each element of $X$ in its
+own cluster and successively merges clusters until there is only one, and the
+divisive or top-down method which begins with a single cluster and
+successively splits clusters until each element is on its own.  The resulting
+hierarchy depends upon which merges or splits have been chosen at each stage,
+and this depends on finding a local optimum according to some criterion.
 
 \begin{algorithm}[h]
   \caption{Agglomerative hierarchical clustering algorithm.}
@@ -521,14 +539,14 @@ criterion.
     \Ensure  A rooted $X$-tree $T$.
 
     \State Let $F$ be a forest of $|X|$ trees each containing a unique element
-    of $X$ as the only vertex, which is also the root.
+    of $X$ as the only vertex, which is also the root,
 
     \While{$|F| > 1$}
 
        \State Let $v$ be a new vertex and $\displaystyle (x,y) \gets \argmin_{x,y
-         \in F} D(L(x),L(y))$.
+         \in F} D(L(x),L(y))$ (where $L(x)$ denotes the leafset of $x$),
        \State Remove trees $x$ and $y$ from $F$ and add the tree obtained by
-         attaching the roots of $x$ and $y$ to $v$ and letting $v$ be the root.
+         attaching the roots of $x$ and $y$ to $v$ and letting $v$ be the root,
     
     \EndWhile
 
@@ -540,21 +558,21 @@ criterion.
 The general algorithm for agglomerative clustering is shown in
 Algorithm~\ref{alg:agglomerative}.  The choice of linkage function determines
 which trees are joined at each stage.  Given a set $X$ and dissimilarity $d
-\colon X \times X \to \rr$, some common choices for linkage functions include
-single-linkage:
+\colon X \times X \to \rr$ and two nonempty subsets $S_1,S_2 \subseteq X$,
+some common choices for linkage functions include single-linkage:
 \begin{equation}
   \label{eq:slink}
-  D_{SL}(X,Y) = \min_{x \in X, y \in Y} d(x,y),
+  D_{SL}(S_1,S_2) = \min_{x \in S_1, y \in S_2} d(x,y),
 \end{equation}
 complete-linkage:
 \begin{equation}
   \label{eq:clink}
-  D_{CL}(X,Y) = \max_{x \in X, y \in Y} d(x,y),
+  D_{CL}(S_1,S_2) = \max_{x \in S_1, y \in S_2} d(x,y),
 \end{equation}
 and average-linkage:
 \begin{equation}
   \label{eq:alink}
-  D_{AL}(X,Y) = \left( \sum_{x \in X} \sum_{y \in Y} d(x,y) \right) / |X| |Y|.
+  D_{AL}(S_1,S_2) = \left( \sum_{x \in S_1} \sum_{y \in S_2} d(x,y) \right) / |S_1| |S_2|.
 \end{equation}
 
 The general algorithm for agglomerative clustering has runtime complexity of
@@ -562,9 +580,9 @@ $O(n^3)$ where $n = |X|$ since there are $O(n)$ merges to be done and finding
 the $\argmin$ takes $O(n^2)$ time.  However, for all three of the linkage
 functions above there are special algorithms which run in only $O(n^2)$ time,
 these are SLINK \citep{sibson1973slink}, CLINK \citep{defays1977efficient} and
-UPGMA \citep{sokal1958statistical}.
+UPGMA \citep{sokal1958statistical} respectively.
 
-The divisive algorithm is very similar but it requires a more complicated
+The divisive method is very similar in nature but it requires a more difficult
 decision about how to split a cluster.  A divisive algorithm may also
 terminate before $|X|$ clusters have been obtained in which case the order in
 which the clusters are split becomes important.  A naïve approach is to always
@@ -578,10 +596,13 @@ cluster, a partitional clustering algorithm can be used to perform the split
 
 The UPGMA algorithm is in fact a modified agglomerative clustering algorithm
 using average-linkage which constructs an edge-weighted rooted $X$-tree.  The
-edge-weighting constructed by UPGMA is always equidistant.  For any
-equidistant $X$-tree $T$, let $\height(T)$ be the length of the path from the
-root to any leaf, or 0 if the root is the sole vertex.  The algorithm for
-UPGMA is shown in Algorithm~\ref{alg:upgma}.
+edge-weighting constructed by UPGMA is always equidistant.
+
+For an equidistant $X$-tree $x = (T,\omega)$, let $height(x)$ be the length of
+the path from the root of $T$ to any leaf, that is $\sum_{e \in P}
+D_{(T,\omega)}$ where $P$ is a path from $\rho_T$ to a leaf in $X$, or 0 if
+the root is the sole vertex.  The algorithm for UPGMA is shown in
+Algorithm~\ref{alg:upgma}.
 
 \begin{algorithm}[h]
   \caption{UPGMA.}
@@ -589,55 +610,55 @@ UPGMA is shown in Algorithm~\ref{alg:upgma}.
 
   \begin{algorithmic}
     \Require A set $X$, and a dissimilarity $d \colon X \times X \to \rr$.
-    \Ensure  A rooted $X$-tree $T$ and equidistant edge-weighting $\omega$.
+    \Ensure  A binary equidistant $X$-tree $(T, \omega)$.
 
     \State Let $F$ be a forest of $|X|$ trees each containing a unique element
     of $X$ as the only vertex, which is also the root.
 
     \While{$|F| > 1$}
 
-       \State Let $v$ be a new vertex, $\displaystyle m \gets \min_{x,y
-         \in F} D_{AL}(L(x),L(y))$, and $\displaystyle (x,y) \gets \argmin_{x,y
-         \in F} D_{AL}(L(x),L(y))$.
+       \State Let $v$ be a new vertex,
+       \State put $\displaystyle m \gets \min_{x,y \in F} D_{AL}(L(x),L(y))$,
+       \State and $\displaystyle (x,y) \gets \argmin_{x,y \in F} D_{AL}(L(x),L(y))$.
        \State Remove trees $x$ and $y$ from $F$ and add the tree obtained by
          attaching the root of $x$ to $v$ with an edge of length $m/2 -
-         \height(x)$, attaching the root of $y$ to $v$ with an edge of length
-         $m/2 - \height(y)$ and letting $v$ be the root.
+         height(x)$, attaching the root of $y$ to $v$ with an edge of length
+         $m/2 - height(y)$ and letting $v$ be the root.
     
     \EndWhile
 
-    \State \Return the single tree contained in $F$.
+    \State \Return the $X$-tree contained in $F$ and its edge-weighting.
   \end{algorithmic}
 \end{algorithm}
 
-Since only two trees are joined at once, the output of UPGMA is always a
-binary tree.  If $d$ is an ultrametric and identifies a binary tree, then the
-output of UPGMA is equivalent to this tree.
+Since only two trees are joined in each iteration, the output of UPGMA is
+always a binary tree.  If the input $d$ is equal to some $D_{(T,\omega)}$ then
+the output of UPGMA will will $(T,\omega)$.
 
-\subsubsection{Neighbour joining}
+\subsubsection{Neighbor-joining}
 \label{sec:neighbour-joining}
 
-Neighbour joining is a method for building an edge-weighted unrooted $X$-tree
+Neighbor-joining is a method for building an edge-weighted unrooted $X$-tree
 which, like UPGMA, is consistent if the dissimilarity identifies a binary tree
 but, unlike UPGMA, the consistency holds for general tree metrics
 \cite{saitou1987nj}.  The algorithm works by replacing a cherry by a single
-vertex and recursively applying neighbour joining to the resulting tree.
-Neighbour joining is shown in Algorithm~\ref{alg:neighbour-joining}.
+vertex and recursively applying Neighbor-joining to the resulting tree.
+Neighbor-joining is shown in Algorithm~\ref{alg:neighbour-joining}.
 
 \begin{algorithm}[h]
-  \caption{Neighbour joining.}
+  \caption{Neighbor-joining.}
   \label{alg:neighbour-joining}
 
   \begin{algorithmic}
     \Require A set $X$, and a dissimilarity $d \colon X \times X \to \rr$.
-    \Ensure  A rooted $X$-tree $T$ and equidistant edge-weighting $\omega$.
+    \Ensure  A binary $X$-tree $T$ and edge-weighting $\omega$.
 
     \If{$|X| = 2$} Let $X = \{x,y\}$ and \Return the tree obtained by joining
     $x$ and $y$ with an edge of length $d(x,y)$.
     \EndIf
 
-    \State $\displaystyle (x,y) \gets \argmax_{x,y \in X} d(x,y) + \frac{1}{2}
-    \sum_{r \in X - \{x,y\}} (d(r,x)+d(r,y)-d(x,y))$.
+    \State $\displaystyle (x,y) \gets \argmax_{x,y \in X} \left( d(x,y) + \frac{1}{2}
+    \sum_{r \in X - \{x,y\}} (d(r,x)+d(r,y)-d(x,y))\right)$.
 
     \State $X' \gets X - \{x,y\} \cup \{v\}$ where $v \notin X$.
 
@@ -652,10 +673,11 @@ Neighbour joining is shown in Algorithm~\ref{alg:neighbour-joining}.
       \end{cases}
     \end{equation*}
 
-    \State Let $T'$ be the tree obtained by applying Neighbour joining to $X'$
-    and $d'$.
+    \State Let $(T',\omega')$ be the tree obtained by applying
+    Neighbor-joining to $X'$ and $d'$.
 
-    \State Attach $x$ and $y$ to the leaf vertex $v$ of $T'$.
+    \State Attach $x$ and $y$ to the leaf vertex $v$ of $T'$ to obtain a tree
+    $T$, put $\omega \gets \omega'$.
 
     \State Put $\displaystyle \omega(\{v,x\}) \gets \frac{1}{2} d(x,y) +
     \frac{1}{2(|X|-2)} \sum_{u \in X} (d(u,x)-d(u,y))$.
@@ -670,112 +692,119 @@ Neighbour joining is shown in Algorithm~\ref{alg:neighbour-joining}.
 \label{sec:constr-from-part}
 
 A partial dissimilarity is one defined for only a subset of all pairs of
-elements.  Let $M \subseteq \dset^2$ be the set of all pairs of elements for
-which we do not know the dissimilarity.  We have only a function $d^* \colon
-\dset^2 - M \to \rr$ or a $|\dset|^2$ dissimilarity matrix in which there are
-``holes'' or pairs labelled as ``unknown''.
+elements.  Let $M \subseteq X^2$ be the set of all pairs of elements for which
+we do not know the dissimilarity.  We have only a function $d^* \colon X^2 - M
+\to \rr$ or a $|X|^2$ dissimilarity matrix in which there are ``holes'' or
+pairs labelled as ``unknown''.
 
 Partial dissimilarities arise often in practice.  It is sometimes difficult or
-impossible to make measurements between certain pairs and sometimes complete
-information may not be given by test subjects.
+impossible to make measurements between certain pairs due to those pairs not
+sharing any information from which a distance can be inferred.  For example,
+in biological studies involving large numbers of species and genes it is often
+the case that species do not share any genes in the available
+data\cite{criscuolo2008fastnj}.
 
 For this reason it becomes useful to ask whether such a partial dissimilarity
 can be extended into a complete dissimilarity that is also a tree metric or
-ultrametric.  We would like to find some $d \colon \dset^2 \to \rr$ for which
-$d(x,y) = d^*(x,y)$ for all $(x,y) \in \dset^2 - M$ and which is a tree metric
-or ultrametric.  In \citep{farach1995robust} it was shown that the problem of
-deciding whether such an extension to a tree metric exists is NP-complete but
-the special case of an extension to an ultrametric is in P.
+ultrametric.  Put differently we would like to find some $d \colon X^2 \to
+\rr$ for which $d(x,y) = d^*(x,y)$ for all $(x,y) \in X^2 - M$ and which is a
+tree metric or ultrametric.  In \citep{farach1995robust} it was shown that the
+problem of deciding whether such an extension to a tree metric exists is
+NP-complete but the special case of an extension to an ultrametric is in P.
 
 Below we describe three different methods given in the literature for
-extending a partial dissimilarity to an ultrametric.  There are also many
-methods that have been devised for the more general problem of extension to a
-tree metric which we do not review but can be found in, for example,
-\citep{guenoche1999approximations}, \citep{farach1995robust},
-\citep{makarenkov2001nouvelle} and \citep{guenoche2004extension}.
+extending a partial dissimilarity to an ultrametric and constructing a rooted
+$X$-tree.  There are also many methods that have been devised for the more
+general problem of extension to a tree metric which we do not review but can
+be found in, for example, \citep{guenoche1999approximations},
+\citep{farach1995robust}, \citep{makarenkov2001nouvelle} and
+\citep{guenoche2004extension}.
 
 \subsubsection{An optimisation method}
 \label{sec:part-dist-optim-method}
 
 The approach taken by \citet{de1984ultrametric} is to consider a least squares
 constrained optimisation problem.  Given a partial dissimilarity $d^* \colon
-\dset^2 - M \to \rr$ we wish to find a function $d \colon \dset^2 \to \rr$
+X^2 - M \to \rr$ we wish to find a function $d \colon X^2 \to \rr$
 such that
-\begin{equation}
+\begin{equation*}
   \label{eq:partial-dist-least-squares}
-  L(d) = \sum_{(x,y) \in \dset^2 - M} (d^*(x,y)-d(x,y))^2
-\end{equation}
+  Loss(d) = \sum_{(x,y) \in X^2 - M} (d^*(x,y)-d(x,y))^2
+\end{equation*}
 is minimised and $d$ is an ultrametric.  The method used is a sequential
 unconstrained minimisation technique.  The constraint that $d$ must be an
-ultrametric is removed and instead we find a dissimilarity $d_n$ which minimises
-the augmented function:
-\begin{equation}
+ultrametric is removed and instead we find a dissimilarity $d_n \colon X^2 \to
+\rr$ which minimises the augmented function:
+\begin{equation*}
   \label{eq:partial-dist-optimisation}
-  \Phi(d_n,\sigma) = L(d_n) + \sigma P(d_n), \qquad (\sigma > 0).
-\end{equation}
-The function $L$ is called the \textit{loss function} and $P$ is the
+  \Phi(d_n,\sigma) = Loss(d_n) + \sigma Pen(d_n), \qquad (\sigma > 0).
+\end{equation*}
+The function $Loss$ is called the \textit{loss function} and $Pen$ is the
 \textit{penalty function} which is meant to enforce the ultrametric
-condition.  $P$ is defined as:
-\begin{equation}
+condition.  $Pen$ is defined as:
+\begin{equation*}
   \label{eq:penalty-function}
-  P(d_n) = \sum_{(i,j,k) \in \Omega(d_n)} (d_n(i,k) - d_n(j,k))^2
-\end{equation}
+  Pen(d_n) = \sum_{(i,j,k) \in \Omega(d_n)} (d_n(i,k) - d_n(j,k))^2
+\end{equation*}
 where
 \begin{equation*}
-  \Omega(d_n) = \{(i,j,k) \in \dset^3 \colon d(i,j) \leq \min(d_n(i,k),d_n(j,k))
-  \text{ and } d_n(i,k) \neq d_n(j,k)\},
+  \Omega(d_n) = \{(i,j,k) \in X^3 \colon d(i,j) \leq \min(d_n(i,k),d_n(j,k))
+  \text{ and } d_n(i,k) \neq d_n(j,k)\}.
 \end{equation*}
-or, in other words, the set of triples for which the ultrametric condition is
-violated.  The unconstrained minimisation is performed successively with an
-increasing value for $\sigma$, each time using the previous result $d_{n-1}$
-to begin the search for the next $d_n$.  To perform the unconstrained
-minimisation of the augmented function, a method by \citet{powell1977restart}
-is used.
+In other words, $\Omega(d_n)$ denotes the set of triples for which the
+ultrametric condition is violated.  The unconstrained minimisation is
+performed successively with an increasing value for $\sigma$, each time using
+the previous result $d_{n-1}$ to begin the search for the next $d_n$.  To
+perform the unconstrained minimisation of the augmented function, a method by
+\citet{powell1977restart} is used.
 
 \subsubsection{An agglomerative method}
 \label{sec:part-dist-agglom-method}
 
 The method used by \citet{schader1992mvl}, which they call Missing Values
-Linkage (MVL), is actually identical to the agglomerative algorithm shown in
-Section~\ref{sec:hier-clust-meth} but using a linkage criterion modified to
-take into account missing values.  For example, the modified average-linkage
-criterion is:
+Linkage (MVL), is actually identical to the agglomerative hierarchical
+clustering algorithm shown in Section~\ref{sec:hier-clust-meth} but using a
+linkage criterion modified to take into account missing values.  The modified
+average-linkage criterion for two nonempty sets $S_1, S_2$ is:
 \begin{equation*}
-  D_{MVL}(X,Y) =
+  D_{MVL}(S_1,S_2) =
   \begin{cases}
     \displaystyle
-    \frac{(\sum_{(x,y) \in X \times Y - M} d(x,y)}{|X \times Y - M|} & \text{if $X
-      \times Y - M \neq \emptyset$,} \\
+    \frac{(\sum_{(x,y) \in S_1 \times S_2 - M} d(x,y)}{|S_1 \times S_2 - M|} & \text{if $S_1
+      \times S_2 - M \neq \emptyset$,} \\
     \infty & \text{otherwise},
   \end{cases}
 \end{equation*}
-where $M = \{(i,j) \in \dset^2 \colon d(i,j) \text{ is unknown}\}$.
+where $M = \{(i,j) \in X^2 \colon d(i,j) \text{ is unknown}\}$.  Modified
+versions of other linkage criteria are possible.
 
 The authors do not provide an algorithm with better time complexity than that
-of the naïve agglomerative algorithm ($O(n^3)$).  They show that the MVL
+of the naïve agglomerative algorithm ($O(n^3)$).  They also show that the MVL
 method produces very similar results to \citeauthor{de1984ultrametric}'s
 method.
 
 \subsubsection{A divisive method}
 \label{sec:part-dist-divisive-method}
 
-\citet{farach1995robust} use a top down, divisive approach.  Let $G=(V,E)$ be
-a graph with vertex set $\dset$ and an edge $\{x,y\}$ with $x,y \in \dset$
-whenever $x \neq y$ and $d(x,y)$ is known.  We also define an edge-weighting
-$\omega \colon E \to \rr$ by $\omega(\{x,y\}) = d(x,y)$ for all $x,y \in E$.
+\citet{farach1995robust} use a top down, divisive approach.  Given a partial
+distance function $d \colon X \times X \to \rr$ let $G=(V,E)$ be a graph with
+vertex set $X$ and an edge $\{x,y\}$ with $x,y \in X$ whenever $x \neq y$ and
+$d(x,y)$ is known.  We also define an edge-weighting $\omega \colon E \to \rr$
+by $\omega(\{x,y\}) = d(x,y)$ for all $x,y \in E$.
 
 The tree construction algorithm proceeds as follows:
 \begin{enumerate}
 \item If $E = \emptyset$, return the single element in $V$.
 \item Otherwise, put $m \gets max_{e \in E} \omega(e)$.
-\item Let $G* = (V,E^*)$ be a graph and put $E^* \gets \{e \in E \colon
+\item Let $G^* = (V,E^*)$ be a graph and put $E^* \gets \{e \in E \colon
   \omega(e) < m\}$.
 \item Let $u$ be a new vertex and return the tree with root node $u$ obtained
   by recursing on each connected component of $G^*$ and attaching the results
   of each to $u$.
 \end{enumerate}
-This basic algorithm requires $O(|V||E|)$ time but a quicker algorithm
-requiring only $O(|E| + |V|\log |V|)$ is described also.
+This basic algorithm shown here requires $O(|V||E|)$ time but a quicker
+algorithm requiring only $O(|E| + |V|\log |V|)$ time is also given by
+\citet{farach1995robust}.
 
 \section{Lassos}
 \label{sec:lassoing-corralling}
@@ -794,10 +823,11 @@ developed.
 \subsection{Definitions and basic properties}
 \label{sec:defin-basic-prop}
 
-Let $\cL \subseteq {X \choose 2}$ be some subset of the pairwise distances
-over $X$ and $(T,\omega), (T',\omega')$ be two edge-weighted $X$-trees.  These
-two trees are called \textit{$\cL$-isometric} if $D_{(T,\omega)}(x,y) =
-D_{(T',\omega')}(x,y)$ for all $xy \in \cL$.
+Let $(T,\omega), (T',\omega')$ be two edge-weighted $X$-trees and $\cL
+\subseteq {X \choose 2}$ be some subset of pairs of leaves in $X$.  For
+convenience we denote an element $\{x,y\} \in \cL$ as simply $xy$.
+$(T,\omega), (T',\omega')$ are called \textit{$\cL$-isometric} if
+$D_{(T,\omega)}(x,y) = D_{(T',\omega')}(x,y)$ for all $xy \in \cL$.
 
 Now, given an $X$-tree $T$ and a subset $\cL \subseteq {X \choose 2}$ we
 define $\cL$ to be:
@@ -820,17 +850,20 @@ concerning general $X$-trees, the reader is referred to \citep{DHS11}.
 \label{sec:lassoing-rooted-x}
 
 Lassos for rooted $X$-trees can be characterised using a graph associated to
-each interior vertex of a tree \citep{HP13}.  First, a lasso which satisfies
-the property that $\bigcup_{c \in \cL} c = X$ is called a \textit{covering} of
-$X$.  Now, given an $X$-tree $T$, some $v \in \iV(T)$, and a set of cords $\cL
-\subseteq {X \choose 2}$, we associate a graph called $G(\cL,v)$.  The vertex
-set of the graph $V_v$ is the set of all child edges of $v$.  The edge set is
-the set of all $\{e,e'\} \subseteq {V_v \choose 2}$ for which there exist
-leaves $a,b \in X$ and a cord $ab \in \cL$ such that $e$ and $e'$ are edges on
-the path from $a$ to $b$ in $T$.  We call the graph $G(\cL,v)$ the
-\textit{child-edge graph} (\textit{of $v$ with respect to $T$ and $\cL$}.
+each interior vertex of a tree \citep{HP13}.  First, a lasso $\cL$ of $X$
+which satisfies the property that $\bigcup_{c \in \cL} c = X$ is called a
+\textit{covering} of $X$.  Let $T$ be an $X$-tree and $\iV(T)$ denote the set
+of internal vertices of $T$.  For some $v \in \iV(T)$, and a set of cords $\cL
+\subseteq {X \choose 2}$, we associate a graph called $G(\cL,v)$ defined as
+follows.  The vertex set of the graph $V_v$ is the set of all child edges of
+$v$.  The edge set $E_V$ is the set of all $\{e,e'\} \in {V_v \choose 2}$ for
+which there exist leaves $a,b \in X$ and a cord $ab \in \cL$ such that $e$ and
+$e'$ are edges on the path from $a$ to $b$ in $T$.  We call the graph
+$G(\cL,v)$ the \textit{child-edge graph} (\textit{of $v$ with respect to $T$
+  and $\cL$}).
 
-We have the following important result due to \cite{HP13}:
+We have the following characterisation of topological lassos which originally
+appeared in \cite{HP13}:
 \begin{lem}
   \label{lem:child-edge-graph-complete}
   Suppose $T$ is an $X$-tree and $\cL \subseteq {X \choose 2}$ is a covering
@@ -841,34 +874,32 @@ We have the following important result due to \cite{HP13}:
   \end{enumerate}
 \end{lem}
 
-Due to the characterisation of edge-weight lassos also presented in the paper,
-we have the following corollary:
-\begin{cor}
-  \label{cor:topo-is-edge-weight}
-  Suppose that $T$ is an $X$-tree.  Then every topological lasso for $T$ must
-  also be an edge-weight lasso, and therefore a strong lasso, for $T$.
-\end{cor}
+Due to the characterisation of edge-weight lassos also presented in
+\cite{HP13}, we also have that every topological lasso for $T$ must also be an
+edge-weight lasso, and therefore a strong lasso, for $T$.
 
 \begin{figure}
 \begin{center}
-\input{figures/dist-min-lass/lasso-example.pdft}
+\input{figures/background2/lasso-example.pdft}
 \end{center}
-\caption{For $X = \{a,\dotsc,e\}$ and $\cL=\{ac,de,bc,ce,cd\}$ the trees $T$
-  and $T'$, depicted in (i) and (ii) respectively, induce the same distances
-  over the cords in $\cL$ despite having different topologies.  In this case
-  $\cL$ is not a topological lasso.}
+\caption{Two equidistant $X$-trees.  All edges have weight 1 except bold edges
+  which have weight 2.  For $\cL=\{ac,de,bc,ce,cd\}$ both trees induce the
+  same distances over the cords in $\cL$ despite having different topologies.
+  In this case $\cL$ is not a topological lasso.}
 \label{fig:lasso-example}
 \end{figure}
 
-To illustrate some of these concepts consider the two trees in
-Figure~\ref{fig:lasso-example}.  The edge-weights on the edges are
-proportional to the length of the edges as shown.  The trees are therefore
-equidistant.  For convenience we denote a cord $\{a,b\}$ simply as $ab$.  If
-we have the set of cords $\cL=\{ac,de,bc,ce,cd\}$ then notice that the
-distances between each of these pairs of leaves is the same for both trees.
-Therefore $\cL$ is not a topological lasso.  Notice that this property of
-$\cL$ is dependent solely on the structure of the set itself and not on the
-actual distances on the trees.
+To illustrate some of these concepts consider the two equidistant rooted
+$X$-trees $(T,\omega),(T',\omega')$ in Figure~\ref{fig:lasso-example}.  The
+edge-weights on the edges are proportional to the length of the edges as shown
+and induce distances $D_{(T,\omega)} \colon X \times X \to \rr$ and
+$D_{(T',\omega')} \colon X \times X \to \rr$ respectively.  The trees are
+therefore equidistant.  If we have the set of cords $\cL=\{ac,de,bc,ce,cd\}$
+then notice that the distances between each of these pairs of leaves is the
+same according to the induced distances for both trees.  Therefore $\cL$ is
+not a topological lasso.  Notice that this property of $\cL$ is dependent
+solely on the structure of the set itself and not on the actual distances on
+the trees.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"

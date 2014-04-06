@@ -1,4 +1,9 @@
-\contentsline {algorithm}{\numberline {1}{\ignorespaces \textsc {Build}.\relax }}{11}{algorithm.1}
-\contentsline {algorithm}{\numberline {2}{\ignorespaces Agglomerative hierarchical clustering algorithm.\relax }}{12}{algorithm.2}
-\contentsline {algorithm}{\numberline {3}{\ignorespaces UPGMA.\relax }}{14}{algorithm.3}
-\contentsline {algorithm}{\numberline {4}{\ignorespaces Neighbour joining.\relax }}{15}{algorithm.4}
+\contentsline {algorithm}{\numberline {1}{\ignorespaces Kennard-Stone initial centres algorithm.\relax }}{35}{algorithm.1}
+\contentsline {algorithm}{\numberline {2}{\ignorespaces Yuan-Meng-Zhang-Dong initial centres algorithm.\relax }}{36}{algorithm.2}
+\contentsline {algorithm}{\numberline {3}{\ignorespaces $k$-means++ initial centres algorithm.\relax }}{37}{algorithm.3}
+\contentsline {algorithm}{\numberline {4}{\ignorespaces Partition Around Medoids (PAM).\relax }}{39}{algorithm.4}
+\contentsline {algorithm}{\numberline {5}{\ignorespaces CLARANS.\relax }}{41}{algorithm.5}
+\contentsline {algorithm}{\numberline {6}{\ignorespaces \textsc {Build}.\relax }}{82}{algorithm.6}
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Agglomerative hierarchical clustering algorithm.\relax }}{84}{algorithm.7}
+\contentsline {algorithm}{\numberline {8}{\ignorespaces UPGMA.\relax }}{86}{algorithm.8}
+\contentsline {algorithm}{\numberline {9}{\ignorespaces Neighbor-joining.\relax }}{87}{algorithm.9}
