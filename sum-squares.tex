@@ -61,10 +61,12 @@ metric space.
 
 However, there is usually no restriction on how many times an element from $M$
 may be sampled so, contrary to the name, a dataset is not usually a set, but
-is often a multiset.  So a dataset is an ordered pair $(\dset,\mu_{\dset})$
-where $\dset$ is the underlying set and $\mu_{\dset} \colon \dset \to
-\mathbb{Z}^+$ is a membership function corresponding to the multiplicity of
-each element.
+is often a multiset.  One way to consider a multiset dataset is as an ordered
+pair $(\dset,\mu_{\dset})$ where $\dset$ is the \textit{underlying set} and
+$\mu_{\dset} \colon \dset \to \mathbb{Z}^+$ is the \textit{membership
+  function}.  For some element $x \in \dset$ $\mu_{\dset}(x) = n$ means that
+$n$ copies $x$ appear in $(\dset,\mu_{\dset})$ (note that $x \in \dset$ is
+ordinary set notation).
 
 \subsection{Multiset clusterings}
 \label{sec:multiset-clusterings}
@@ -72,8 +74,9 @@ each element.
 A clustering is usually considered to be a set of subsets of the dataset but
 if the dataset is a multiset then the clusters must also be multisets.  A
 $k$-clustering of $(\dset,\mu_{\dset})$ is therefore $\clus =
-\{(C_{1},\mu_{1}),(C_{2},\mu_{2}),\dotsc,(C_{k},\mu_{k})\}$ where
-$C_{1} \cup C_{2} \cup \dotsb \cup C_{k} = \dset$ and for all $x \in
+\{(C_{1},\mu_{1}),(C_{2},\mu_{2}),\dotsc,(C_{k},\mu_{k})\}$ where $\mu_i$ is
+the membership function for cluster $C_i$.  For any such clustering we have
+that $C_{1} \cup C_{2} \cup \dotsb \cup C_{k} = \dset$ and for all $x \in
 \dset$, $\sum_{i=1}^{k} \mu_{i}(x) = \mu_{\dset}(x)$.
 
 \section{Clustering criteria}
@@ -144,8 +147,8 @@ metric
   = \sum_{x \in A} \mu_A(x) d^2(a,s)
   + \sum_{x \in A} \mu_A(x) d^2(x,a)
 \end{equation}
-for any $A \subseteq M$, where $a \in M$ is the centroid of $A$, and $s \in M$
-\citep{spath80}.  By summing over each clustering, $C_1,\dotsc,C_k$ in some
+for each $A \subseteq M$, where $a \in M$ is the centroid of $A$, and $s \in
+M$ \citep{spath80}.  By summing over each clustering, $C_1,\dotsc,C_k$ in some
 clustering of $\dset$ we obtain the equation:
 \begin{equation}
   \label{eq:cd-sep-eq}
@@ -206,7 +209,7 @@ Under the HEOM, the centroid-distance optimal multiset 2-clustering is
 \begin{equation*}
   \{\{a,a,a,a,c,c\},\{b,b,b,d\}\},
 \end{equation*}
-which has centroids $(0,\frac{1}{3},a)$ and $(1,\frac{1}{4},b)$.  The
+which has centroids $(0,\frac{1}{3},p)$ and $(1,\frac{1}{4},q)$.  The
 centroid-distance cost is $4(\frac{1}{3})^2 + 2((\frac{2}{3})^2+1) +
 3(\frac{1}{4})^2 + (\frac{3}{4})^2 + 1 = 5\frac{1}{12}$ and the
 squared-separation is $6((\frac{2}{5})^2+(\frac{1}{30})^2) +
@@ -215,7 +218,7 @@ maximum squared-separation possible since the clustering
 \begin{equation*}
   \{\{a,a,a,a\},\{b,b,b,c,c,d\}\},
 \end{equation*}
-with centroids $(0,0,a)$ and $(\frac{2}{3},\frac{1}{2},b)$, has a
+with centroids $(0,0,p)$ and $(\frac{2}{3},\frac{1}{2},q)$, has a
 squared-separation of $4((\frac{2}{5})^2+(\frac{3}{10})^2) +
 6((\frac{4}{15})^2+(\frac{1}{5})^2+1) = 7\frac{2}{3}$.
 
@@ -224,7 +227,7 @@ metric: let $M = (\dset,d_1) = (\{a,b,c\},overlap)$.  We measure the cost of
 the multiset clustering $\{C_1\}$ where $C_1 = (\{a,b,c\},\mu_1)$ and
 $\mu_1(a)=\mu_1(b)=\mu_1(c)=1$.  The centroid is equal to either $a,b$ or $c$,
 this gives a cost using the left-hand side of equation~\eqref{eq:as-cd-eq} of
-$\frac{1}{2}$ while the right-hand side gives 1.
+$\frac{1}{2}$ while the right-hand side gives $2$.
 
 So, although it may seem sensible to minimise centroid-distance cost for other
 metrics, in general it should not be considered to be a criterion for
@@ -268,7 +271,7 @@ separation.
   \end{equation}
 
   Similarly we can construct a clustering $\mathcal{C}''$ by removing one copy
-  of $x$ from $C_{j}$ and placing it in $C_{i}$.  Then
+  of $x$ from $C_{j}$ and placing it in $C_{i}$ and deduce that
   \begin{equation*}
     cost_{as}(\mathcal{C}'') = cost_{as}(\mathcal{C})
     - \sum_{y \in C_{j}} \mu_{j}(y) d^2(x,y)
@@ -421,7 +424,7 @@ within the region defined by the tessellation.
 An all-squares optimal clustering, on the other hand, is not necessarily
 linearly separable.  This can be shown by a simple example.  Consider a
 dataset consisting of distinct points $a,b,c,d$ arranged in the Euclidean
-plane as illustrated in figure~\ref{fig:points-in-plane}.  There are $n$
+plane as illustrated in Figure~\ref{fig:points-in-plane}.  There are $n$
 copies of $a$ and one copy each of $b,c,d$.  The clustering $\clus =
 \{\{(a,n)\},\{(b,1),(c,1),(d,1)\}\}$ has an all-squares cost of 72.  But if we
 move one of $b,c,d$ into the first cluster, then we have a cost of $8n+24$
@@ -533,18 +536,18 @@ all-squares clustering (EASC).
       edges $\{u_i,v_i\}, \{u_i,w_i\}$ and $\{v_i,w_i\}$ belong to $E$?}
   \end{problem}
 
-  We transform an instance $I = G = (V,E)$ of PT, where $|V|=3p$ and $|E|=m$
-  into an instance $f(I)$ of EASC: first we assign to $\dset$ a set of $n=3p$
-  points in $(3p+m)$-space.  Each element $v_i \in V$ corresponds to a point
-  where
+  We transform an instance $I = G = (V,E)$ of PT, where $|V|=3p$, $V = \{v_0,
+  \dotsc, v_{3p-1}\}$ and $|E|=m$ into an instance $f(I)$ of EASC: first we
+  assign to $\dset$ a set of $n=3p$ points in $(3p+m)$-dimensional Euclidean
+  space.  Each element $v_i \in V$ corresponds to a point where
   \begin{enumerate}
   \item the $i$th coordinate is $N = 2m$,
   \item all other coordinates $1 \leq i \leq 3p$ are 0,
-  \item for $1 \leq j \leq m$, if $v_i$ is adjacent to $e_j \in E$ then the
+  \item for $1 \leq j \leq m$, if $v_i$ is incident with $e_j \in E$ then the
     $(3p+j)$th coordinate is 1, otherwise it is 0.
   \end{enumerate}
-  We then assign $p$ to $k$ and $8m-12p+12N^2p$ to $B$.  It is easy to see
-  that this transformation can be computed in polynomial time.
+  We then set $k$ to $p$ and $B$ to $8m-12p+12N^2p$.  It is easy to see that
+  this transformation can be computed in polynomial time.
 
   \begin{lem}
     \label{lem:eq-dis}
@@ -577,9 +580,9 @@ all-squares clustering (EASC).
     least $2s$ greater than the cost of the optimal clustering.
   \end{cor}
 
-  In our case $\left\lceil \frac{n}{k} \right\rceil = \left\lfloor \frac{n}{k}
-  \right\rfloor = 3$, so the optimal clustering when all nonzero distances are
-  equal will be one where each cluster contains three elements.
+  In our reduction $\left\lceil \frac{n}{k} \right\rceil = \left\lfloor
+    \frac{n}{k} \right\rfloor = 3$, so the optimal clustering when all nonzero
+  distances are equal will be one where each cluster contains three elements.
 
   \begin{lem}
     \label{lem:euclidean-iff}
@@ -591,34 +594,36 @@ all-squares clustering (EASC).
     each cluster correspond to one of the triangles in the partition of $G$.
     Let $w,x,y$ be the vertices of such a triangle, and therefore a cluster.
     The distance squared between a pair of these points is $d^2(w,x) =
-    2N^2+\deg(w)+\deg(x)-2$, so the overall cost of the cluster is
-    $2(2\deg(w)+2\deg(x)+2\deg(y)+6N^2-6)$.  Hence, the set of $p$ triangles
-    has cost
+    2N^2+\deg(w)+\deg(x)-2$; the $2N^2$ comes from the coordinates governed by
+    rules 1 and 2 in the transformation and the $\deg(w) + \deg(x) + 2$ comes
+    from the coordinates governed by rule 3.  The overall cost of the
+    clustering is therefore $2(2\deg(w)+2\deg(x)+2\deg(y)+6N^2-6)$.  Hence,
+    the set of $p$ triangles has cost
     \begin{equation}
       \label{eq:tri-cost}
-      4\sum_{v \in V} \deg(v) + 12N^2p - 12p = 8m - 12p + 12N^2p = B,
+      4\sum_{v \in V} \deg(v) + 12N^2p - 12p = 8m + 12N^2p - 12p = B,
     \end{equation}
     so $f(I) \in Y_{\text{EASC}}$.
 
     If $f(I) \in Y_{\text{EASC}}$ then we have a $k$-clustering which fits the
     bound.  The distance between each pair of distinct points in the dataset
     is at least $2N^2$.  Assume that the distances are all exactly $2N^2$: due
-    to lemma~\ref{lem:eq-dis}, the optimal clustering in this case is one
+    to Lemma~\ref{lem:eq-dis}, the optimal clustering in this case is one
     where each cluster contains 3 elements, and this clustering has an overall
-    cost of $12N^2p$.  Due to corollary~\ref{cor:extra-cost}, any suboptimal
+    cost of $12N^2p$.  Due to Corollary~\ref{cor:extra-cost}, any suboptimal
     clustering would have an overall cost of at least $(12p+4)N^2$ and, since
-    $N^2=4m^2$, will not meet the bound.  Clearly, if any of these suboptimal
+    $N^2=4m^2$, will not meet the bound.  Clearly, if one of these suboptimal
     clusterings contained distances greater than $2N^2$ in the sum their
     overall cost would be greater still.  Therefore, each cluster must contain
     exactly 3 elements.
 
     As shown in equation~\eqref{eq:tri-cost}, the cost of a clustering where
-    each cluster corresponds to a triangle in $G$ equals the bound.  If any
+    each cluster corresponds to a triangle in $G$ equals the bound.  If some
     cluster does not correspond to a triangle, then its cost is increased, and
     therefore the overall cost of the clustering will be greater than the
     bound.  So each cluster must be a triangle, so $I \in Y_{\text{PT}}$.
   \end{proof}
-  Hence, due to lemma~\ref{lem:euclidean-iff}, the theorem is established.
+  Hence, due to Lemma~\ref{lem:euclidean-iff}, the theorem is established.
 \end{proof}
 
 \subsubsection{$p$-valued metric}
@@ -638,13 +643,13 @@ all-squares clustering (EASC).
   We observe that a guessed solution can be checked in polynomial time,
   therefore $\text{ASC} \in \NP$.
 
-  Now to show that ASC is NP-complete we will construct a transformation from
-  a known NP-complete problem to our problem.  We will again use the known
-  NP-complete problem PARTITION INTO TRIANGLES (PT).
+  Now to show that ASC is NP-complete we will
 
-  We transform an instance $I$ of PT into an instance $f(I)$ of ASC.  First we
-  construct a 3-valued metric space by assigning $V$ to $\dset$ and then for
-  every $u,v \in \dset$
+  Now we choose again to construct a transformation from PARTITION INTO
+  TRIANGLES (PT).  An instance $I$ of PT is transformed into an instance
+  $f(I)$ of ASC as follows: first we construct a 3-valued metric space by
+  setting $\dset$ to $V$ and defining a function $d \colon \dset \times \dset
+  \to \{0,1,2\}$ by
   \begin{equation*}
     d(u,v) = \begin{cases}
       0 & \text{if $u=v$,}\\
@@ -676,9 +681,8 @@ all-squares clustering (EASC).
     \end{enumerate}
   \end{proof}
 
-  We then assign $6q$ to $B$ and $q$ to $k$ to complete the transformation.
-  It is easy to see that this transformation can be computed in polynomial
-  time.
+  We then set $B$ to $6q$ and $k$ to $q$ to complete the transformation.  It
+  is easy to see that this transformation can be computed in polynomial time.
 
   \begin{lem}
     \label{lem:3-val-iff}
@@ -695,12 +699,12 @@ all-squares clustering (EASC).
     If $I \in N_{\text{PT}}$ then we cannot have a clustering where all
     clusters have cardinality $3$ as this will contain at least one distance
     greater than 1 and therefore not meet the bound.  But, due to
-    lemma~\ref{lem:eq-dis}, any clustering with differently sized clusters
+    Lemma~\ref{lem:eq-dis}, any clustering with differently sized clusters
     always has a higher cost so they also cannot meet the bound.  Therefore
     $f(I) \in N_{\text{ASC}}$.
   \end{proof}
 
-  Hence, due to lemmata~\ref{lem:3-val-met} and \ref{lem:3-val-iff}, the
+  Hence, due to Lemmata~\ref{lem:3-val-met} and \ref{lem:3-val-iff}, the
   theorem is established.
 
 \end{proof}
@@ -719,8 +723,8 @@ all-squares clustering (EASC).
   We transform an instance, $I$, of the $n$-valued problem into an instance,
   $f(I)$ of the $(n+1)$-valued problem.  Let $\dset^*$, $d^*$, $k^*$ and $B^*$
   be the dataset, metric, number of clusters and bound of $f(I)$,
-  respectively.  We assign $\dset \cup \{a\}$ to $\dset^*$, $k+1$ to $k^*$ and
-  $B$ to $B^*$.  We define $d^*$ for all $x,y \in \dset^*$ as
+  respectively.  We set $\dset^*$ to $\dset \cup \{a\}$, $k^*$ to $k+1$ and
+  $B^*$ to $B$.  We define a function $d^* \colon \dset \times \dset$ by
   \begin{equation*}
     d^*(x,y) =
     \begin{cases}
@@ -730,7 +734,7 @@ all-squares clustering (EASC).
     \end{cases}
   \end{equation*}
   where $s = \sum_{p,q \in \dset} d^2(p,q)$.  Notice that the distance between
-  $a$ and any element in $\dset$ is the complete sum of all distances squared
+  $a$ and each element in $\dset$ is the complete sum of all distances squared
   in $\dset$.  It is easy to see that this transformation can be computed in
   polynomial time.
 
@@ -749,30 +753,30 @@ all-squares clustering (EASC).
 
     If $f(I) \in Y_{ASC}$ then there is some clustering, $\clus^* =
     \{C^*_1,C^*_2,\dotsc, C^*_{k^*}\}$, with cost less than or equal to $B$.
-    Let $C^*_l$ be the cluster which contains the element $a$.  If any other
+    Let $C^*_l$ be the cluster which contains the element $a$.  If some other
     elements belong to this cluster then we can move them into any other
     cluster: each element we move makes a saving of at least $s^2$ but the
     final overall cost of the cluster we move them to can be at worst $s$, so
     clearly this will result in a saving.  Now, $C_l$ contains only $a$ so
     does not contribute to the overall cost, so $\clus^* \setminus C^*_l$ has
-    an overall cost less than or equal to B and therefore $I \in Y_{ASC}$.
+    an overall cost less than or equal to $B$ and therefore $I \in Y_{ASC}$.
   \end{proof}
 
-  Hence, due to lemma~\ref{lem-asc-n-val-iff}, the theorem is established.
+  Hence, due to Lemma~\ref{lem-asc-n-val-iff}, the theorem is established.
 \end{proof}
 
 If our dataset is a set and the metric is 2-valued then the problem is
-solvable in polynomial time due to lemma~\ref{lem:eq-dis}.  We need only to
-solve the equation
+solvable in polynomial time due to Lemma~\ref{lem:eq-dis}.  We need only solve
+the equation
 \begin{equation*}
   x \left\lceil\frac{n}{k}\right\rceil
   + (k-x) \left\lfloor\frac{n}{k}\right\rfloor = n
 \end{equation*}
 for $x$ and an optimal clustering is then $x = n-k\lfloor\frac{n}{k}\rfloor$
-clusters of any $\lceil\frac{n}{k}\rceil$ elements and $k-x$ clusters of any
-$\lfloor\frac{n}{k}\rfloor$ elements.  For the decision problem version we
-would then simply calculate the cost of the clustering to see if it is less
-than the bound.  Hence, we have:
+clusters of $\lceil\frac{n}{k}\rceil$ elements and $k-x$ clusters of
+$\lfloor\frac{n}{k}\rfloor$ elements.  For the decision version we would then
+simply calculate the cost of the clustering to see if it is less than the
+bound.  We conclude with:
 \begin{thm}
   When the dataset is a set with a 2-valued metric, an optimal clustering can
   be found in polynomial time.
@@ -786,7 +790,7 @@ becomes NP-complete.
 \end{thm}
 
 \begin{proof}
-  We construct a transformation from the known NP-complete problem
+  We construct a transformation from the NP-complete problem
   \citep{gareyjohnson79}:
   \begin{problem}{Minimum Sum of Squares (MSS)}
     \instance{Finite set $A$, a size $s(a) \in \mathbb{Z}^+$ for each $a \in
@@ -798,9 +802,8 @@ becomes NP-complete.
       \end{equation*}
     }
   \end{problem}
-  We construct our dataset by assigning $A$ to $\dset$ and $s$ to
-  $\mu_{\dset}$ and we assign $K$ to $k$.  We define a metric $d$ for all $u,v
-  \in \dset$ as
+  We construct our dataset by setting $\dset$ to $A$ and $\mu_{\dset}$ to $s$
+  and we set $k$ to $K$.  We define a metric $d$ for all $u,v \in \dset$ as
   \begin{equation*}
     d(u,v) =
     \begin{cases}
@@ -830,9 +833,9 @@ becomes NP-complete.
   \end{equation*}
   We set $B$ to $J-\Gamma$ and the transformation is complete.  It is now easy
   to see that the cost of the optimal clustering, $\clus$, will meet the
-  bound, $B$, if and only if the first term in equation~\eqref{eq:clus-tot} is
-  less than or equal to $J$.  So $I \in Y_{\text{MSS}}$ if and only if $f(I)
-  \in Y_{\text{ASC}}$ and the theorem is established.
+  bound, $B$, if and only if the first term in expression~\eqref{eq:clus-tot}
+  is less than or equal to $J$.  So $I \in Y_{\text{MSS}}$ if and only if
+  $f(I) \in Y_{\text{ASC}}$ and the theorem is established.
 \end{proof}
 
 \subsection{Centroid-distance clustering}
@@ -876,8 +879,8 @@ sets so the membership function has been omitted.
   \end{problem}
 
   We transform an instance $I$ of DS into an instance $f(I)$ of CDC.  Fist we
-  construct a 3-valued metric space by assigning $V$ to $M$ and $\dset$ and
-  then for every $u,v \in M$
+  construct a 3-valued metric space by setting $M = \dset$ to $V$ and define a
+  function $d \colon M \times M \to \rr$ by
   \begin{equation*}
     d(u,v) = \begin{cases}
       0 & \text{if $u=v$,}\\
@@ -886,8 +889,8 @@ sets so the membership function has been omitted.
     \end{cases}
   \end{equation*}
 
-  This is a metric space by lemma~\ref{lem:3-val-met}. We then assign $K$ to
-  $k$ and $n-k$ to $B$.
+  This is a metric space by Lemma~\ref{lem:3-val-met}. We then set $k$ to $K$
+  and $B$ to $n-k$.
 
   \begin{lem}
     \label{lem:iff}
@@ -904,8 +907,8 @@ sets so the membership function has been omitted.
     still have an overall cost of zero.  The remaining $n-k$ elements are
     added one by one to any cluster where they share an edge with the
     tentative centroid.  Thus, each of these $n-k$ elements contributes to the
-    cost by 1.  If any of the final centroids of these constructed clusters
-    turn out to be different to the tentative centroids, this can only
+    cost by 1.  If one of the final centroids of these constructed clusters
+    turns out to be different to the tentative centroids, this can only
     decrease the cost of that cluster, by the definition of a centroid.
     Therefore the overall cost is less than or equal to $B = n-k$, so $f(I)
     \in Y_{CDC}$.
@@ -984,10 +987,10 @@ sets so the membership function has been omitted.
     elements must contribute to the cost by at least $1$, so therefore must
     contribute by exactly $1$ giving an overall cost of exactly $n-k$.  Each
     cluster therefore corresponds to a star in $G$, as illustrated in
-    figure~\ref{fig:domset}, so $I \in Y_{\text{DS}}$.
+    Figure~\ref{fig:domset}, so $I \in Y_{\text{DS}}$.
   \end{proof}
 
-  Hence, due to lemmata~\ref{lem:3-val-met} and \ref{lem:iff}, the theorem is
+  Hence, due to Lemmata~\ref{lem:3-val-met} and \ref{lem:iff}, the theorem is
   established.
 \end{proof}
 
@@ -1015,7 +1018,7 @@ Our proof establishes the following new result:
   metric and show that it is NP-complete with an $(n+1)$-valued metric.
 
   We use the same transformation as used for the proof of
-  theorem~\ref{thm:asc-np-complete-n-val}.
+  Theorem~\ref{thm:asc-np-complete-n-val}.
 
   \begin{lem}
     \label{lem-cdc-n-val-iff}
@@ -1033,7 +1036,7 @@ Our proof establishes the following new result:
 
     If $f(I) \in Y_{CDC}$ then there is some clustering $\clus^* =
     \{C^*_1,C^*_2,\dotsc,C^*_{k^*}\}$ which has cost less than or equal to
-    $B$.  Let $C^*_l$ be the cluster which contains element $a$.  If any other
+    $B$.  Let $C^*_l$ be the cluster which contains element $a$.  If other
     elements belong to this cluster then the cluster will have cost greater
     than or equal to $s^2$.  We can move all other elements to any other
     cluster, say $C^*_p$, which will reduce the cost of $C^*_l$ to 0, but the
@@ -1042,7 +1045,7 @@ Our proof establishes the following new result:
     C^*_l$ has an overall cost less than or equal to $B$ and therefore $I \in
     Y_{CDC}$.
   \end{proof}
-  Hence, due to lemma~\ref{lem-cdc-n-val-iff}, the theorem is established.
+  Hence, due to Lemma~\ref{lem-cdc-n-val-iff}, the theorem is established.
 \end{proof}
 
 However, when the metric is 2-valued, the problem is solvable in polynomial
@@ -1067,8 +1070,9 @@ The first term is a constant, so the problem is to simply maximise the second
 term.  This can be done by ordering the elements of $\dset$ by their
 membership count in descending order and selecting the first $k$ elements.  We
 move all copies of each of the selected elements to their own cluster; these
-will become the centroids.  The remaining elements may then be moved to any
-cluster as they will all contribute to the cost by $s$ each in any case.
+will become the centroids.  The remaining elements may then be moved to an
+arbitrary cluster as they will all contribute to the cost by $s$ each in any
+case.
 
 \section{The assignment metric}
 \label{sec:metr-comp-clust}
@@ -1088,7 +1092,9 @@ We define the assignment metric as a function $\Delta \colon \mathcal{P}_k
   \Delta(\clus_1, \clus_2) = \min_{\sigma \in S_k} \sum_{i=1}^{k}
   \delta(C_{1i}, C_{2\sigma(i)})
 \end{equation*}
-for some $\delta \colon 2^{\dset} \!\!\times 2^{\dset} \to \mathbb{R}$.
+for some $\delta \colon 2^{\dset} \!\!\times 2^{\dset} \to \mathbb{R}$ and
+where $S_k$ is the set of all possible functions $\sigma \colon \{1, \dotsc,
+k\} \to \{1, \dotsc, k\}$.
 
 \begin{thm}
   The measure $\Delta$ is a metric on $\mathcal{P}_k$ whenever $\delta$ is a
@@ -1383,10 +1389,9 @@ s_{k!}\}$ be the set of costs for each solution so each element is equal to
 $\sum_{i=1}^{k} \delta(C_{1i}, C_{2\sigma(i)})$ for some $\sigma$.  The mean
 value in the matrix is
 \begin{equation*}
-  \frac{(k-2)m + mk}{k^2}.
+  \frac{(k-2)m + mk}{k^2},
 \end{equation*}
-Since each value in the matrix contributes to the solutions exactly $(k-1)!$
-times, the mean solution value is
+so the mean solution value is
 \begin{align*}
   \bar{s} &= k \left( \frac{(k-2)m + mk}{k^2} \right)\\
           &= 2m - \frac{2m}{k}.
@@ -1458,7 +1463,7 @@ This bound is tight and can be met with the worst case
   &\dotsc,\\
   &\{k,k+k,\dotsc,(k-1)k+k\}\}
 \end{align*}
-which is also shown in figure~\ref{fig:worst-case}.  This also produces the
+which is also shown in Figure~\ref{fig:worst-case}.  This also produces the
 worst case under the VI metric, as shown in \citep{meila-2007}.
 
 \section{Worst case performance}
@@ -1512,7 +1517,7 @@ Let $(M,d)$ be 2-dimensional Euclidean space with the Euclidean metric and our
 dataset be $(\dset, \mu_{\dset})$ where $\dset \subset \mathbb{R}^2$, $\dset =
 A \cup B \cup C \cup D$, $\mu_{\dset}(A)=\mu_{\dset}(B)=N$ and
 $\mu_{\dset}(C)=\mu_{\dset}(D)=N+1$.  The relative positions of $A,B,C,D$ in
-the Euclidean plane are shown in figure~\ref{fig:clusters}.  Two possible
+the Euclidean plane are shown in Figure~\ref{fig:clusters}.  Two possible
 $2$-clusterings of $(\dset,\mu_{\dset})$ are $\{A \cup B,C \cup D\}$ and $\{A
 \cup D,B \cup C\}$ which we will call $\clus_1$ and $\clus_2$ respectively.
 
@@ -1538,10 +1543,27 @@ Other clusterings of $\dset$ are possible, but these are trivially more
 expensive.
 
 A simple numerical example can now be constructed; let $s=1.4$, $\epsilon=0.1$
-and $N=1$.  The costs of all possible 2-clusterings, except for $\{B, A \cup C
-\cup D\}$ and $\{D, A \cup B \cup C\}$ since these have the same costs as the
-clusterings shown on the last two lines, are shown in table~\ref{tab:costs}.
-Again we see that the optimal clustering under each criterion is different.
+and $N=1$.  The costs of all possible 2-clusterings are shown in
+Table~\ref{tab:costs}.  Again we see that the optimal clustering under each
+criterion is different.
+
+% \begin{table}
+%   \centering
+%   \caption{The costs of possible 2-clusterings
+%     of $\dset$, with minimum costs underlined.}
+%   \begin{tabular}{lrr}
+%   \toprule
+%   Clustering & Centroid-distance cost & All-squares cost \\
+%   \midrule
+%   $\{A \cup B, C \cup D\}$ & \underline{2.94} & 19.6 \\
+%   $\{A \cup D, B \cup C\}$ & 3 & \underline{18} \\
+%   $\{A \cup C, B \cup D\}$ & $5\frac{46}{75}$ & 33.68 \\
+%   $\{A, B \cup C \cup D\}$ & 4.152 & 41.52 \\
+%   $\{C, A \cup B \cup D\}$ & 4.2825 & 29.76 \\
+%   \bottomrule
+% \end{tabular}
+% \label{tab:costs}
+% \end{table}
 
 \begin{table}
   \centering
@@ -1551,15 +1573,18 @@ Again we see that the optimal clustering under each criterion is different.
   \toprule
   Clustering & Centroid-distance cost & All-squares cost \\
   \midrule
-  $\{A \cup B, C \cup D\}$ & \underline{2.94} & 19.6 \\
-  $\{A \cup D, B \cup C\}$ & 3 & \underline{18} \\
-  $\{A \cup C, B \cup D\}$ & $5\frac{46}{75}$ & 33.68 \\
+  $\{A \cup B, C \cup D\}$ & \underline{2.940} & 19.60 \\
+  $\{A \cup D, B \cup C\}$ & 3.375 & \underline{18.00} \\
+  $\{A \cup C, B \cup D\}$ & 5.613 & 33.68 \\
   $\{A, B \cup C \cup D\}$ & 4.152 & 41.52 \\
-  $\{C, A \cup B \cup D\}$ & 4.2825 & 29.76 \\
+  $\{B, A \cup C \cup D\}$ & 4.152 & 41.52 \\
+  $\{C, A \cup B \cup D\}$ & 4.283 & 29.76 \\
+  $\{D, A \cup B \cup C\}$ & 4.283 & 29.76 \\
   \bottomrule
 \end{tabular}
 \label{tab:costs}
 \end{table}
+
 
 $\clus_1$ and $\clus_2$ are not just slightly different clusterings, they are
 in fact optimally different according to both the VI metric and assignment
