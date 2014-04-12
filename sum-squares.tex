@@ -138,29 +138,29 @@ centroid-distance.
 
 If $d$ is the Euclidean metric, centroid-distance is also equivalent to a
 criterion for separation, although it is not immediately obvious why.  It is
-due to the parallel axis theorem, or Huygens-Steiner theorem, which states
-that, when $(M,d)$ is the Euclidean space with the Euclidean
-metric
+due to the parallel axis theorem, or Huygens-Steiner theorem, which we saw in
+Section~\ref{sec:scatter-matrix-based}.  The theorem states that when
+$(M,d_E)$ is the Euclidean space with the Euclidean metric
 \begin{equation}
   \label{eq:huygens}
-  \sum_{x \in A} \mu_A(x) d^2(x,s)
-  = \sum_{x \in A} \mu_A(x) d^2(a,s)
-  + \sum_{x \in A} \mu_A(x) d^2(x,a)
+  \sum_{x \in A} \mu_A(x) d_E^2(x,s)
+  = \sum_{x \in A} \mu_A(x) d_E^2(a,s)
+  + \sum_{x \in A} \mu_A(x) d_E^2(x,a)
 \end{equation}
 for each $A \subseteq M$, where $a \in M$ is the centroid of $A$, and $s \in
 M$ \citep{spath80}.  By summing over each clustering, $C_1,\dotsc,C_k$ in some
 clustering of $\dset$ we obtain the equation:
 \begin{equation}
   \label{eq:cd-sep-eq}
-  \sum_{x \in \dset} \mu_{\dset}(x) d^2(x,s)
-  = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d^2(c_i,s)
-  + \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d^2(x,c_i).
+  \sum_{x \in \dset} \mu_{\dset}(x) d_E^2(x,s)
+  = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d_E^2(c_i,s)
+  + \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d_E^2(x,c_i).
 \end{equation}
 The left-hand side is a constant for any $s$ and $\dset$ and the second term
 on the right-hand side is the centroid-distance cost.  Therefore, minimising
 the centroid-distance cost is equivalent to maximising squared-separation
 \begin{equation*}
-  sep(\clus) = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d^2(c_i,s).
+  sep(\clus) = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d_E^2(c_i,s).
 \end{equation*}
 For convenience, $s$ is usually taken to be the centroid of $\dset$.
 
@@ -169,24 +169,24 @@ centroid-distance cost.  We substitute some $y \in C_i$ for $s$ in
 \eqref{eq:huygens} and sum over all $y \in C_i$, multiplying each term by
 $\mu_i(y)$:
 \begin{eqnarray*}
-  \sum_{y \in C_i} \sum_{x \in C_i} \mu_i(x) \mu_i(y) d^2(x,y)
-  &=& \sum_{y \in C_i} \mu_i(y) d^2(c_i,y) \sum_{x \in C_i} \mu_i(x)\\
-  &+& \sum_{x \in C_i} \mu_i(x) d^2(c_i,x) \sum_{y \in C_i} \mu_i(y).
+  \sum_{y \in C_i} \sum_{x \in C_i} \mu_i(x) \mu_i(y) d_E^2(x,y)
+  &=& \sum_{y \in C_i} \mu_i(y) d_E^2(c_i,y) \sum_{x \in C_i} \mu_i(x)\\
+  &+& \sum_{x \in C_i} \mu_i(x) d_E^2(c_i,x) \sum_{y \in C_i} \mu_i(y).
 \end{eqnarray*}
 Rearranging we get
 \begin{equation*}
   \frac{1}{2}
-  \frac{\displaystyle \sum_{x,y \in C_i} \mu_i(x) \mu_i(y) d^2(x,y)}
+  \frac{\displaystyle \sum_{x,y \in C_i} \mu_i(x) \mu_i(y) d_E^2(x,y)}
        {\displaystyle \sum_{x \in C_i} \mu_i(x)}
-  = \sum_{x \in C_i} \mu_i(x) d^2(x,c_i).
+  = \sum_{x \in C_i} \mu_i(x) d_E^2(x,c_i).
 \end{equation*}
 So,
 \begin{equation}
   \label{eq:as-cd-eq}
   \frac{1}{2}\sum_{i=1}^{k}
-  \frac{\displaystyle \sum_{x,y \in C_i} \mu_i(x) \mu_i(y) d^2(x,y)}
+  \frac{\displaystyle \sum_{x,y \in C_i} \mu_i(x) \mu_i(y) d_E^2(x,y)}
        {\displaystyle \sum_{x \in C_i} \mu_i(x)}
-  = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d^2(x,c_i).
+  = \sum_{i=1}^{k} \sum_{x \in C_i} \mu_i(x) d_E^2(x,c_i).
 \end{equation}
 The right-hand side here is centroid-distance cost, while the left-hand side
 bears a resemblance to all-squares cost.
@@ -513,7 +513,7 @@ are omitted since they are always equal to 1.
 \label{sec:euclidean-space}
 
 An important special case of ASC is when the nodes are in Euclidean space and
-the metric, $d$, is the Euclidean metric.  We call this special case Euclidean
+we use the Euclidean metric $d_E$.  We call this special case Euclidean
 all-squares clustering (EASC).
 
 \begin{thm}
@@ -1092,13 +1092,13 @@ We define the assignment metric as a function $\Delta \colon \mathcal{P}_k
   \Delta(\clus_1, \clus_2) = \min_{\sigma \in S_k} \sum_{i=1}^{k}
   \delta(C_{1i}, C_{2\sigma(i)})
 \end{equation*}
-for some $\delta \colon 2^{\dset} \!\!\times 2^{\dset} \to \mathbb{R}$ and
-where $S_k$ is the set of all possible functions $\sigma \colon \{1, \dotsc,
-k\} \to \{1, \dotsc, k\}$.
+for some $\delta \colon (2^{\dset} \setminus \emptyset) \times (2^{\dset}
+\setminus \emptyset) \to \mathbb{R}$ and where $S_k$ is the set of all
+possible functions $\sigma \colon \{1, \dotsc, k\} \to \{1, \dotsc, k\}$.
 
 \begin{thm}
   The measure $\Delta$ is a metric on $\mathcal{P}_k$ whenever $\delta$ is a
-  metric on $2^{\dset}$.
+  metric on $(2^{\dset} \setminus \emptyset)$.
 \end{thm}
 
 \begin{proof}
@@ -1148,200 +1148,214 @@ being used often in the literature for comparing sets, for example in
 multisets; the multiset version of symmetric difference is
 $\delta((A,\mu_A),(B,\mu_B)) = \sum_{x,y \in A \cup B} |\mu_A(x)-\mu_B(y)|$.
 
-In Section~\ref{sec:lifting-metric-space} we discuss the use of metrics which
-are aware of the underlying metric space of a clustering.  In
-Sections~\ref{sec:upper-bound} and \ref{sec:worst-case-perf} we use the
-symmetric difference to prove an upper bound and then a worst case result for
-our two clustering criteria.
-
 Calculating $\Delta$ amounts to calculating the minimum cost matching between
 the clusters.  There are $k!$ possible matchings, but the minimum can be found
 in $O(k^3)$ time using the Hungarian algorithm \cite{kuhn1955hungarian}.
 Since $k! < k^3$ when $k < 6$, it may be more efficient to simply enumerate
 all solutions when $k$ is small.
 
-As an aside, before we prove our bound, we would like to note that the
-assignment metric can do a lot more than we demonstrate in this paper.
 Clusterings with different $k$ can be compared by the addition of the
-pseudometric $||\clus_1|-|\clus_2||$.  This is most sensible when the $\delta$
-is bounded or normalised.  Since we can use any metric for $\delta$, taking
-into consideration the underlying metric space is possible.  For example, the
-Haussdorf metric compares nonempty sets in a metric space.  This removes some
-of the limitations of other metrics, as described in
-\citep{bae2010comparison}.
+pseudometric $||\clus_1|-|\clus_2||$.  Let $\mathcal{P}$ be the set of all
+partitions of $\dset$.  The assignment metric then becomes a function $\Delta
+\colon \mathcal{P} \times \mathcal{P} \to \mathbb{R}$ defined as
+\begin{equation*}
+  \Delta(\clus_1, \clus_2)
+  = \min_{\sigma \in S_k} \sum_{i=1}^{k} \delta(C_{1i},C_{2\sigma(i)})
+  + \lambda ||\clus_1|-|\clus_2||,
+\end{equation*}
+where $k = \min(|C_1|,|C_2|)$, $\delta \colon (2^{\dset}\setminus \emptyset)
+\times (2^{\dset}\setminus \emptyset) \to \mathbb{R}$ and $\lambda$ is a
+positive real number.
 
-\subsubsection{Lifting the underlying metric space}
+This is most sensible when the metric $\delta$ is bounded or normalised and
+$\lambda$ is greater than or equal to the upper bound on $\delta$.
+Calculation of the metric using the Hungarian algorithm can then be performed
+by a simple modification, namely by setting the cost of matching a set to
+nothing as $\lambda$ and finding the minimum matching in the same way.
+
+Using a bounded metric does not limit our choice since any metric can be
+bounded.  One general formula for bounding a metric by $[0,1]$ is
+\begin{equation}
+  \label{eq:met-bound}
+  \delta_b (A,B) = \frac{\delta(A,B)}{1+\delta(A,B)}.
+\end{equation}
+Alternatively, it may be possible to normalise the metric, as with the
+normalised symmetric difference metric.
+
+This version of the assignment metric is bounded by $\lambda \cdot
+\max(|\clus_1|,|\clus_2|)$, and this bound is approached arbitrarily closely
+by $\clus_1 = \{\{1,2,\dotsc,n\}\}, \clus_2 = \{\{1\},\{2\},\dotsc,\{n\}\}$ in
+the limit of large $n$ for any metric $\delta$.  Tighter bounds may exist for
+specific choices of $\delta$ and fixed $k$ (we prove one in
+Section~\ref{sec:upper-bound}).
+
+In Section~\ref{sec:asgn-met-fuzzy-partitions} we show how the assignment
+metric can be used to compare fuzzy partitions and in
+Section~\ref{sec:lifting-metric-space} we discuss the use of metrics which are
+aware of the underlying metric space of a clustering.  In
+Section~\ref{sec:worst-case-perf} we use the symmetric difference to prove a
+worst case result for our two clustering criteria.
+
+\subsection{Comparing fuzzy partitions}
+\label{sec:asgn-met-fuzzy-partitions}
+
+We can compare fuzzy partitions by using the following metric on fuzzy sets.
+Normalised version too.
+
+The assignment metric extends easily to fuzzy partitions.  All we need is a
+metric on fuzzy sets.  Here we present such a metric which is analogous to the
+symmetric difference.
+
+Let $\mathcal{F}_f$ be the set of all fuzzy sets and $\mathcal{F}_c \subset
+\mathcal{F}_f$ the set of all crisp sets.  Note that a crisp set is a special
+case of a fuzzy set where
+\begin{equation*}
+  \mu_A(x) =
+  \begin{cases}
+    1 & \text{if $x \in A$}\\
+    0 & \text{if $x \notin A$}
+  \end{cases}
+\end{equation*}
+for all $A \in \mathcal{F}_c$.
+
+We now define a function $\delta_f \colon \mathcal{F}_f \times \mathcal{F}_f
+\to \mathbb{R}$ by
+\begin{equation*}
+  \delta_f(A,B) = \sum_{x \in \mathcal{R}} |\mu(x,A) - \mu(x,B)|.
+\end{equation*}
+
+\begin{thm}
+  The measure $\delta_f$ is equivalent to the symmetric difference
+  $\delta(A,B) = |A \symdif B|$ for all $A,B \in \mathcal{F}_c$.
+\end{thm}
+
+\begin{proof}
+  For each $x \in \mathcal{R}$:
+  \begin{enumerate}
+  \item If $x \notin A$ and $x \notin B$ then $\mu(x,A) = \mu(x,B) = 0$ and
+    therefore this does not contribute to the sum in $\delta_f(A,B)$,
+  \item if $x \in A$ and $x \notin B$ then $\mu(x,A) = 1$ and $\mu(x,B) = 0$
+    so $|\mu(x,A) - \mu(x,B)| = |1 - 0| = 1$,
+  \item similarly, if $x \notin A$ and $x \in B$ then $|\mu(x,A) - \mu(x,B)|
+    = |0 - 1| = 1$,
+  \item if $x \in A$ and $x \in B$ then $|\mu(x,A) - \mu(x,B)| = |1 - 1| = 0$
+    and therefore also does not contribute to the sum.
+  \end{enumerate}
+\end{proof}
+
+For fuzzy sets this measure does correspond to $|A \symdif B| = |A \cup B|
+- |A \cap B|$ since
+\begin{align*}
+  \mu(x, A \cup B) &= \max(\mu(x,A), \mu(x,B))\\
+  \mu(x, A \cap B) &= \min(\mu(x,A), \mu(x,B))
+\end{align*}
+so the cardinality $|A \cup B| - |A \cap B|$ is
+\begin{align*}
+  &\sum_{x \in \mathcal{R}} \big(\max(\mu(x,A),\mu(x,B)) - \min(\mu(x,A),\mu(x,B))\big)\\
+  &= \sum_{x \in \mathcal{R}} |\mu(x,A) - \mu(x,B)|
+\end{align*}
+
+\begin{thm}
+  $(\mathcal{F}_f, \delta_f)$ is a metric space.
+\end{thm}
+
+\begin{proof}~
+  
+  \begin{enumerate}
+  \item $\delta_f(A,B) = 0 \iff A=B$:
+    \begin{align*}
+      \delta_f(A,B) = 0 &\iff \mu(x,A) = \mu(x,B) \quad \forall x \in
+      \mathcal{R}\\
+      &\iff A = B,
+    \end{align*}
+  \item $\delta_f(A,B) = \delta_f(B,A)$ by definition,
+  \item $\delta_f(A,B)+\delta_f(B,C) \geq \delta_f(A,C)$ (the triangle
+    inequality):
+    \begin{align*}
+      \delta_f(A,B) + \delta_f(B,C)
+      &= \sum_{x \in \mathcal{R}} |\mu(x,A) - \mu(x,B)|
+      + \sum_{x \in \mathcal{R}} |\mu(x,B) - \mu(x,C)|\\
+      &= \sum_{x \in \mathcal{R}} \big(|\mu(x,A)-\mu(x,B)|
+      + |\mu(x,B)-\mu(x,C)|\big)\\
+      &\geq \sum_{x \in \mathcal{R}} |\mu(x,A) - \mu(x,C)|\\
+      &= \delta_f(A,C)
+    \end{align*}
+  \end{enumerate}
+\end{proof}
+
+There is also a corresponding normalised version of this metric for use with
+the second version of the assignment metric:
+  \begin{equation*}
+    \delta_{f_n}(A,B) = \frac{|A \symdif B|}{|A \cup B|}.
+  \end{equation*}
+
+\subsection{Lifting the underlying metric space}
 \label{sec:lifting-metric-space}
 
-\begin{figure}
-  \centering
-  \begin{subfigure}[b]{0.3\textwidth}
-    \begin{tikzpicture}
-      \begin{axis}[xmin=0,xmax=10,ymin=0,ymax=10,width=1.2\textwidth,tick label style={font=\tiny}]
-        \addplot+[only marks,color=blue,mark=o] table {
-          2 2
-          1 2
-          2 1
-          0.9 2.3
-          2.1 0.7
-          1.4 1.3
-          2.6 2.8
-          2.3 1.2
-          3.6 2.1
-          4.6 2.4
-          3.6 2.5
-          3.4 1.2
-        };
-        \addplot+[only marks,color=red,mark=x] table {
-          8 2
-          6.2 2.6
-          8.8 3.9
-          7.6 2.4
-          7.2 3.2
-          5.6 2
-          8.7 2.4
-          8.9 1.5
-          7 2
-          6.5 1.7
-          7.3 1.6
-          5.8 1.5
-        };
-        \addplot+[only marks,color=brown,mark=triangle] table {
-          5 8
-          5.5 8.6
-          5.7 7.2
-          5.2 6.2
-          6.8 8.2
-          5.2 6.7
-          3.8 9.2
-          3.7 8.2
-          4.3 6.2
-          4.9 6.7
-          5 9
-          4.5 8.6
-        };
-      \end{axis}
-    \end{tikzpicture}
-    \caption{Clustering $\clus_1$.}
-    \label{fig:clus1}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
-    \begin{tikzpicture}
-      \begin{axis}[xmin=0,xmax=10,ymin=0,ymax=10,width=1.2\textwidth,tick label style={font=\tiny}]
-        \addplot+[only marks,color=blue,mark=o] table {
-          2 2
-          1 2
-          2 1
-          0.9 2.3
-          2.1 0.7
-          1.4 1.3
-          2.6 2.8
-          2.3 1.2
-          3.6 2.1
-          4.6 2.4
-          3.6 2.5
-          3.4 1.2
-          
-          5.2 6.2
-          4.3 6.2
-          4.9 6.7
-          5.2 6.7        
-        };
-        \addplot+[only marks,color=red,mark=x] table {
-          8 2
-          6.2 2.6
-          8.8 3.9
-          7.6 2.4
-          7.2 3.2
-          5.6 2
-          8.7 2.4
-          8.9 1.5
-          7 2
-          6.5 1.7
-          7.3 1.6
-          5.8 1.5
-        };
-        \addplot+[only marks,color=brown,mark=triangle] table {
-          5 8
-          5.5 8.6
-          5.7 7.2
-          6.8 8.2
-          3.8 9.2
-          3.7 8.2
-          5 9
-          4.5 8.6
-        };
-      \end{axis}
-    \end{tikzpicture}
-    \caption{Clustering $\clus_2$.}
-    \label{fig:clus2}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
-    \begin{tikzpicture}
-      \begin{axis}[xmin=0,xmax=10,ymin=0,ymax=10,width=1.2\textwidth,tick label style={font=\tiny}]
-        \addplot+[only marks,color=blue,mark=o] table {
-          2 2
-          1 2
-          2 1
-          0.9 2.3
-          2.1 0.7
-          1.4 1.3
-          2.6 2.8
-          2.3 1.2
-          3.6 2.1
-          4.6 2.4
-          3.6 2.5
-          3.4 1.2
-          
-          6.2 2.6
-          5.6 2
-          6.5 1.7
-          5.8 1.5
-        };
-        \addplot+[only marks,color=red,mark=x] table {
-          8 2
-          8.8 3.9
-          7.6 2.4
-          7.2 3.2
-          8.7 2.4
-          8.9 1.5
-          7 2
-          7.3 1.6
-        };
-        \addplot+[only marks,color=brown,mark=triangle] table {
-          5 8
-          5.5 8.6
-          5.7 7.2
-          5.2 6.2
-          6.8 8.2
-          5.2 6.7
-          3.8 9.2
-          3.7 8.2
-          4.3 6.2
-          4.9 6.7
-          5 9
-          4.5 8.6
-        };
-      \end{axis}
-    \end{tikzpicture}
-    \caption{Clustering $\clus_3$.}
-    \label{fig:clus3}
-  \end{subfigure}
-  \caption{Three clusterings on the same dataset.}
-  \label{fig:three-clusterings}
-\end{figure}
+\input{asgn-met-graphs.tex}
 
-Distances between c1 and c2 and c1 and c3 resp.
+Another possibility that the assignment metric gives us is to use a metric
+which is aware of the metric space underlying our clustering.  This overcomes
+some of the limitations that are present in most comparison methods
+\citep{bae2010comparison}.
 
-VI
-3.1154556  3.1154556
-asgn met - symdif
-72
-asgn met - hausdorff
-6.0621233  3.424846
+Figure~\ref{fig:three-clusterings} shows three possible clusterings,
+$\clus_1,\clus_2$ and $\clus_3$ on a given dataset.  The elements in this
+dataset exist in the Euclidean plane and are shown in their relative positions
+on the page.  Imagine that $\clus_1$ represents the standard clustering and
+$\clus_2$ and $\clus_3$ are two alternative clusterings.  We would like to
+know which of the alternative clusterings is closest to the standard so we
+measure the distance between $\clus_1$ and $\clus_2$ and $\clus_1$ and
+$\clus_3$.  Under the VI metric we get $\Delta(\clus_1,\clus_2) =
+\Delta(\clus_1,\clus_3) = 3.1154556$.  Under the assignment metric with the
+symmetric difference we similarly get $\Delta(\clus_1,\clus_2) =
+\Delta(\clus_1,\clus_3) = 72$.  This seems contrary to our intuition: we would
+expect that $\clus_2$ is further from the standard since the clusters are of
+very different shapes.  The assignment metric combined with the Hausdorff
+metric $\delta_{H}$ and Euclidean metric $d_E$ reflects this intuition: we get
+$\Delta(\clus_1,\clus_2) = 6.0621233$ and $\Delta(\clus_1,\clus_3) =
+3.424846$.  We could, of course, have used a metric other than the Euclidean
+metric to plug in to the Hausdorff metric if this made more sense.
 
+The Hausdorff metric can be normalised in a natural way for use with the
+second version of the assignment metric.  One way would be to divide by the
+maximum distance observed in the dataset:
+\begin{equation*}
+  \delta_{H_n}(X,Y) = \frac{\delta_{H}(X,Y)}{\max_{x,y \in \dset} d(x,y)}.
+\end{equation*}
 
-\subsubsection{Upper bound}
+When we use a metric like the Hausdorff metric we have three ``layers'' of
+metric space that we are dealing with.  The underlying layer is our dataset
+and metric used for clustering $(\dset, d)$.  We have the cluster layer
+$(2^{\dset} \setminus \emptyset,\delta)$ and the clustering layer
+$(\mathcal{P},\Delta)$.  When we take into account all three layers we say
+that we are ``lifting'' the underlying metric space to the space of
+partitions.
+
+% Distances between c1 and c2 and c1 and c3 resp.
+
+% VI
+% 3.1154556  3.1154556
+% asgn met - symdif
+% 72
+% asgn met - hausdorff
+% 6.0621233  3.424846
+
+It should be noted that two commonly used functions for comparing sets in a
+metric space
+\begin{equation*}
+  f_1(X, Y) = \min_{x \in X, y \in Y} d(x, y)
+\end{equation*}
+and
+\begin{equation*}
+  f_2(X, Y) = \sum_{x \in X} \sum_{y \in Y} d(x, y)
+\end{equation*}
+are \textit{not} metrics.  This can be shown by considering a simple
+counterexample for each: $f_1(\{x,y\},\{x,z\}) = 0$ violates property 3 of a
+metric (identity of indiscernibles) and $f_2(\{x,y\},\{x,y\}) > 0$ violates
+property 2 (identical elements are most similar).
+
+\subsection{Upper bound}
 \label{sec:upper-bound}
 
 An upper bound for $\Delta$ can be established when $\delta(A,B) = |A \symdif
@@ -1513,9 +1527,9 @@ be.
   \label{fig:clusters}
 \end{figure}
 
-Let $(M,d)$ be 2-dimensional Euclidean space with the Euclidean metric and our
-dataset be $(\dset, \mu_{\dset})$ where $\dset \subset \mathbb{R}^2$, $\dset =
-A \cup B \cup C \cup D$, $\mu_{\dset}(A)=\mu_{\dset}(B)=N$ and
+Let $(M,d_E)$ be 2-dimensional Euclidean space with the Euclidean metric and
+our dataset be $(\dset, \mu_{\dset})$ where $\dset \subset \mathbb{R}^2$,
+$\dset = A \cup B \cup C \cup D$, $\mu_{\dset}(A)=\mu_{\dset}(B)=N$ and
 $\mu_{\dset}(C)=\mu_{\dset}(D)=N+1$.  The relative positions of $A,B,C,D$ in
 the Euclidean plane are shown in Figure~\ref{fig:clusters}.  Two possible
 $2$-clusterings of $(\dset,\mu_{\dset})$ are $\{A \cup B,C \cup D\}$ and $\{A
@@ -1622,8 +1636,9 @@ except for all-squares on a multiset, which remains NP-complete.
 We have introduced a new metric for comparing clusterings, called the
 assignment metric.  It is, in fact, a family of metrics since any metric for
 comparing matched sets can be used.  This allows for some interesting choices
-of metric, including those which take into account the underlying metric space
-of the dataset.
+of metric, namely we can use it to compare fuzzy clusterings and take into
+account the underlying metric space of the dataset which gives the measure a
+more intuitive feel.
 
 We have used this metric to show just how different optimal clusterings
 according to the two criteria can be.  It turns out that they can be optimally

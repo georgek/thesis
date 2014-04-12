@@ -11,11 +11,9 @@ This chapter is based on the following paper:
   topological lassos.  Submitted 2013.
 \end{itemize}
 
-
-
 \newpage
 
-A classical result in distance based tree-reconstruction characterizes when
+A classical result in distance based tree-reconstruction characterises when
 for a distance $D$ on some finite set $X$ there exist a uniquely determined
 dendrogram on $X$ (essentially a rooted tree $T=(V,E)$ with leaf set $X$ and
 no degree two vertices but possibly the root and an edge weighting
@@ -36,7 +34,7 @@ of when a lasso uniquely determines the topology of a dendrogram's underlying
 tree, that is, it is a topological lasso for that tree.  We show that any
 set-inclusion minimal topological lasso for such a tree $T$ can be transformed
 into a 'distinguished' minimal topological lasso $\cL$ for $T$, that is, the
-graph $(X,\cL)$ is a claw-free block graph. Furthermore, we characterize such
+graph $(X,\cL)$ is a claw-free block graph. Furthermore, we characterise such
 lassos in terms of the novel concept of a cluster marker map for $T$ and
 present results concerning the heritability of such lassos in the context of
 the subtree and supertree problems.
@@ -106,7 +104,7 @@ edge-weightings. Thus, $\cL'$ uniquely determines $\mathcal D$.
 Although an intriguing question, apart from some recent results in
 \cite{HP13}, not much is known about it (see \cite{DHS11} and \cite{HS13} for
 some partial results in case the tree in question is unrooted).  By
-formalizing a dendrogram in terms of a certain edge-weighted $X$-tree (see the
+formalising a dendrogram in terms of a certain edge-weighted $X$-tree (see the
 next section for a precise definition of this concept as well as all the other
 concepts mentioned below) and using the concept of a topological lasso which
 was originally introduced for unrooted phylogenetic trees with leaf set $X$ in
@@ -150,9 +148,9 @@ and their spectrum was studied in \cite{GS01, MSST06} (see also \cite{BR13}
 for a more general study of the adjacency matrix of such graphs).  Calling a
 minimal topological lasso $\cL$ for $T$ {\em distinguished} if $\Gamma(\cL)$
 is a claw-free block graph, we present in Theorem~\ref{theo:characterization}
-a characterization of a distinguished minimal topological lasso for $T$ in
+a characterisation of a distinguished minimal topological lasso for $T$ in
 terms of the novel concept of a cluster marker map for $T$. In addition, we
-characterize when a distinguished minimal topological lasso for $T$ gives rise
+characterise when a distinguished minimal topological lasso for $T$ gives rise
 to a distinguished minimal topological lasso for a subtree of $T$
 (Theorem~\ref{theo:subtree}) and also present a partial answer to the
 canonical analogue of a question raised for supertrees of unrooted
@@ -167,7 +165,7 @@ phylogenetic trees in \cite{DHS11}.
 %on the cords in $\cL$ are being used.
 %We conclude with presenting such a construction. 
 
-The paper is organized as follows. In Section~\ref{sec:terminology}, we
+The paper is organised as follows. In Section~\ref{sec:terminology}, we
 introduce relevant terminology surrounding $X$-trees and lassos. In
 Section~\ref{sec:gamma-l-graph}, we collect first properties of the graph
 $\Gamma(\cL)$ associated to a topological lasso $\cL$ and in
@@ -1336,11 +1334,11 @@ compatible.
 \end{proof}
  
 
-\section{Characterizing distinguished minimal topological lassos}
+\section{Characterising distinguished minimal topological lassos}
 \label{sec:characterization-distinguished}
 
 In this section, we establish the converse of Theorem~\ref{theo:
-  distinguished-lasso-verification} which allows us to characterize
+  distinguished-lasso-verification} which allows us to characterise
 distinguished minimal topological lasso of non-degenerate $X$-trees.  We start
 with a well-known construction for associating an unrooted tree to a connected
 block graph (see e.\,g.\,\cite{diestel}).  Suppose that $G$ is a connected
@@ -1468,7 +1466,7 @@ is bijective.
 %
 Armed with this result, we are now ready to establish the converse of
 Theorem~\ref{theo: distinguished-lasso-verification} which yields the
-aforementioned characterization of distinguished minimal topological lassos of
+aforementioned characterisation of distinguished minimal topological lassos of
 non-degenerate $X$-trees.
 
 \begin{thm}
@@ -1609,7 +1607,7 @@ and $(T,\omega')$ are $\cL$-isometric. Moreover, $\cL$ is called a {\em strong
 lasso for $T$ (see \cite{DHS11} for more on such lassos in the unrooted case).
 
 Like a topological lasso for a $X$-tree $T$, an equidistant lasso $\cL$ for
-$T$ can also be characterized in terms of a property of the child-edge graph
+$T$ can also be characterised in terms of a property of the child-edge graph
 $G(\cL,v)$ associated to $T$ and $\cL$ where $v\in \iV(T)$. Namely, a set
 $\cL$ of cords of $X$ is an equidistant lasso for an $X$-tree $T$ if and only
 if, for every vertex $v\in \iV(T)$, the graph $G(\cL,v)$ has at least one edge
@@ -1635,7 +1633,7 @@ Theorem~\ref{theo:characterization} implies
 \section{Heredity of distinguished minimal topological lassos}
 \label{sec:subtree}
 
-In this section, we turn our attention to the problems of characterizing when
+In this section, we turn our attention to the problems of characterising when
 a distinguished minimal topological lasso of an $X$-tree $T$ induces a
 distinguished minimal topological lasso for a subtree of $T$ and, conversely
 when distinguished minimal topological lassos of $X$-trees can be combined to
@@ -1821,7 +1819,271 @@ also be of interest to study further.
 \section{Constructing a tree from a distinguished lasso}
 \label{sec:constr-tree-from}
 
+Let $(T,\omega)$ be an equidistant $X$-tree and let $\cL$ be a distinguished
+minimal topological lasso for $T$.  To the graph $\Gamma(\cL)$ we can assign
+an edge-weight function $\alpha_{\cL} \colon E(\Gamma(\cL)) \to \mathbb{R}^+$
+by letting $\alpha_{\cL}(xy) = D_{(T,\omega)}(x,y)$ for all edges $xy \in
+E(\Gamma(\cL))$.
 
+We next associate an edge-weighted tree $(\AcL,\BecL)$ to $\Gamma(\cL)$ by
+essentially replacing every block of $\Gamma(\cL)$ by an edge-weighted star
+tree.  More precisely, let $B$ be a block in $\Gamma(\cL)$.  We first choose
+distinct vertices $a,b \in V(B)$ and put $m_B := \alpha_{\cL}(\{a,b\})$.  Note
+that since $\omega$ is a equidistant proper edge-weighting for $T$ this
+definition of $m_B$ is independent of the choice of $a$ and $b$.  Next we
+delete all edges from $B$, add a vertex $s_B$ to $V(B)$ and new edges
+$\{a,s_B\}$ for all $a \in V(B) - \{s_B\}$ to obtain a star tree $S_B$ with
+leaf set $V(B)$.  Finally, we put $\beta_B \colon E(S_B) \to \mathbb{R}^+,
+\beta_B(e) = m_B/2$ for all $e \in E(S_B)$.  Once this has been done for all
+blocks in $\Gamma(\cL)$ we obtain the tree $\AcL$.  We define an
+edge-weighting $\beta_{\cL} \colon E(\AcL) \to \mathbb{R}^+$ by putting
+$\beta_{\cL}(e) = \beta_B(e)$ for the unique block $B \in \Block(\Gamma(\cL))$
+with $e$ an edge in $B$.
+
+Now we present an algorithm for constructing an edge-weighted $X$-tree
+$(T,\omega)$ from $\AcL$ and $\BecL$ which we call \textsc{TreeConstruct}.
+The algorithm builds a tree $T$ using the graph $\AcL$ and the function
+$\BecL$ by traversing $\AcL$ and building the tree by adding internal vertices
+and their children.  The pseudocode for the algorithm is shown in
+Figure~\ref{algorithm:treeconstruct2}.
+
+Note that we make use of the distance function $D_{(T,\omega)} \colon V
+\times V \to \mathbb{R}^+$ that is induced by the edge-weight function
+$\omega$ by letting, for all pairs $x,y \in V$, $D_{(T,\omega)}(x,y)
+= \sum_{e \in P(x,y)} \omega(e)$ where $P(x,y)$ is the set of edges on the
+path from $x$ to $y$.
+
+\begin{algorithm}
+  \caption{\textsc{Order}($\AcL,u,v,o$)}
+  \label{algorithm:order}
+  
+  \begin{algorithmic}
+    \Require Graph $\AcL$ derived from a distinguished minimal topological
+    lasso $\cL$, vertices $u,v \in V(\AcL)$ and an $n$-tuple $o$.
+    \Ensure An $(n+1)$-tuple $o^*$.
+
+    \State Let $C_u := \{c \in V(\AcL) \colon cu \in \cL, c \neq v\}$.
+    \State Put $o^* := (o,u)$.
+    \ForAll{$v \in C_u$}
+    \If{$\deg_{\AcL}(v) > 1$}
+    \State Let $u^* \in v(\AcL)$ be the vertex such that $u^*v \in \cL$,
+    \State Put $o^* := \text{\textsc{Order}}(\AcL, u^*, v, o^*)$,
+    \State Put $o^* := (o^*, u)$.
+    \EndIf
+    \EndFor
+
+    \State \Return $o^*$.
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{figure}
+\centering
+\parbox{0cm}{\begin{tabbing}
+XX\= XX\= XX\=  XX\= XX\= XX\= XX\=  XXXXX\=  XXXXXXXXXXX\= \kill \\
+{\textsc{TreeConstruct}($\AcL,\BecL$)} \\
+\rule{\columnwidth}{0.5pt}\\
+\textbf{Input:} \> \> \> Graph $\AcL$ derived from a distinguished minimal topological lasso $\cL$\\
+                \> \> \> and an edge-weight function $\BecL \colon \cL \to \mathbb{R}_{>0}$.\\
+\textbf{Output:} \> \> \> An $X$-tree $T = (V,E)$ with root $\rho$ and an
+                          equidistant proper edge-\\
+                 \> \> \> weighting $\omega \colon E \to
+                          \mathbb{R}_{\geq 0}$.\\\\
+
+\lnum{\phantom{0}1} \> Label all vertices in $\AcL$ as unprocessed.\\
+
+\lnum{\phantom{0}2} \> Let $v$ be some degree 1 vertex in $\AcL$ and $u$ be the vertex
+           adjacent to $v$.\\
+
+\lnum{\phantom{0}3} \> Let $(u_1,u_2,\dotsc,u_n) := \text{\textsc{Order}}(\AcL, u, v, \emptyset)$.\\
+
+\lnum{\phantom{0}4} \> Let $C_{u_1} := \{c \in V(\AcL) \colon \{c,u_1\} \in E(\AcL)\}$.\\
+\lnum{\phantom{0}5} \> Put $T:=(V,E)$ with $V := \{u_1\} \cup C_{u_1}$, $E := \{\{u_1,c\} \colon c \in C_{u_1}\}$
+              and $ \rho := u_1$.\\
+\lnum{\phantom{0}6} \> Define a function $\omega \colon E \to \rr_{\geq 0}$ and let
+              $\omega(\{u_1,c\}) := \BecL(\{u_1,v\})$ for all $c \in C_{u_1}$.\\
+\lnum{\phantom{0}7} \> Label all $c \in C_{u_1}$ in $\AcL$ as processed.\\
+
+\lnum{\phantom{0}8} \> \textbf{Foreach} $i \in (2,\dotsc,n)$ \textbf{do}:\\
+\lnum{\phantom{0}9} \> \> \textbf{If} $u_i$ is already processed, \textbf{continue}
+                 with $i := i+1$.  \textbf{EndIf.}\\
+\lnum{10} \> \> Let $C_{u_i} := \{c \in V(\AcL) \colon \{c,u_i\} \in E(\AcL)$ and $c$
+                 is unprocessed.$\}$\\
+\lnum{11} \> \> Let $v \in V(\AcL)$ be the unique vertex such that both $\{u_i,v\}
+                 \in E(\AcL)$\\
+            \> \> \> and $\{v,u_{i-1}\} \in E(\AcL)$.\\
+\lnum{12} \> \> \textbf{If} $\DTw(\rho,v) < \BecL(\{v,u_i\})$
+                 \textbf{then}:\\
+\lnum{13} \> \> \> Put $V^* := V \cup \{u_i\} \cup C_{u_i}$,\\
+           \> \> \> \> $E^* := E \cup \{\{u_i,c\} \colon c \in C_{u_i}\} \cup
+                       \{\{\rho,u_i\}\}$, and\\
+           \> \> \> \> $\rho^* := u_i$.\\
+\lnum{14} \> \> \> Define a function $\omega^* \colon E^* \to
+                    \mathbb{R}_{\geq 0}$ and let $\omega^*(e) := \omega(e)$
+                    for all $e \in E$,\\
+           \> \> \> \> $\omega^*(\{u_i,c\}) := \BecL(\{u_i,v\})$ for all $c
+                       \in C_{u_i}$, and\\
+           \> \> \> \> $\omega^*(\{\rho,u_i\}) := \BecL(\{v,u_i\}) -
+                       \DTw(v,\rho)$.\\
+
+\lnum{15} \> \> \> Label all $\{u_i\} \cup C_{u_i}$ in $\AcL$ as processed and put
+                    $\rho := \rho^*$.\\
+
+\lnum{16} \> \> \textbf{Else}:\\
+\lnum{17} \> \> \> Let $p,q \in V$ be the unique vertices such that $\{p,q\}
+                    \in E$ and\\
+           \> \> \> \> $\DTw(v,p) > \BecL(\{v,u_i\}) > \DTw(v,q)$.\\
+           \> \> \> Put $V^*:= V \cup \{u_i\} \cup C_{u_i}$, and\\
+           \> \> \> \>  $E^*:= E \cup \{\{u_i,c\} \colon c \in C_{u_i}\} \cup
+                        \{\{p,u_i\},\{u_i,q\}\} - \{\{p,q\}\}$.\\
+\lnum{18} \> \> \> Define a function $\omega^* \colon E^* \to
+                    \mathbb{R}_{\geq 0}$ and let\\
+           \> \> \> \> $\omega^*(e) := \omega(e)$ for all $e \in E - \{\{p,q\}\}$,\\
+           \> \> \> \> $\omega^*(\{u_i,c\}) := \BecL(\{u_i,v\})$ for all $c \in
+                       C_{u_i}$,\\
+           \> \> \> \> $\omega^*(\{p,u_i\}):= \DTw(v,p) - \BecL(\{u_i,v\})$, and\\
+           \> \> \> \> $\omega^*(\{u_i,q\}):= \BecL(\{u_i,v\}) - \DTw(v,q)$.\\
+
+\lnum{19} \> \> \> Label all $\{u_i\} \cup C_{u_i}$ in $\AcL$ as processed.\\
+
+\lnum{20} \> \> \textbf{EndIf.}\\
+
+\lnum{21} \> \> Put $V:=V^*, E:=E^*$ and $\omega:=\omega^*$.\\
+
+\lnum{22} \> \textbf{EndFor.}
+
+         \end{tabbing}}
+\caption{Pseudocode for \textsc{TreeConstruct}.}
+\label{algorithm:treeconstruct2}
+\end{figure}
+
+We next show that the construction ConstructTree is correct.  So assume for
+the remainder of this section that $T_O$ is an $X$-tree, that $\cL$ is a
+distinguished minimal topological lasso for $T_O$ and that the distance $D_O(x,y)$
+is known for all $xy \in \cL$.  Let $(T,\omega)$ be the $X$-tree $T$ with
+equidistant proper edge-weighting $\omega \colon E(T) \to
+\mathcal{R}_{\geq 0}$ returned by \textsc{ConstructTree}.
+
+We begin with a lemma which shows that the two conditional cases in step 4 are
+valid.  Specifically, we cannot have a case where
+$D_{(T,\omega^*)}(v,\rho) = \beta(\{v,u^*\})$ so the algorithm continues to
+run until all vertices in $\AcL$ have been exhausted.
+
+\begin{lem}
+  \label{lem:nonequal-adjacent}
+  Let $B,B' \in Block(\Gamma(\cL))$ denote two distinct blocks of
+  $\Gamma(\cL)$ such that $V(B) \cap V(B') \neq \emptyset$.  Then for all $e
+  \in E(B)$ and all $e' \in E(B')$ we have $\BecL(e) \neq \BecL(e')$.
+\end{lem}
+
+\begin{proof}
+  Assume for the purpose of contradiction that $\BecL(e) = \BecL(e')$.  Let
+  $\alpha = \BecL(e)$, $\alpha' = \BecL(e')$ and $y \in V(B) \cap V(B')$.  Note
+  that $y \in \Cut(\Gamma(\cL))$.  Choose some $a \in V(B) - \{y\}$ and $a'
+  \in V(B') - \{y\}$ which must exist since the size of a block in
+  $\Gamma(\cL)$ is at least two.  Then, on the one hand, our assumptions on
+  $e$ and $e'$ combined with the definition of the edge-weighting $\omega$
+  implies that the paths $P$ and $P'$ from $v = \lca_{T}(y,a)$ to $a$ and $v'
+  = \lca_{T}(y,a')$ to $a'$, respectively, have the same length.  But on the
+  other hand the choice of $y$ implies that either $v'$ is a descendant of $v$
+  in $T$ or $v$ is a descendant of $v'$ in $T$ and so $P$ and $P'$ must have
+  different lengths: a contradiction.
+\end{proof}
+
+\begin{lem}
+  \label{lem:t-is-x-tree}
+  $T$ is an $X$-tree and $\omega$ is a proper equidistant edge-weighting for
+  $T$.
+\end{lem}
+
+\begin{proof}
+  We proceed by induction on the number of times steps 2 and 3 are executed
+  or, equivalently, the number of stars in $\AcL$ processed.
+
+  The case is that $T$ is a $Y$-tree, where $Y \subseteq X$, following the
+  first, and only, execution of step 2.  Since step 2 is simply setting $T$
+  equal to a star from $\AcL$ it is clear that $T$ will be a $Y$-tree.
+  Further, since the edge-weights are transferred directly from $\AcL$ and
+  these are positive and equal for all edges within a star by definition,
+  $\omega$ will be an equidistant proper edge-weighting.
+
+  For the inductive step we assume that $T = (V,E)$ is a $Y$-tree and that
+  $\omega$ is an equidistant proper edge-weighting prior to step 3 and we show
+  that the tree $T^* = (V^*,E^*)$ obtained following step 3 is a $Y^*$-tree,
+  where $Y^* \supset Y$ and that the edge-weighting $\omega^* \colon E(T^*)
+  \to \rr_{>0}$ obtained is an equidistant proper edge-weighting.
+
+  First we show that $T^*$ is a $Y^*$-tree.  Since $T$ is a tree it is
+  connected and $|V| = |E| + 1$.  In step 3 there are two cases: either we add
+  to $T$ one internal vertex $u$, a set of leaves $C_u$ and $|C_u|+1$ edges;
+  or we replace an edge $\{u,v\}$ with a path $u,w,v$, where $w$ is a new
+  vertex not present in $T$, add a set of leaves $C_w$ and $|C_w|$ edges.  In
+  either case it is clear that $T^*$ is connected and it remains that
+  $|V^*| = |E^*| + 1$ so $T^*$ is a $Y^*$-tree.
+
+  Now we show that $\omega^*$ is an equidistant proper edge-weighting.  Again
+  there are two cases in step 3 which we deal with separately.  In the first
+  case we have that $D_{(T,\omega)}(v,\rho) < \BecL(\{v,u^*\})$ so
+  $\BecL(\{v,u^*\}) - D_{(T,\omega)}(v,\rho)$ is positive.  All other values
+  for $\omega^*$ come from either $\omega$ or $\BecL$ which are positive
+  functions, so $\omega^*$ is a proper edge-weighting.  To see that it is
+  equidistant note that both $T$ and all $c \in C_{u^*}$ become children of
+  $u^*$.  Since $T$ is equidistant, $D_{(T,\omega)}(v,\rho)$ is the distance
+  between all leaves of $T$ and $\rho$, therefore the distance between all
+  leaves of $T^*$ and $\rho^*$ becomes $\BecL(\{v,u^*\})$, so $\omega^*$ is
+  equidistant.
+
+  In the second case we have that $D_{(T,\omega)}(v,\rho) > \BecL(\{v,u^*\})$
+  and also the inequality $D_{(T,\omega)}(v,p) > \BecL(\{v,u^*\}) >
+  D_{(T,\omega)}(v,q)$.  It is clear then that all calculated values for
+  $\omega^*$ will be positive and, as before, the remainder come from either
+  $\omega$ or $\BecL$, therefore $\omega^*$ is proper.  Similar to the first
+  case, the children of $u^*$ will be the leaves $C_{u^*}$ and a tree with $q$
+  as its root.  This tree will be ultrametric since it is a subtree of $T$ so
+  the distance between $q$ and all of its leaf descendants will be
+  $D_{(T,\omega)}(v,q)$.  It follows that the distance between $u^*$ and these
+  leaves will be $\omega^*(\{u^*,q\}) + D_{(T,\omega)}(v,q) = \BecL(\{u^*,v\})
+  - D_{(T,\omega)}(v,q) + D_{(T,\omega)}(v,q) = \BecL(\{u^*,v\})$ and this is
+  equal to the edge-weight set for $\omega^*(\{u^*,c\})$ for all $c \in
+  C_{u^*}$.  Now since the distance between $p$ and all of its leaf
+  descendants in $T$ is $D_{(T,\omega)}(v,p)$ and we are setting
+  $\omega^*(\{p,u^*\}) := D_{(T,\omega)}(v,p) - \BecL(\{u^*,v\})$, the
+  distance between $p$ and its leaf descendants in $T^*$ remains the same,
+  therefore $\omega^*$ is equidistant.
+
+  Finally, it is clear that the algorithm will terminate after all stars in
+  $\AcL$ have been exhausted and since each unprocessed leaf in $\AcL$ is
+  processed for every star we will have that $T^*$ is a $Y^*$-tree with $Y^* =
+  X$ following the final execution of either step 2 or 3.
+\end{proof}
+
+\begin{lem}
+  \label{lem:t-t-star-equal-dists}
+  For each cord $xy \in \cL$ we have that $D_{(T,\omega)}(x,y) = D_O(x,y)$.
+\end{lem}
+
+\begin{proof}
+  By definition, a star with centre $u$ and leaves $v_1,\dotsc,v_k$ is present
+  in $\AcL$ if and only if the cords $\{v_iv_j \colon 1 \leq i < j \leq k\}$
+  are present in $\cL$.  Also by definition $\beta(\{u_i,v_i\}) =
+  D_{(T,\omega)}(v_i,v_j)/2$ for all $1 \leq i,j \leq k$ and $i \neq j$.
+  Whenever an internal vertex $u^*$ is added in either steps 2 or 3 we also
+  attach the set $C_{u^*}$ of leaves to it.  It is ensured initially that
+  $\omega^*(\{u^*,v\}) = \beta(\{u^*,v\})$ for all $v \in C_{u^*}$.  Any of
+  these edges $\{u,v\}$ may later be removed and replaced by a path $u,w,v$ by
+  subsequent executions of step 3, but the length of the path $u,w,v$ is kept
+  equal to the original length of $\{u,v\}$ each time.  Therefore
+  $D_{(T,\omega)}(x,y) = D_O(x,y)$ for all $x,y \in \cL$.
+\end{proof}
+
+As a result of Lemmata~\ref{lem:t-is-x-tree} and
+\ref{lem:t-t-star-equal-dists} and the definitions of a topological lasso we
+obtain the following theorem:
+
+\begin{thm}
+  \label{thm:t-t-star-l-isometric}
+  $(T,\omega)$ and $(T^*,\omega^*)$ are $\cL$-isometric.  In particular, $T$
+  and $T^*$ are equivalent.
+\end{thm}
 
 \section{Conclusion}
 \label{sec:conclusion-dist}

@@ -191,9 +191,9 @@ $\Delta$ for dissimilarities on partitions.  In this subsection we look at
 some metrics on sets and in Section~\ref{sec:comparing-partitions} we will
 look at dissimilarities on partitions.
 
-Let $\dset$ be a set.  The cardinality of the symmetric difference,
-$\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to \mathbb{R}^{\geq 0}$
-is a well-known metric on sets defined as:
+Let $\dset$ be a set and $2^\dset$ its powerset.  The cardinality of the
+symmetric difference, $\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to
+\mathbb{R}^{\geq 0}$ is a well-known metric on sets defined as:
 \begin{equation*}
   \delta_{\symdif}(X,Y) = |X \symdif Y|,
 \end{equation*}
@@ -371,7 +371,7 @@ reproduce the proof here with the errors corrected.
   \end{tikzpicture}
   \caption{$X$ and $Y$ are sets with elements labelled by \tikzuptriangle ~and
     \tikzupdtriangle ~respectively.  Elements in both sets are labelled with
-    \tikzbotriangle .  The Haussdorf distance between $X$ and $Y$ is,
+    \tikzbotriangle .  The Hausdorff distance between $X$ and $Y$ is,
     informally, the greatest distance one must travel if starting from a point
     in one set and travelling to the closest point in the other.  This
     distance is marked by $d$ in the diagram.}
@@ -379,15 +379,15 @@ reproduce the proof here with the errors corrected.
 \end{figure}
 
 Let $(M,d)$ be a metric space and $\mathcal{M}=2^M \setminus \{\emptyset\}$.
-The Haussdorf distance, $\delta_{H} \colon \mathcal{M} \times \mathcal{M} \to
+The Hausdorff distance, $\delta_{H} \colon \mathcal{M} \times \mathcal{M} \to
 \mathbb{R}^{\geq 0}$, is defined as:
 \begin{equation*}
   \delta_{H}(X,Y) = \max\left(\max_{x \in X} \min_{y \in Y} d(x,y),
                              \max_{y \in Y} \min_{x \in X} d(x,y)\right), 
 \end{equation*}
-for all $X,Y \in \mathcal{M}$.  The Haussdorf distance is a metric on
+for all $X,Y \in \mathcal{M}$.  The Hausdorff distance is a metric on
 $\mathcal{M}$ \citep{braun2003geometry}.  This distance is illustrated in
-Figure~\ref{fig:haussdorf} by showing the Haussdorf distance between two sets
+Figure~\ref{fig:haussdorf} by showing the Hausdorff distance between two sets
 with elements in a metric space.  In Chapter~\ref{cha:sum-squar-clust} we
 present a new metric on $\mathcal{M}$.
 
@@ -591,9 +591,12 @@ many applications including classification of data in the natural sciences
 where membership is not precisely defined.
 
 Formally, a fuzzy set is an ordered pair $(C,\mu_{C})$ consisting of an
-underlying set $C$ and a membership function $\mu_{C} \colon C \to (0,1]$.
-Note that in our definition, all members of the underlying set are members of
-the fuzzy set to some extent since the grades of membership cannot be zero.
+underlying set $C$ and a membership function $\mu_{C} \colon C \to [0,1]$.
+For some fuzzy set $(C,\mu_C)$ and element $x \in C$ $\mu_C(x) = 1$ means $x$
+is a full member, $\mu_C(x) = 0$ means $x$ is not a member and $0 < \mu_C(x) <
+1$ means $x$ is a fuzzy member.  If $\mu_C(x) = 0$ or $1$ for all $x \in C$
+then the object is called by contrast a \textit{crisp set} and may be handled
+by ordinary set theory \cite{zadeh1965fuzzy,klir1995fuzzy}.
 
 A \textit{$k$-fuzzy-partition} of an $n$-set $\dset$ is a set of $k \in
 \{1,\dotsc,n\}$ fuzzy sets: \[\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}\]
