@@ -832,15 +832,14 @@ $D_{(T,\omega)}(x,y) = D_{(T',\omega')}(x,y)$ for all $xy \in \cL$.
 Now, given an $X$-tree $T$ and a subset $\cL \subseteq {X \choose 2}$ we
 define $\cL$ to be:
 \begin{enumerate}[label=(\roman*)]
-\item an \textit{edge-weight lasso} if $\omega = \omega'$ holds for all proper
-  edge-weightings $\omega,\omega'$ of $T$ where $(T,\omega),(T,\omega')$ are
-  $\cL$-isometric,
-\item a \textit{topological lasso} if $T \simeq T'$ holds for any $X$-tree
-  $T'$ for which there exist proper edge-weightings $\omega,\omega'$ of $T,T'$
-  respectively where $(T,\omega),(T',\omega')$ are $\cL$-isometric,
-\item a \textit{strong lasso} if $(T,\omega) \equiv (T',\omega')$ holds for
-  every given proper edge-weighting $\omega$ and any edge-weighted $X$-tree
-  $(T',\omega')$ where $(T,\omega),(T',\omega')$ are $\cL$-isometric.
+\item an \textit{equidistant lasso} for $T$ if $\omega = \omega'$ holds for
+  all equidistant edge-weightings $\omega,\omega'$ of $T$ where
+  $(T,\omega),(T,\omega')$ are $\cL$-isometric,
+\item a \textit{topological lasso} for $T$ if $T \simeq T'$ holds for any
+  $X$-tree $T'$ for which there exist proper edge-weightings $\omega,\omega'$
+  of $T,T'$ respectively where $(T,\omega),(T',\omega')$ are $\cL$-isometric,
+\item a \textit{strong lasso} $T$ if $\cL$ is both an equidistant and
+  topological lasso for $T$.
 \end{enumerate}
 
 For further information and discussion about lassos, especially those
@@ -874,7 +873,7 @@ appeared in \cite{HP13}:
   \end{enumerate}
 \end{lem}
 
-Due to the characterisation of edge-weight lassos also presented in
+Due to the characterisation of equidistant lassos also presented in
 \cite{HP13}, we also have that every topological lasso for $T$ must also be an
 edge-weight lasso, and therefore a strong lasso, for $T$.
 
