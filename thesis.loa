@@ -6,5 +6,4 @@
 \contentsline {algorithm}{\numberline {6}{\ignorespaces \textsc {Build}.\relax }}{86}{algorithm.6}
 \contentsline {algorithm}{\numberline {7}{\ignorespaces Agglomerative hierarchical clustering algorithm.\relax }}{88}{algorithm.7}
 \contentsline {algorithm}{\numberline {8}{\ignorespaces UPGMA.\relax }}{90}{algorithm.8}
-\contentsline {algorithm}{\numberline {9}{\ignorespaces Neighbor-joining.\relax }}{91}{algorithm.9}
-\contentsline {algorithm}{\numberline {10}{\ignorespaces \textsc {Order}($A_{{\mathcal L}},u,v,o$)\relax }}{131}{algorithm.10}
+\contentsline {algorithm}{\numberline {9}{\ignorespaces \textsc {Order}($A_{{\mathcal L}},u,v,o$)\relax }}{131}{algorithm.9}

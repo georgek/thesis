@@ -1,0 +1,59 @@
+% removed because it's about unrooted trees
+
+\subsubsection{Neighbor-joining}
+\label{sec:neighbour-joining}
+
+Neighbor-joining is a method for building an edge-weighted unrooted $X$-tree
+which, like UPGMA, is consistent if the dissimilarity identifies a binary tree
+but, unlike UPGMA, the consistency holds for general tree metrics
+\cite{saitou1987nj}.  The algorithm works by replacing a cherry by a single
+vertex and recursively applying Neighbor-joining to the resulting tree.
+Neighbor-joining is shown in Algorithm~\ref{alg:neighbour-joining}.
+
+\begin{algorithm}[h]
+  \caption{Neighbor-joining.}
+  \label{alg:neighbour-joining}
+
+  \begin{algorithmic}
+    \Require A set $X$, and a dissimilarity $d \colon X \times X \to \rr$.
+    \Ensure  A binary $X$-tree $T$ and edge-weighting $\omega$.
+
+    \If{$|X| = 2$} Let $X = \{x,y\}$ and \Return the tree obtained by joining
+    $x$ and $y$ with an edge of length $d(x,y)$.
+    \EndIf
+
+    \State $\displaystyle (x,y) \gets \argmax_{x,y \in X} \left( d(x,y) + \frac{1}{2}
+    \sum_{r \in X - \{x,y\}} (d(r,x)+d(r,y)-d(x,y))\right)$.
+
+    \State $X' \gets X - \{x,y\} \cup \{v\}$ where $v \notin X$.
+
+    \State Define a dissimilarity $d' \colon X' \times X' \to \rr$ by:
+    \begin{equation*}
+      d'(p,q) =
+      \begin{cases}
+        0 & \text{if $p,q \notin X$} \\
+        (d(x,p)+d(y,p)-d(x,y))/2 & \text{if $p \in X, q \notin X$} \\
+        (d(x,q)+d(y,q)-d(x,y))/2 & \text{if $p \notin X, q \in X$} \\
+        d(p,q) & \text{otherwise.}
+      \end{cases}
+    \end{equation*}
+
+    \State Let $(T',\omega')$ be the tree obtained by applying
+    Neighbor-joining to $X'$ and $d'$.
+
+    \State Attach $x$ and $y$ to the leaf vertex $v$ of $T'$ to obtain a tree
+    $T$, put $\omega \gets \omega'$.
+
+    \State Put $\displaystyle \omega(\{v,x\}) \gets \frac{1}{2} d(x,y) +
+    \frac{1}{2(|X|-2)} \sum_{u \in X} (d(u,x)-d(u,y))$.
+
+    \State Put $\omega(\{v,y\}) \gets d(x,y) - \omega(\{v,x\})$.
+
+    \State \Return $(T,\omega)$.
+  \end{algorithmic}
+\end{algorithm}
+
+
+The number of possible binary $X$-trees is $(2|X|-5)!!$ and the number of
+possible rooted binary $X$-trees is $(2|X|-3)!!$
+\cite{felsenstein2004inferring}.

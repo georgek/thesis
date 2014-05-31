@@ -77,6 +77,12 @@
 
 % --- End TikZ stuff ---
 
+% --- Subfigures ---
+
+\DeclareCaptionSubType*{figure}
+\captionsetup[figure]{labelfont=normalfont,textfont=normalfont}
+\renewcommand\thesubfigure{\roman{subfigure}}
+
 % make equations and figures numbered (sec.eq)
 % \numberwithin{equation}{section}
 % \numberwithin{figure}{section}
@@ -114,6 +120,7 @@
 \newcommand{\rk}{{\rm rk}}
 %\newcommand{\dim}{{\rm dim}}
 \newcommand{\rr}{{\mathbb R}}
+\newcommand{\rrnn}{{\mathbb R}_{\geq 0}}
 \newcommand{\cq}{{\mathcal Q}}
 \newcommand{\cp}{{\mathcal P}}
 \newcommand{\cd}{{\mathcal D}}
