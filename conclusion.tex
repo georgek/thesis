@@ -3,28 +3,28 @@
 
 In this thesis we have investigated several problems related to analysing
 distances using techniques known as clustering.  With regards to partitional
-clustering we have shown that the problem begins with defining a criterion
-with which to determine the suitability of any particular clustering
-solution.  We have an intuitive sense of what we'd like to obtain in a
-clustering, that is one where the clusters are tightly packed and well
-separated, but we have shown that even very similar criteria which have been
-used for this purpose can produce wildly different results in the worst case.
-We have also shown that the widely used centroid-distance criterion is not
-simultaneously a criterion for homogeneity and separation under the
-homogeneous Euclidean-overlap metric.  This is contrary to the popular
-assumption that it is a criterion for separation when in fact this property
-depends on the use of the Euclidean metric.
+clustering we have seen that a central task is to define a criterion with
+which to determine the suitability of any particular clustering solution.  We
+have an intuitive sense of what we would like to obtain in a clustering, that
+is one where the clusters are tightly packed and well separated, but we have
+shown that even very similar criteria which have been used for this purpose
+can produce wildly different results in the worst case
+(Section~\ref{sec:worst-case-perf}).  We have also shown that the widely used
+centroid-distance criterion is not simultaneously a criterion for homogeneity
+and separation under the homogeneous Euclidean-overlap metric making it less
+useful as a general purpose clustering criterion.
 
 Even if the sum-of-squares criteria are deemed to be good enough, it is now
 known that clustering under the centroid-distance criterion is an NP-hard
-problem in Euclidean space.  We have shown that the associated decision
-problem is NP-complete even under a simple $p$-valued metric where $p \geq 3$.
-However, the problem is solvable in polynomial time for a 2-valued metric.
-Similarly, we have shown that the decision problem associated with all-squares
-clustering is NP-complete both with Euclidean space and with $p$-valued
-metric when $p \geq 3$.  The problem is solvable in polynomial time with a
-2-valued metric when the dataset is a set, but the problem remains NP-complete
-even for a 2-valued metric when the dataset is a multiset.
+problem in Euclidean space \cite{aloise09,mahajan09}.  We have shown that the
+associated decision problem is NP-complete even under a simple $p$-valued
+metric where $p \geq 3$.  However, the problem is solvable in polynomial time
+for a 2-valued metric.  Similarly, we have shown that the decision problem
+associated with all-squares clustering is NP-complete both with Euclidean
+space and with $p$-valued metric when $p \geq 3$.  The problem is solvable in
+polynomial time with a 2-valued metric when the dataset is a set, but the
+problem remains NP-complete even for a 2-valued metric when the dataset is a
+multiset.
 
 In the process of showing the worst case performance of the two sum-of-squares
 criteria we have developed a new metric for comparing clusterings called the

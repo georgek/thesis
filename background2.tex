@@ -85,7 +85,8 @@ that is of greatest interest to us.  As noted by Knuth \cite{knuth97taocp1}
 there is a large degree of variation in the terminology used by different
 authors in graph theory.  We try to follow the terminology used in current
 phylogenetics literature such as \cite{semple2003phylogenetics} and
-\cite{DHS11}.  Throughout this section, let $X$ denote a finite nonempty set.
+\cite{dress11lassoing}.  Throughout this section, let $X$ denote a finite
+nonempty set.
 
 \subsubsection{Graphs}
 \label{sec:graphs}
@@ -603,8 +604,11 @@ and average-linkage:
 The general algorithm for agglomerative clustering has runtime complexity of
 $O(n^3)$ where $n = |X|$ since there are $O(n)$ merges to be done and finding
 the $\argmin$ takes $O(n^2)$ time.  However, for many linkage criteria,
-including the three above, it is possible to use an $O(n^2)$ algorithm as we
-will see in the next section.
+including the three above, it is possible to use an $O(n^2)$ algorithm.  Two
+well known examples are SLINK \cite{sibson1973slink} and CLINK
+\cite{defays1977efficient} for single-linkage and complete-linkage clustering
+respectively.  In the next section we will see that average-linkage clustering
+may be done in quadratic time too.
 
 The divisive method works in the opposite direction: we begin with a single
 cluster and successively split clusters until we end up with one cluster per
@@ -679,23 +683,27 @@ stage.  A local minimum in this context means a pair of elements which are
 \textit{mutual nearest neighbours} (MNNs).  Given a set $X$ and a distance $d$
 on $X$, a pair $x,y \in X$ are MNNs if there exists no element $z \in X$ for
 which $d(x,z) < d(x,y)$ or $d(y,z) < d(x,y)$.  Such a pair can be safely
-agglomerated just as in the general algorithm for certain linkage criteria,
-including average-linkage \cite{murtagh2011methods}.
+agglomerated as soon as it is found, just as in the general algorithm
+\cite{murtagh2011methods}.
 
 Finding MNNs can be done quickly by building a chain of nearest neighbours in
 the following way: we begin with an arbitrary cluster in $X$ and find its
 nearest neighbour giving us a chain of length two.  We then repeatedly add to
 the chain the nearest neighbour of the last element in the chain until we find
 a pair of MNNs.  The MNNs are removed from the chain and agglomerated.  The
-distances between new clusters are calculated recursively using the
-Lance-Williams update formula \cite{lance66theory}.  The process is then
-continued from the end of the chain, or from an arbitrary cluster if the chain
-is empty.
+distances between new clusters and all other clusters are calculated
+recursively using the Lance-Williams update formula in constant time
+\cite{lance66theory}.  The process is then continued from the end of the
+chain, or from an arbitrary cluster if the chain is empty.  This method works
+because for certain linkage criteria, including average-linkage, the nearest
+neighbour chain remains valid after an agglomeration (see
+\cite{gronau2007optimal} for details).
 
 This method was developed in the early 1980s and initially appeared in
 \cite{de1980classification} and \cite{juan1982programme} (in French) and later
 in \cite{murtagh1983survey} and \cite{murtagh1984complexities} (in English).
-It leads to the optimal $O(n^2)$ version of UPGMA \cite{gronau2007optimal}.
+It leads to the optimal $O(n^2)$ version of UPGMA and other hierarchical
+clustering methods \cite{gronau2007optimal}.
 
 \subsection{Reconstruction from partial distances}
 \label{sec:constr-from-part}
@@ -729,18 +737,18 @@ in, for example, \citep{guenoche1999approximations}, \citep{farach1995robust},
 \subsubsection{An optimisation method}
 \label{sec:part-dist-optim-method}
 
-The approach taken by \citet{de1984ultrametric} is to consider a least squares
-constrained optimisation problem.  Given a partial distance $d^* \colon
-X^2 - M \to \rrnn$ we wish to find a function $d \colon X^2 \to \rrnn$
-such that
+The approach taken by \cite{de1984ultrametric} is to consider a least squares
+constrained optimisation problem.  Given a partial distance $d^* \colon X
+\times X - M \to \rrnn$ we wish to find a function $d \colon X \times X \to
+\rrnn$ such that
 \begin{equation*}
   \label{eq:partial-dist-least-squares}
-  Loss(d) = \sum_{(x,y) \in X^2 - M} (d^*(x,y)-d(x,y))^2
+  Loss(d) = \sum_{(x,y) \in X \times X - M} (d^*(x,y)-d(x,y))^2
 \end{equation*}
 is minimised and $d$ is an ultrametric.  The method used is a sequential
 unconstrained minimisation technique.  The constraint that $d$ must be an
-ultrametric is removed and instead we find a distance $d_n \colon X^2 \to
-\rrnn$ which minimises the augmented function:
+ultrametric is removed and instead we find a distance $d_n \colon X \times X
+\to \rrnn$ which minimises the augmented function:
 \begin{equation*}
   \label{eq:partial-dist-optimisation}
   \Phi(d_n,\sigma) = Loss(d_n) + \sigma Pen(d_n), \qquad (\sigma > 0).
@@ -762,13 +770,13 @@ ultrametric condition is violated.  The unconstrained minimisation is
 performed successively with an increasing value for $\sigma$, each time using
 the previous result $d_{n-1}$ to begin the search for the next $d_n$.  To
 perform the unconstrained minimisation of the augmented function, a method by
-\citet{powell1977restart} is used.
+\cite{powell1977restart} is used.
 
 \subsubsection{An agglomerative method}
 \label{sec:part-dist-agglom-method}
 
 Missing Values Linkage (MVL) is an example of an agglomerative approach
-proposed by \citet{schader1992mvl}.  It is actually identical to the
+proposed by \cite{schader1992mvl}.  It is actually identical to the
 agglomerative hierarchical clustering algorithm (see
 Section~\ref{sec:hier-clust-meth}) but using a linkage criterion modified to
 take into account missing values.
@@ -779,24 +787,29 @@ average-linkage criterion for two nonempty sets $S_1, S_2$ is:
   D_{MVL}(S_1,S_2) =
   \begin{cases}
     \displaystyle
-    \frac{(\sum_{(x,y) \in S_1 \times S_2 - M} d(x,y)}{|S_1 \times S_2 - M|} & \text{if $S_1
+    \frac{\displaystyle (\sum_{(x,y) \in S_1 \times S_2 - M} d(x,y)}
+         {|S_1 \times S_2 - M|} & \text{if $S_1
       \times S_2 - M \neq \emptyset$,} \\
     \infty & \text{otherwise},
   \end{cases}
 \end{equation*}
-where $M = \{(i,j) \in X^2 \colon d(i,j) \text{ is unknown}\}$.  Modified
-versions of other linkage criteria are possible and some more examples are
-given in the original paper.
+where $M = \{(i,j) \in X \times X \colon d(i,j) \text{ is unknown}\}$.
+Modified versions of other linkage criteria are possible; some more examples
+are given in the original paper.
 
 The authors do not provide an algorithm with better time complexity than that
 of the naïve $O(n^3)$ agglomerative algorithm (where $n = |X|$).  They also
 show that the MVL method produces very similar results to
 \citeauthor{de1984ultrametric}'s method.
 
+Figure~\ref{fig:farach-mvl-ex} (ii) shows the tree constructed by MVL from a
+partial distance $d$ on a set $\{a,\dotsc,e\}$ containing only the distances
+$d(a,b)=1, d(b,c)=1, d(c,d)=2, d(c,e)=2, d(d,e)=3$.
+
 \subsubsection{A divisive method}
 \label{sec:part-dist-divisive-method}
 
-\citet{farach1995robust} use a top down, divisive approach.  Given a partial
+\cite{farach1995robust} use a top down, divisive approach.  Given a partial
 distance function $d^* \colon X \times X - M \to \rrnn$ let $G=(V,E)$ be a
 graph with vertex set $X$ and an edge $\{x,y\}$ with $x,y \in X$ but $(x,y)
 \notin M$ (so the distance between $x$ and $y$ is known).  We also define an
@@ -811,11 +824,24 @@ The tree reconstruction algorithm proceeds as follows:
   \omega(e) < m\}$.
 \item Let $u$ be a new vertex and return the tree with root node $u$ obtained
   by recursing on each connected component of $G^*$ and attaching the results
-  of each to $u$.
+  of each to $u$.               %what if only one component?!
 \end{enumerate}
 This basic algorithm shown here requires $O(|V||E|)$ time but a quicker
 algorithm requiring only $O(|E| + |V|\log |V|)$ time is also given by
-\citet{farach1995robust}.
+\cite{farach1995robust}.
+
+Figure~\ref{fig:farach-mvl-ex} (i) shows the tree constructed by this method
+from the same partial distance $d$ on $\{a,\dotsc,e\}$ containing only the
+distances $d(a,b)=1, d(b,c)=1, d(c,d)=2, d(c,e)=2, d(d,e)=3$.  Note that the
+tree constructed is different to the tree constructed by MVL.
+
+\begin{figure}
+  \centering
+  \input{figures/background2/farach-mvl-ex.pdft}
+  \caption{The two different trees constructed by Farach's method (i) and the
+    MVL method (ii) from the same partial distance information.}
+  \label{fig:farach-mvl-ex}
+\end{figure}
 
 \section{Lassos}
 \label{sec:lassoing-corralling}
@@ -824,6 +850,12 @@ All of the methods for reconstructing a tree from a partial distance
 listed in Section~\ref{sec:constr-from-part} have one thing in common: the
 tree produced in undefined when more than one extension to an ultrametric is
 possible.
+
+As we saw in the example shown in Figure~\ref{fig:farach-mvl-ex}, the existing
+partial distance reconstruction methods can construct different trees from the
+same input.  The problem with the example partial distance in that case was
+that no ultrametric extension exists so the methods each modified the given
+distances in different ways.  This may be undesirable.
 
 Certain partial distances on $X$ have the property that they uniquely
 determine the topology or edge-weights of an $X$-tree.  In other words, only
@@ -881,15 +913,15 @@ topological lasso.  Notice that this property of $\cL$ is dependent solely on
 the structure of the set itself and not on the actual distances on the trees.
 
 For further information and discussion about lassos, especially those
-concerning more general trees, the reader is referred to \cite{DHS11} and
-\cite{huber2014tree}..
+concerning more general trees, the reader is referred to
+\cite{dress11lassoing} and \cite{huber2014tree}.
 
 \subsection{Characterising lassos: the child-edge graph}
 \label{sec:lassoing-rooted-x}
 
 Lassos for $X$-trees can be characterised using a graph associated to each
-interior vertex of a tree \citep{HP13}.  First, a lasso $\cL$ of $X$ which
-satisfies the property that $\bigcup_{c \in \cL} c = X$ is called a
+interior vertex of a tree \cite{huber13lassoing}.  First, a lasso $\cL$ of $X$
+which satisfies the property that $\bigcup_{c \in \cL} c = X$ is called a
 \textit{covering} of $X$.  Let $T$ be an $X$-tree and $\iV(T)$ denote the set
 of internal vertices of $T$.  For some $v \in \iV(T)$, and a set of cords $\cL
 \subseteq {X \choose 2}$, we associate a graph called $G(\cL,v)$ defined as
@@ -901,7 +933,7 @@ $G(\cL,v)$ the \textit{child-edge graph} (\textit{of $v$ with respect to $T$
   and $\cL$}).
 
 We have the following characterisation of topological lassos which originally
-appeared in \cite{HP13}:
+appeared in \cite{huber13lassoing}:
 \begin{lem}
   \label{lem:child-edge-graph-complete}
   Suppose $T$ is an $X$-tree and $\cL \subseteq {X \choose 2}$ is a covering
@@ -913,7 +945,7 @@ appeared in \cite{HP13}:
 \end{lem}
 
 Due to the characterisation of equidistant lassos also presented in
-\cite{HP13}, we also have that every topological lasso for $T$ must also be an
+\cite{huber13lassoing}, we also have that every topological lasso for $T$ must also be an
 edge-weight lasso, and therefore a strong lasso, for $T$.
 
 %%% Local Variables:

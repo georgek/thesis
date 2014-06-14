@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T2A,OT1]{fontenc}
 \usepackage[english]{babel}
+\usepackage{geometry}
 \usepackage{setspace}
 \usepackage[pdftex]{graphicx,color}
 \usepackage{tikz}
@@ -80,7 +81,7 @@
 % --- Subfigures ---
 
 \DeclareCaptionSubType*{figure}
-\captionsetup[figure]{labelfont=normalfont,textfont=normalfont}
+\captionsetup[subfigure]{labelfont=normalfont,textfont=normalfont}
 \renewcommand\thesubfigure{\roman{subfigure}}
 
 % make equations and figures numbered (sec.eq)
@@ -270,32 +271,34 @@ June 2012
 
 \begin{abstract}
   Distances arise in a wide variety of different contexts, one of which is
-  clustering, that is, the problem of finding groups of similar objects within
-  a set of objects.  These groups are seemingly very easy to find for humans,
-  but very difficult to find for machines as there are two major difficulties
-  to be overcome: defining precisely an objective criterion for the vague
-  notion of ``groups of similar objects'', and the computational complexity of
-  finding such groups given a criterion.  In the first part of this thesis, we
-  begin with the first difficulty and show that even seemingly similar
-  optimisation criteria used for partitional clustering can produce vastly
-  different results.  In the process of showing this we develop a new metric
-  for comparing clustering solutions called the assignment metric.  We then
-  prove some new NP-completeness results for two related ``sum-of-squares''
-  problems.
+  partitional clustering, that is, the problem of finding groups of similar
+  objects within a set of objects.  These groups are seemingly very easy to
+  find for humans, but very difficult to find for machines as there are two
+  major difficulties to be overcome: defining precisely an objective criterion
+  for the vague notion of ``groups of similar objects'', and the computational
+  complexity of finding such groups given a criterion.  In the first part of
+  this thesis, we focus on the first difficulty and show that even seemingly
+  similar optimisation criteria used for partitional clustering can produce
+  vastly different results.  In the process of showing this we develop a new
+  metric for comparing clustering solutions called the assignment metric.  We
+  then prove some new NP-completeness results for problems using two related
+  ``sum-of-squares'' clustering criteria.
 
-  A second area in which metrics arise is the reconstruction of (rooted
-  edge-weighted leaf-labelled) trees from distances.  It is well-known that a
-  tree can be uniquely reconstructed from the matrix of distances between each
-  pair of leaves if these distances have been induced by a tree in the first
-  place.  But the complete matrix may not always be available in practice.  In
-  the second part of this thesis we look at some of the circumstances under
-  which a tree can be uniquely reconstructed from only an incomplete matrix of
-  distances.  We call this process ``lassoing'' a tree.  We investigate the
-  properties of a special type of lasso called a distinguished minimal
-  topological lasso and develop an algorithm from constructing a tree from
-  such a lasso.  We then develop a more general algorithm which can construct
-  a tree from a partial distance and return the subset of the partial distance
-  which were used to uniquely determine the constructed tree.
+  Closely related to partitional clustering is the problem of hierarchical
+  clustering.  We extend and formalise this problem to the problem of
+  constructing rooted edge-weighted \textit{$X$-trees}, that is trees with a
+  leafset $X$. It is well known that an $X$-tree can be uniquely reconstructed
+  from a distance on $X$ if the distance is a metric with special properties,
+  namely the distance has been induced by a tree in the first place.  But in
+  practice the complete distance on $X$ may not always be available.  In the
+  second part of this thesis we look at some of the circumstances under which
+  a tree can be uniquely reconstructed from incomplete distance information.
+  We call a distance which uniquely determines an $X$-tree a \textit{lasso}.
+  We investigate the properties of a special type of lasso called a
+  distinguished minimal topological lasso and develop an algorithm for
+  constructing a tree from such a lasso.  We then develop a more general
+  algorithm which can construct a tree together with a lasso from partial
+  distance information.
 \end{abstract}
 \newpage
 
@@ -337,15 +340,15 @@ June 2012
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-\include{intro}
+% \include{intro}
 
-\include{background}
+% \include{background}
 
-\include{sum-squares}
+% \include{sum-squares}
 
 \include{background2}
 
-\include{distinguished-lassos}
+% \include{distinguished-lassos}
 
 \include{lasso-construction}
 
@@ -353,7 +356,7 @@ June 2012
 
 % \include{further}
 
-\include{conclusion}
+% \include{conclusion}
 
 \bibliographystyle{plainnat}
 \bibliography{metrics.bib,comp-clustering.bib,clustering.bib,phylogenetics.bib}
