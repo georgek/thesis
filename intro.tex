@@ -39,7 +39,7 @@ show that even seemingly similar optimisation criteria can produce vastly
 different results (see Section~\ref{sec:worst-case-perf}).
 
 In order to show that criteria can produce vastly different partitions it is
-necessary to be able to compare partitions.  Many metrics have been devised
+necessary to be able to compare partitions.  Some metrics have been devised
 for that purpose already but they are all naïve with respect to the face that
 our data itself lives in a metric space.  We find ourselves with several
 layers of metric spaces and we introduce the concept of ``lifting'' a metric
@@ -95,13 +95,17 @@ clustering criteria, called sum-of-squares criteria.  We show that the two
 criteria can produce completely different results.  In
 Chapter~\ref{cha:background2}, we turn our attention to the tree
 reconstruction problem and introduce trees, tree metrics, tree reconstruction
-and lassos.  In Chapter~\ref{cha:dist-minim-topl}, we investigate the
-properties of a special kind of lasso which we call a distinguished minimal
-topological lasso and present an algorithm for tree construction from such a
-lasso.  In Chapter~\ref{cha:lasso-construction}, we present a general
-algorithm for tree reconstruction from partial distances which is consistent
-according to the theory of lassos.  Finally we conclude the thesis and suggest
-further work in Chapter~\ref{cha:conclusion}.
+and lassos.
+% In Chapter~\ref{cha:dist-minim-topl}, we investigate the
+% properties of a special kind of lasso which we call a distinguished minimal
+% topological lasso and present an algorithm for tree construction from such a
+% lasso.
+In Chapter~\ref{cha:lasso-construction}, we present a general algorithm called
+\textsc{Lasso} for tree reconstruction from partial distances which is
+consistent according to the theory of lassos and show that it is applicable to
+construction of trees and supertrees from partial distance information.  We
+apply Finally we conclude the thesis and suggest further work in
+Chapter~\ref{cha:conclusion}.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"

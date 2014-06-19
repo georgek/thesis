@@ -21,21 +21,19 @@ Trees have been used to represent hierarchical structures for many hundreds of
 years \cite{knuth97taocp1}.  One of the most well-known and ubiquitous
 occurrences is that of the family tree.  The use of a tree to represent
 lineages was widespread in Europe by the 14th Century in Christian artwork
-depicted the ancestors of Jesus of Nazareth.  This tree is known as the Tree
-of Jesse \cite{corblet1860etude}.
+depicting the ancestors of Jesus of Nazareth.  This depiction is known as the
+Tree of Jesse \cite{corblet1860etude}.
 
 Darwin would later popularise the concept of the more general ``tree of life''
 in his seminal work popularly known as \textit{On the Origin of Species}
-\cite{darwin1859origin}.
-
-Darwin's first tree (Figure~\ref{fig:darwin-tree}) shows the theoretical
-relationship between an ancestral species (1) and its descendant species.
-Extant species are shown by tips on the endpoints of some branches with the
-remaining branches possibly representing extinct species.  His idea was that
-groups of species would have diverged at different times and therefore some
-groups will be more closely related than others.  For example, the species
-labelled by B and C would be more closely related than those labelled by A and
-D.
+\cite{darwin1859origin}.  Darwin's first tree (Figure~\ref{fig:darwin-tree})
+shows the theoretical relationship between an ancestral species (1) and its
+descendant species \cite{semple2003phylogenetics}.  Extant species are shown
+by tips on the endpoints of some branches with the remaining branches possibly
+representing extinct species.  His idea was that groups of species would have
+diverged at different times and therefore some groups will be more closely
+related than others.  For example, the species labelled by B and C would be
+more closely related than those labelled by A and D.
 
 \begin{figure}
   \centering
@@ -54,7 +52,7 @@ ad geometriam situs pertinentis'' \cite{euler1735solutio} in which it was
 shown that it was not possible to walk through the city of Königsburg crossing
 each of its seven bridges exactly once.
 
-Tree structures are of great importance in computer programming.  One of
+Tree structures are of great importance in computer programming.  One of the
 earliest programs to make explicit use of tree structures used them to
 represent algebraic formulae for the purpose of symbolic differentiation
 \cite{knuth97taocp1,kahrimanian53differentiation}.  This would later become
@@ -62,31 +60,31 @@ the field of computer algebra which would drive the development of computer
 science and especially programming languages for many years.
 
 Intuitively, it makes sense to arrange many different types of information in
-trees, particularly those for which we have a distance.  A first question to
-ask is whether a representation in terms of a tree exists for a given dataset
-and distance function.  As we will see, when the distance function satisfies
-certain properties there always exists a tree representation and this
-representation is also unique (in a well-defined sense).  We focus then on a
-slightly different problem: imagine we know the distance between only certain
-pairs of objects in our dataset.  We call this information a partial distance.
-This presents two separate problems.  First, does there exist a tree
-representation of a given partial distance and if so, can we find one?
-Second, does there exist a unique tree representation of a given partial
-distance, and if so can we find it?  These issues are the subject of the
-remainder of this thesis.
+trees, particularly that for which we can define a distance since.  A first
+question to ask is whether a representation in terms of a tree exists for a
+given dataset and distance function.  As we will see, when the distance
+function satisfies certain properties there always exists a tree
+representation and this representation is also unique (in a well-defined
+sense).  We focus then on a slightly different problem: imagine we know the
+distance between only certain pairs of objects in our dataset.  We call this
+information a partial distance.  This presents two separate problems.  First,
+does there exist a tree representation of a given partial distance and if so,
+can we find one?  Second, does there exist a unique tree representation of a
+given partial distance, and if so can we find it?  These issues are the
+subject of the remainder of this thesis.
 
 \subsection{Basic terminology and assumptions}
 \label{sec:basic-term-assumpt}
 
 In this section we introduce much of the terminology that is required for
 dealing with trees.  Since trees are special cases of graphs, we begin with
-general graph theory before moving on to trees and then a special type of tree
-that is of greatest interest to us.  As noted by Knuth \cite{knuth97taocp1}
-there is a large degree of variation in the terminology used by different
-authors in graph theory.  We try to follow the terminology used in current
-phylogenetics literature such as \cite{semple2003phylogenetics} and
-\cite{dress11lassoing}.  Throughout this section, let $X$ denote a finite
-nonempty set.
+general graph theory before moving on to trees and, in particular, a special
+type of tree that is of greatest interest to us: the equidistant tree.  As
+noted by Knuth \cite{knuth97taocp1} there is a large degree of variation in
+the terminology used by different authors in graph theory.  We try to follow
+the terminology used in current phylogenetics literature such as
+\cite{semple2003phylogenetics} and \cite{dress11lassoing}.  Throughout this
+section, let $X$ denote a finite nonempty set.
 
 \subsubsection{Graphs}
 \label{sec:graphs}
@@ -112,14 +110,14 @@ with it.
 A \textit{path} is a sequence of distinct vertices $v_1,v_2,\dotsc,v_k$ where
 $k \geq 2$ such that for all $i \in \{1,\dotsc,k-1\}, v_i$ and $v_{i+1}$ are
 adjacent.  If $k \geq 3$ and $v_1$ and $v_k$ are also adjacent then the path
-is called a \textit{cycle}.  A graph is \textit{connected} if there exists a
-path joining each pair of distinct vertices.  A graph is \textit{complete} if
-there is an edge joining each pair of distinct vertices.  A subset of $V$ is
-called a \textit{clique} if there is an edge joining each pair of distinct
-vertices in $V$.  Figure~\ref{fig:graph-ex} helps to illustrate these
-definitions.  In the graph shown in (i) an example of a path is $g,f,e,d$ and
-an example of a cycle is $g,f,b,a,g$.  The graph is connected, but not
-complete, and the set $\{a,b,g,f\}$ is a clique.
+is called a \textit{cycle}.  A graph is \textit{connected} if between each
+pair of distinct vertices there exists a path joining them.  A graph is
+\textit{complete} if there is an edge joining each pair of distinct vertices.
+A subset $V' \subseteq V$ is called a \textit{clique} if there is an edge
+joining each pair of distinct vertices in $V'$.  Figure~\ref{fig:graph-ex}
+helps to illustrate these definitions.  In the graph shown in (i) an example
+of a path is $g,f,e,d$ and an example of a cycle is $g,f,b,a,g$.  The graph is
+connected, but not complete, and the set $\{a,b,g,f\}$ is a clique.
 
 A \textit{directed graph} is an ordered pair $(V,E)$ where $E$ is a set of
 \textit{directed edges} or \textit{arcs}.  An arc $(v,v') \in E$ is said to
@@ -143,9 +141,14 @@ $(V',E')$ is an \textit{induced subgraph} of $(V,E)$.
 \subsubsection{Trees}
 \label{sec:trees}
 
-A graph that is connected and has no cycles is called a \textit{tree}.  Trees can be
-characterised in many ways, some of which are given in the following theorem
-(see \citep[][Section 2.3.4.1]{knuth97taocp1} for a proof):
+In this section we formally define trees as a special type of graph and
+introduce all the relevant terminology for a special type of tree which we
+will focus on.
+
+A graph that is connected and has no cycles is called a
+\textit{tree}.  Trees can be characterised in many ways, some of which are
+given in the following theorem (see \cite[][Section 2.3.4.1]{knuth97taocp1}
+for a proof):
 
 \begin{thm}
   If $G$ is a finite graph with $n > 0$ vertices, the following statements are
@@ -160,12 +163,13 @@ characterised in many ways, some of which are given in the following theorem
   \end{enumerate}
 \end{thm}
 
-A \textit{rooted tree} (or \textit{oriented tree}) is a directed graph $G$
-with a distinguished vertex $\rho_G$ (the root) such that
-\cite{knuth97taocp1}:
+For example, Figure~\ref{fig:x-tree-ex} shows two graphs which are trees.  The
+tree depicted in (ii) is a special type of tree called a \textit{rooted tree}.
+A rooted tree (or \textit{oriented tree}) is a directed graph $G$ with a
+distinguished vertex $\rho_G$ (the root) such that \cite{knuth97taocp1}:
 \begin{enumerate}[label=\alph*)]
-\item Each vertex $v$ of $G$ apart from $\rho_G$ has in-degree 1,
 \item The root $\rho_G$ has in-degree 0,
+\item Each vertex $v$ of $G$ apart from $\rho_G$ has in-degree 1,
 \item There is a path between $\rho_G$ and any vertex of $G$ that is not the
   root.
 \end{enumerate}
@@ -173,25 +177,29 @@ with a distinguished vertex $\rho_G$ (the root) such that
 \begin{figure}
   \centering
   \input{figures/background2/x-tree-ex.pdft}
-  \caption{A phylogenetic $X$-tree (i) and a rooted phylogenetic $X'$-tree
+  \caption{A tree (i) and a rooted phylogenetic $X$-tree
     (ii).}
   \label{fig:x-tree-ex}
 \end{figure}
 
-A vertex in a tree is called a \textit{leaf} if it has degree 1.  All other
-vertices are called \textit{interior} vertices.  An edge which is incident
-with a leaf is called a \textit{pendant} edge.  All other edges are called
-\textit{interior} edges.  The set of all leaves of a tree $T$ is called the
-\textit{leafset} of $T$ which we denote by $L(T)$.
+Suppose $T$ is a rooted tree.  A vertex in $T$ is called a \textit{leaf} if it
+has degree 1.  All other vertices are called \textit{interior} vertices.  An
+edge which is incident with a leaf is called a \textit{pendant} edge.  All
+other edges are called \textit{interior} edges.  The set of all leaves of $T$
+is called the \textit{leafset} of $T$ which we denote by $L(T)$.
 
-Suppose $X$ is a finite, nonempty set, a \textit{phylogenetic $X$-tree}
-($X$-tree for short) is a tree with no degree 2 vertices and leafset $X$.  A
-\textit{rooted phylogenetic $X$-tree} is a rooted tree with no vertices of
-in-degree one and out-degree one and with leafset $X$.
-Figure~\ref{fig:x-tree-ex} shows an $X$-tree with $X = \{a,\dotsc,g\}$ and a
-rooted $X'$-tree with $X' = \{a,\dotsc,f\}$.  Since the remainder of this
-thesis is concerned with rooted trees we will from now on refer to a rooted
-phylogenetic $X$-tree as simply an \textit{$X$-tree}.
+Suppose $X$ is a finite, nonempty set, a \textit{rooted phylogenetic $X$-tree}
+is a rooted tree with no vertices of in-degree one and out-degree one and with
+leafset $X$.  Since the remainder of this thesis is concerned with rooted
+trees we will from now on refer to a rooted phylogenetic $X$-tree as simply an
+\textit{$X$-tree}.  Figure~\ref{fig:x-tree-ex} (ii) shows an $X$-tree with $X
+= \{a,\dotsc,f\}$.
+
+An $X$-tree is \textit{binary} if all interior vertices have degree 3 apart
+from the root which has degree 2.  We therefore have that each vertex has
+out-degree zero or two and each vertex apart from the root has in-degree 1.
+By considering the directed paths from the root to leaves it becomes clear why
+such a tree is called binary \cite{semple2003phylogenetics}.
 
 An \textit{edge-weighted graph} $(G,\omega)$ is a graph $G=(V,E)$ paired with
 an edge-weighting function $\omega \colon E \to \rr$.  For an edge-weighted
@@ -206,18 +214,6 @@ are adjacent then we also call $v$ the \textit{parent} of $v'$ and $v'$ a
 \textit{child} of $v$.  The number of children of a particular vertex equals
 its out-degree.
 
-We call two $X$-trees $T$ and $T'$ \textit{equivalent} (written $T \simeq T'$)
-if there exists a bijection $\phi \colon V(T) \to V(T')$ which preserves
-adjacency and is the identity on $X$.  Since an $X$-tree is rooted, $\phi$
-must also map $\rho_{T}$ to $\rho_{T'}$.  This means that $T$ and $T'$ are
-necessarily isomorphic.
-
-An $X$-tree is \textit{binary} if all interior vertices have degree 3 apart
-from the root which has degree 2.  We therefore have that each vertex has
-out-degree zero or two and each vertex apart from the root has in-degree 1.
-By considering the directed paths from the root to leaves it becomes clear why
-such a tree is called binary \cite{semple2003phylogenetics}.
-
 The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in an
 $X$-tree is the unique vertex $u$ such that $u$ is an ancestor of both $v$ and
 $v'$ and the path from the root $\rho$ to $u$ is longer than the path to any
@@ -231,14 +227,20 @@ whose leafset is $X'$, with degree 2 vertices suppressed.  $T|X'$ is then
 called a \textit{restricted subtree}.  If $T$ is binary and $|X'| = 3$ then
 $T|X'$ is called a \textit{triplet}.
 
-For a set $X$ the number of possible binary $X$-trees is $(2|X|-3)!!$.
-Therefore to find a tree in this space with particular properties we cannot
-look at each possible tree and must instead use a special tree reconstruction
-method.  Next we look at how distances are related to trees and then at the
-problem of reconstructing a tree from distance information.
+We call two $X$-trees $T$ and $T'$ \textit{equivalent} (written $T \simeq T'$)
+if there exists a bijection $\phi \colon V(T) \to V(T')$ that extends to a
+graph isomorphism that is the identity on $X$.  Since an $X$-tree is rooted,
+$\phi$ must also map $\rho_{T}$ to $\rho_{T'}$.
 
-\subsubsection{Distances}
-\label{sec:distances}
+For a set $X$ the number of possible non-equivalent binary $X$-trees is
+$(2|X|-3)!!$.  Therefore to find a tree in this space with particular
+properties we cannot look at each possible tree and must instead use a special
+tree reconstruction method.  Next we look at how distances are related to
+trees and then at the problem of reconstructing a tree from distance
+information.
+
+\subsubsection{Ultrametrics}
+\label{sec:ultrametrics}
 
 Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
 \colon E \to \rrnn$ we can associate a distance $D_{(T,\omega)} \colon X
@@ -252,57 +254,18 @@ Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
   \end{cases}
 \end{equation*}
 where $P(x,y)$ is the set of edges on the path from $x$ to $y$.  We call
-$D_{(T,\omega)}$ the distance \textit{induced} by $(T,\omega)$.  A distance
-$\delta \colon X \times X \to \rr$ is called a \textit{tree metric} if there
-exists an $X$-tree $T=(V,E)$ with edge-weighting $\omega \colon E \to \rrnn$
-such that $\delta(x,y) = D_{(T,\omega)}(x,y)$ for all $x,y \in X$.  So for any
-edge-weighted $X$-tree $(T,\omega)$, the distance $D_{(T,\omega)}$ is a tree
-metric.
+$D_{(T,\omega)}$ the distance \textit{induced} by $(T,\omega)$.  
 
-\begin{figure}
-  \centering
-  \input{figures/background2/quartet.pdft}
-  \caption{An $\{w,x,y,z\}$-tree with four leaves used to illustrate the
-    four-point condition.}
-  \label{fig:quartet-tree}
-\end{figure}
-
-The \textit{four-point condition} allows us to decide whether a given distance
-is in fact a tree metric \cite{semple2003phylogenetics}.  A distance $\delta
-\colon X \times X \to \rr$ satisfies the four-point condition if for every
-$w,x,y,z \in X$ the following holds:
-\begin{equation*}
-  \delta(w,x) + \delta(y,z) \leq \max(\delta(w,y)+\delta(x,z),
-                                      \delta(w,z)+\delta(x,y)).
-\end{equation*}
-Since the elements $w,x,y,z$ need not be distinct it is easy to see that if
-$\delta$ satisfies the four-point condition then it satisfies the triangle
-inequality and is therefore a metric.  Further, $\delta$ is a tree metric on
-$X$ if and only if it satisfies the four-point condition
-\citep[Theorem 7.2.6]{semple2003phylogenetics}.
-
-To illustrate the fact that an induced distance $D_{(T,\omega)}$ must satisfy
-the four-point condition let $T$ be the tree shown in
-Figure~\ref{fig:quartet-tree} and $\omega$ be any proper edge-weighting for
-it.  Then it is easy to see that $\DTw(w,x)+\DTw(y,z) < \DTw(w,y)+\DTw(x,z)$
-by observing the dotted and dashed lines.  Also $\DTw(w,y)+\DTw(x,z) =
-\DTw(w,z)+\DTw(x,y)$, so the distance induced by $T$ and $\omega$ on
-$\{w,x,y,z\}$ satisfies the four-point condition.
-
-An important property of tree metrics is that for any tree metric $\delta
-\colon X \times X \to \rr$ there is, up to isomorphism of the underlying
-$X$-tree, a unique edge-weighted $X$-tree $(T,\omega)$ for which $\delta(x,y)
-= D_{(T,\omega)}(x,y)$ holds for all $x,y \in X$.  This tree can be recovered
-from the metric in polynomial time \citep{semple2003phylogenetics}.  We will
-see some of the methods for doing this in Section~\ref{sec:constr-from-dist}.
-
-A distance $\delta \colon X \times X \to \rr$ is called an
-\textit{ultrametric} if for every distinct $x,y,z \in X$ the following holds:
+The distance induced by a tree is a special type of metric called a
+\textit{tree metric}.  These metrics have some interesting properties which
+are discussed in \cite[Chapter 7]{semple2003phylogenetics}.  For our purposes
+we are most interested in a special type of tree metric called an
+\textit{ultrametric}.  A distance $\delta \colon X \times X \to \rr$ is called
+an ultrametric if for every distinct $x,y,z \in X$ the following stronger form
+of the triangle inequality holds:
 \begin{equation*}
   \delta(x,y) \leq \max(\delta(x,z),\delta(y,z)).
 \end{equation*}
-Any ultrametric satisfies the four-point condition and is therefore also a
-tree metric.
 
 \begin{figure}
   \centering
@@ -359,8 +322,9 @@ tree metric.
    \label{fig:example-equidistant}
 \end{figure}
 
-An edge-weighting $\omega \colon E \to \rr$ for an $X$-tree $T=(V,E)$ is
-called \textit{equidistant} if it satisfies the following properties:
+An edge-weighting $\omega \colon E \to \rr$ for an $X$-tree $T=(V,E)$ with
+root $\rho_T$ is called \textit{equidistant} if it satisfies the following
+properties:
 \begin{itemize}
 \item[(i)] $D_{(T,\omega)}(\rho_T,x) = D_{(T,\omega)}(\rho_T,y)$ for all $x,y
   \in X$,
@@ -383,14 +347,13 @@ the actual length shown with a scale bar.
 
 For any ultrametric $\delta \colon X \times X \to \rr$ there is, up to
 isomorphism, a unique equidistant $X$-tree $(T,\omega)$ such that $\delta(x,y)
-= D_{(T,\omega)}(x,y)$ for all $x,y \in X$.  As with a general tree metric,
-this tree can be recovered from the ultrametric in polynomial time, as we will
-see in the next section.
+= D_{(T,\omega)}(x,y)$ for all $x,y \in X$.  This tree can be recovered from
+the ultrametric in polynomial time, as we will see in the next section.
 
 \section{Tree reconstruction}
 \label{sec:tree-construction}
 
-In this section we look at various methods of reconstructing trees.  Of most
+In this section, we look at various methods of reconstructing trees.  Of most
 interest to us is the problem of reconstructing an $X$-tree from a distance on
 $X$.  This is generally done by one of two broad classes of hierarchical
 clustering methods which we discuss in Section~\ref{sec:hier-clust-meth}.
@@ -399,13 +362,6 @@ A further problem is that of reconstructing an edge-weighted $X$-tree from a
 distance on $X$.  This is desirable in many cases, for example in
 phylogenetics the edge-weights might represent the time or number of point
 mutations \cite{felsenstein2004inferring}.
-
-Given a distance $d \colon X \times X \to \rr_{\geq 0}$ and a weighted
-$X$-tree $(T,\omega)$ produced by some reconstruction method, we call that
-method \textit{consistent} if it satisfies the property that whenever $d$ is a
-tree metric on $X$ then $D_{(T,\omega)}(x,y) = d(x,y)$ for all $x,y \in X$.
-In other words, if given a tree metric the reconstruction method produced the
-unique edge-weighted tree identified by the tree metric.
 
 Closely related to this is the problem of reconstructing $X$-trees from only
 partial distance information.  This means that we do not have the complete
@@ -418,8 +374,7 @@ known.
 As with complete distance information, it is possible for partial distance
 information to uniquely determine an $X$-tree.  This is the subject of
 Section~\ref{sec:lassoing-corralling}.  This allows us to define a consistency
-property for partial distance reconstruction methods.  Such methods appear in
-Chapters~\ref{cha:dist-minim-topl} and \ref{cha:lasso-construction}.
+property for partial distance reconstruction methods.
 
 \subsection{Reconstruction from subtrees}
 \label{sec:constr-from-subtr}
@@ -430,11 +385,14 @@ of an $X$-tree.  It suffices merely to know the set of subtrees displayed by
 the tree \cite{semple2003phylogenetics}.
 
 A pair of leaves of an $X$-tree that share the same parent is called a
-\textit{cherry}.  An $X$-tree with $|X| = 3$ that contains a cherry is called
-a \textit{triplet}.  If $P$ is an $\{a,b,c\}$-tree $a,b$ is a cherry of $P$
-then we denote the triplet $P$ by $ab|c$.  We say that a triplet $ab|c$ is
-\textit{displayed} by an $X$-tree $T$ if $T|\{a,b,c\}$ is binary and
-$lca_T(a,c) = lca_T(b,c)$ is an ancestor of $lca_T(a,b)$ in $T$.
+\textit{cherry} and a set of leaves (of any size) that share the same parent
+is called a \textit{pseudocherry}.  As before, an $X$-tree with $|X| = 3$ that
+contains a cherry is called a triplet.  If $P$ is an $\{a,b,c\}$-tree $a,b$ is
+a cherry of $P$ then we denote the triplet $P$ by $ab|c$.  We say that a
+triplet $ab|c$ is \textit{displayed} by an $X$-tree $T$ if the restriction
+$T|\{a,b,c\}$ of $T$ to $\{a,b,c\}$ is binary and $lca_T(a,c) = lca_T(b,c)$ is
+an ancestor of $lca_T(a,b)$ in $T$.  For example, the tree $T_2$ in
+Figure~\ref{fig:build-ex} is a triplet and can be written as $ad|c$.
 
 \begin{algorithm}[h]
   \caption{\textsc{Build}.}
@@ -457,7 +415,7 @@ $lca_T(a,c) = lca_T(b,c)$ is an ancestor of $lca_T(a,b)$ in $T$.
     of $[R,S]$.
 
     \ForAll{$1 \leq i \leq k$}
-    \State Let $T_i$ be the output of \textsc{Build} on $R_i$ where $R_i =
+    \State Let $T_i$ be the output of \textsc{Build} on $R_i =
     \{T|S_i \colon T \in R\}$.
     \EndFor
 
@@ -476,21 +434,22 @@ $lca_T(a,c) = lca_T(b,c)$ is an ancestor of $lca_T(a,b)$ in $T$.
   \label{fig:build-ex}
 \end{figure}
 
-The \textsc{Build} algorithm \cite{aho1981inferring} can reconstruct an
-$X$-tree $T$ from the set $\{T|S \colon S \subseteq X, |S| = 3 \text{ and }
-T|S \text{ is binary}\}$ of all triplets displayed by $T$.  We show the
-\textsc{Build} algorithm in pseudocode in Algorithm~\ref{alg:build} and show
-an example in Figure~\ref{fig:build-ex}.  The algorithm uses a set of rooted
-trees $\{T_1,\dotsc,T_n\}$ where $L(T_1) \cup \dotsb \cup L(T_n) = X$ and an
-auxiliary graph $[R,S]$ which has vertex set $S \subseteq X$ and an edge
-$\{a,b\}$ for each $a,b \in S$ whenever there exists some $c \in S$ and some
-$T' \in R$ such that $T'|\{a,b,c\}$ and $ab|c$ are equivalent.
+The \textsc{Build} algorithm \cite{aho1981inferring} can be used to
+reconstruct an $X$-tree $T$ from the set of all triplets displayed by $T$.  We
+show the \textsc{Build} algorithm in pseudocode in Algorithm~\ref{alg:build}
+and give an example in Figure~\ref{fig:build-ex}.  The algorithm uses a set
+$R$ of rooted trees $\{T_1,\dotsc,T_n\}$ where $L(T_1) \cup \dotsb \cup L(T_n)
+= X$ and an auxiliary graph $[R,S]$ which has vertex set $S \subseteq X$ and
+an edge $\{a,b\}$ for each $a,b \in S$ whenever there exists some $c \in S$
+and some $T' \in R$ such that $T'|\{a,b,c\}$ and $ab|c$ are equivalent.
 
-If \textsc{Build} returns a tree then the set of input trees is said to be
-\textit{compatible}.  Furthermore, if we input the set of all triplets
-displayed by a tree $T$, then \textsc{Build} will output $T$ and therefore $T$
-is uniquely determined by the set of triplets it displays
-\cite{semple2003phylogenetics}.
+This algorithm has some nice properties, for example if \textsc{Build} returns
+a tree then the set of input trees is said to be \textit{compatible}.  The
+definition of compatible is independent of \textsc{Build} (see
+\cite{semple2003phylogenetics}) but \textsc{Build} can be used to check
+compatibility.  Furthermore, if we input the set of all triplets displayed by
+a tree $T$, then \textsc{Build} is guaranteed to output $T$ and therefore $T$
+is uniquely determined by the set of triplets it displays.
 
 If the inputted set of triplets $R$ is some subset of all the triplets
 displayed by a tree then the set is still compatible but this set is displayed
@@ -505,6 +464,14 @@ the theory of relational databases.  It was later applied to phylogenetics but
 remained relatively unknown in the field for a number of years
 \cite{steel1992complexity,bryant04supertree}.
 
+When the inputted trees are not compatible, \textsc{Build} returns an error.
+Since it is often the case that trees will not be compatible, the
+\textsc{MinCutSupertree} algorithm was developed which will construct a tree
+even if the input trees are not compatible \cite{semple2000supertree}.
+The algorithm builds a graph similar to $[R,S]$ and ensures that it is
+disconnected in each step by using a minimum cut.  This algorithm was
+developed primarily for construction of phylogenetic supertrees.
+
 \subsection{Reconstruction from distances}
 \label{sec:constr-from-dist}
 
@@ -513,7 +480,7 @@ begin with a brief overview of general hierarchical clustering methods and
 then look at the UPGMA method \cite{sokal1958statistical} and its optimal
 runtime algorithm.  Hierarchical clustering methods in general build
 unweighted $X$-trees, but UPGMA can be considered an extension which also
-builds an edge-weighting for the constructed tree.
+constructs an edge-weighting for the constructed tree.
 
 For a distance-based reconstruction method the following property is
 desirable: if we input a distance function $D_{(T,\omega)}$ induced by an
@@ -535,15 +502,16 @@ $X$-tree \cite{durbin1998biological}.
 
 Hierarchical clustering is used for the classification of information in much
 the same way as partitional clustering.  The aim of a hierarchical clustering
-method is to produce an $X$-tree corresponding to a distance $D$ on a set $X$.
-While a partition of a set is merely a set of disjoint subsets (clusters)
-which cover the set, an $X$-tree can be viewed as a hierarchy of such clusters
-which induces several partitions on $X$.  This natural relationship between
-trees and partitions is shown in Figure~\ref{fig:tree-clust-ex}.  In the
-example we have $X = \{a,\dotsc,e\}$.  The root of the tree corresponds to the
-single cluster $X$ (denoted $abcde$) and as we move down the tree the set is
-partitioned further until we have cluster of one leaf each (denoted
-$a|b|c|d|e$).
+method is to produce an $X$-tree corresponding to a given distance $D$ on a
+set $X$.  While a partition of a set is merely a set of disjoint subsets
+(clusters) which ``cover'' the set, an $X$-tree can be viewed as a hierarchy
+of such clusters which induces several partitions on $X$.  This natural
+relationship between trees and partitions is illustrated in
+Figure~\ref{fig:tree-clust-ex}.  In the example we have $X = \{a,\dotsc,e\}$.
+The root of the tree corresponds to the single cluster $X$ (denoted $abcde$)
+and as we move down the tree the set is partitioned further until we have
+cluster of one leaf each ($\{\{a\},\dotsc,\{e\}\}$, denoted $a|b|c|d|e$ for
+short).
 
 There are two main methods in use for building hierarchies.  These are the
 \textit{agglomerative} or ``bottom-up'' methods which begin with each element
@@ -559,8 +527,9 @@ local optimum according to some criterion.
   \label{alg:agglomerative}
 
   \begin{algorithmic}
-    \Require A set $X$, a distance $d \colon X \times X \to \rr$, and a
-    linkage function $D \colon 2^X \times 2^X \to \rr$.
+    \Require A set $X$ and a linkage function $D \colon 2^X \times 2^X \to \rr$
+    with an underlying distance $d \colon X \times X \to \rr$.
+
     \Ensure  A rooted $X$-tree $T$.
 
     \State Let $F$ be a forest of $|X|$ trees each containing a unique element
@@ -585,7 +554,8 @@ Algorithm~\ref{alg:agglomerative}.  The choice of linkage function determines
 how the distances are recomputed at each stage and therefore which trees are
 joined in each subsequent stage.  Given a set $X$ and distance $d \colon X
 \times X \to \rr$ and two nonempty subsets $S_1,S_2 \subseteq X$, some common
-choices for linkage functions include single-linkage:
+choices for linkage functions include:\\
+single-linkage:
 \begin{equation*}
   \label{eq:slink}
   D_{SL}(S_1,S_2) = \min_{x \in S_1, y \in S_2} d(x,y),
@@ -606,9 +576,9 @@ $O(n^3)$ where $n = |X|$ since there are $O(n)$ merges to be done and finding
 the $\argmin$ takes $O(n^2)$ time.  However, for many linkage criteria,
 including the three above, it is possible to use an $O(n^2)$ algorithm.  Two
 well known examples are SLINK \cite{sibson1973slink} and CLINK
-\cite{defays1977efficient} for single-linkage and complete-linkage clustering
-respectively.  In the next section we will see that average-linkage clustering
-may be done in quadratic time too.
+\cite{defays1977efficient} for using single-linkage and complete-linkage
+respectively.  In the next section we will see that hierarchical clustering
+using average-linkage may be done in quadratic time too.
 
 The divisive method works in the opposite direction: we begin with a single
 cluster and successively split clusters until we end up with one cluster per
@@ -626,14 +596,12 @@ applications \cite{cimiano2004comparing}.
 \subsubsection{UPGMA}
 \label{sec:upgma}
 
-The UPGMA method is in fact a modified agglomerative clustering method using
-average-linkage which reconstructs an edge-weighted $X$-tree.  The
-edge-weighting constructed by UPGMA is always equidistant.
-
-For an equidistant $X$-tree $(T,\omega)$, let $height((T,\omega))$ be the
-length of the path from the root of $T$ to any leaf, that is $\sum_{e \in P}
-D_{(T,\omega)}$ where $P$ is a path from $\rho_T$ to a leaf in $X$, or 0 if
-the root is the sole vertex.  The algorithm for UPGMA is shown in
+Unweighted Pair Group Method with Arithmetic Mean (UPGMA)
+\cite{sokal1958statistical} is in fact a modified agglomerative clustering
+method using average-linkage which reconstructs an equidistant $X$-tree.  For
+an equidistant $X$-tree $(T,\omega)$, let $height((T,\omega))$ be the sum of
+the edge weights on the path from the root of $T$ to any leaf, or 0 if the
+root is the sole vertex.  The algorithm for UPGMA is shown in
 Algorithm~\ref{alg:upgma}.
 
 \begin{algorithm}[h]
@@ -664,27 +632,27 @@ Algorithm~\ref{alg:upgma}.
 \end{algorithm}
 
 Since only two trees are joined in each iteration, the output of UPGMA is
-always a binary tree.  If the input $d$ is equal to the induced distance
-$D_{(T,\omega)}$ of some equidistant $X$-tree $(T,\omega)$ then UPGMA will
-return $(T,\omega)$ \cite{durbin1998biological}.
+always a binary tree.  If the input distance $d$ is equal to the induced
+distance $D_{(T,\omega)}$ of some equidistant binary $X$-tree $(T,\omega)$
+then UPGMA is guaranteed to return $(T,\omega)$ \cite{durbin1998biological}.
 
 % mention general method for other linkage criteria
 
 % However, for all three of the linkage
 % functions above there are special algorithms which run in only $O(n^2)$ time,
-% these are SLINK \citep{sibson1973slink}, CLINK \citep{defays1977efficient} and
+% these are SLINK \cite{sibson1973slink}, CLINK \cite{defays1977efficient} and
 % UPGMA respectively.  The following section discusses .
 
 In the general agglomerative algorithm, each step involves identifying a pair
 of elements such that no other pair of elements in $X$ are closer according to
-the linkage criterion.  In other words, we are finding a global minimum.  In
-more efficient algorithms we instead look only for a local minimum at each
-stage.  A local minimum in this context means a pair of elements which are
-\textit{mutual nearest neighbours} (MNNs).  Given a set $X$ and a distance $d$
-on $X$, a pair $x,y \in X$ are MNNs if there exists no element $z \in X$ for
-which $d(x,z) < d(x,y)$ or $d(y,z) < d(x,y)$.  Such a pair can be safely
-agglomerated as soon as it is found, just as in the general algorithm
-\cite{murtagh2011methods}.
+the chosen linkage criterion.  In other words, we are finding a global
+minimum.  In more efficient algorithms we instead look only for a local
+minimum at each stage.  A local minimum in this context means a pair of
+elements which are \textit{mutual nearest neighbours} (MNNs).  Given a set $X$
+and a distance $d$ on $X$, a pair $x,y \in X$ are MNNs if there exists no
+element $z \in X$ for which $d(x,z) < d(x,y)$ or $d(y,z) < d(x,y)$.  Such a
+pair can be safely agglomerated as soon as it is found, just as in the general
+algorithm \cite{murtagh2011methods}.
 
 Finding MNNs can be done quickly by building a chain of nearest neighbours in
 the following way: we begin with an arbitrary cluster in $X$ and find its
@@ -699,7 +667,8 @@ because for certain linkage criteria, including average-linkage, the nearest
 neighbour chain remains valid after an agglomeration (see
 \cite{gronau2007optimal} for details).
 
-This method was developed in the early 1980s and initially appeared in
+This mutual nearest neighbour method, also called the \textit{algorithme des
+  célibataires}, was developed in the early 1980s and initially appeared in
 \cite{de1980classification} and \cite{juan1982programme} (in French) and later
 in \cite{murtagh1983survey} and \cite{murtagh1984complexities} (in English).
 It leads to the optimal $O(n^2)$ version of UPGMA and other hierarchical
@@ -708,54 +677,64 @@ clustering methods \cite{gronau2007optimal}.
 \subsection{Reconstruction from partial distances}
 \label{sec:constr-from-part}
 
-A partial distance on a set $X$ is a distance where the distance between some
-pairs of elements is missing.  Partial distances arise often in practice.  It
-is sometimes difficult or impossible to make measurements between certain
-pairs due to those pairs not sharing any information from which a distance can
-be inferred.  For example, in biological studies involving large numbers of
-species and genes it is often the case that species do not share any genes in
-the available data \cite{criscuolo2008fastnj}.
+Partial distances arise often in practice, that is a distance where the
+distance between some pairs of elements is missing.  Potential reasons for
+this might be that it is sometimes difficult or impossible to make
+measurements between certain pairs due to those pairs not sharing any
+information from which a distance can be inferred.  For example, in biological
+studies involving large numbers of species and genes it is often the case that
+species do not share any genes in the available data
+\cite{criscuolo2008fastnj}.  We discuss the motivation for studying this
+problem in more detail in Section~\ref{sec:lasso-motivation}.
 
-For this reason it becomes useful to ask whether such a partial distance can
-be extended into a complete distance that is also a tree metric or
-ultrametric.  Put differently, a partial distance is a function $d \colon X
-\times X - M \to \rrnn$ where $M$ is the set of pairs for which the distance
-value is missing.  The problem is to find a complete distance $d \colon X
-\times X \to \rrnn$ where $d(x,y) = d^*(x,y)$ for all $x,y \in X \times X - M$
-and which is a tree metric or ultrametric.  In \citep{farach1995robust} it was
-shown that the problem of deciding whether such an extension to a tree metric
-exists is NP-complete but the special case of an extension to an ultrametric
-is in P.
+For this reason it becomes useful to ask whether a partial distance can be
+extended into a complete distance that is also an ultrametric.  More formally,
+a \textit{partial distance} on $X$ is a function $d^* \colon X \times X - M
+\to \rrnn$ where $M$ is the set of pairs for which the distance value is
+missing.  The problem is to find a complete distance $d \colon X \times X \to
+\rrnn$ where $d(x,y) = d^*(x,y)$ for all $x,y \in X \times X - M$ and which is
+an ultrametric.  In \cite{farach1995robust} it was shown that it is possible
+to decide in polynomial time whether an extension to an ultrametric exists
+(and to compute such an extension), although the corresponding decision
+problem for unrooted trees (that is, deciding if an extension to a general
+tree metric exists) is NP-complete.
 
-Below we describe three different methods given in the literature for
-extending a partial distance to an ultrametric and reconstructing an $X$-tree.
-There are also many methods that have been devised for the more general
-problem of extension to a tree metric which we do not review but can be found
-in, for example, \citep{guenoche1999approximations}, \citep{farach1995robust},
-\citep{makarenkov2001nouvelle} and \citep{guenoche2004extension}.
+Below we describe three different methods proposed in the literature for
+extending a partial distance on $X$ to an ultrametric on $X$ and
+reconstructing the corresponding equidistant $X$-tree.  We restrict ourselves
+to equidistant $X$-trees but similar results on unrooted trees may be found
+in, for example, \cite{guenoche1999approximations}, \cite{farach1995robust},
+\cite{makarenkov2001nouvelle} and \cite{guenoche2004extension}.
 
 \subsubsection{An optimisation method}
 \label{sec:part-dist-optim-method}
 
-The approach taken by \cite{de1984ultrametric} is to consider a least squares
+The approach taken by \citet{de1984ultrametric} is to consider a least squares
 constrained optimisation problem.  Given a partial distance $d^* \colon X
-\times X - M \to \rrnn$ we wish to find a function $d \colon X \times X \to
-\rrnn$ such that
+\times X - M \to \rrnn$, a function $Loss \colon \rrnn^{X \times X} \to \rrnn$
+(where $\rrnn^{X \times X}$ is the set of all dissimilarities on $X$) is
+defined as:
 \begin{equation*}
   \label{eq:partial-dist-least-squares}
-  Loss(d) = \sum_{(x,y) \in X \times X - M} (d^*(x,y)-d(x,y))^2
+  Loss(d) = \sum_{(x,y) \in X \times X - M} (d^*(x,y)-d(x,y))^2.
 \end{equation*}
-is minimised and $d$ is an ultrametric.  The method used is a sequential
-unconstrained minimisation technique.  The constraint that $d$ must be an
-ultrametric is removed and instead we find a distance $d_n \colon X \times X
-\to \rrnn$ which minimises the augmented function:
+This is called the \textit{loss function}.  The problem is now to find a
+function $d \colon X \times X \to \rrnn$ such that $Loss(d)$ is minimised and
+with the constraint that $d$ is an ultrametric.
+
+To solve the constrained minimisation problem the authors propose to use the
+sequential unconstrained minimisation technique (SUMT)
+\cite{fiacco1964sequential}.  Under this technique the constraint that $d$ be
+an ultrametric is removed and instead we find a distance $d_n \colon X \times
+X \to \rrnn$ which minimises the augmented function $\Phi \colon \rrnn^{X
+  \times X} \times \rrnn \to \rrnn$ defined as:
 \begin{equation*}
   \label{eq:partial-dist-optimisation}
   \Phi(d_n,\sigma) = Loss(d_n) + \sigma Pen(d_n), \qquad (\sigma > 0).
 \end{equation*}
-The function $Loss$ is called the \textit{loss function} and $Pen$ is the
-\textit{penalty function} which is meant to enforce the ultrametric
-condition.  $Pen$ is defined as:
+where $Loss$ is the loss function and $Pen \colon \rrnn^{X \times X} \to
+\rrnn$ is called the \textit{penalty function} which is meant to enforce the
+ultrametric condition.  $Pen$ is defined as:
 \begin{equation*}
   \label{eq:penalty-function}
   Pen(d_n) = \sum_{(i,j,k) \in \Omega(d_n)} (d_n(i,k) - d_n(j,k))^2
@@ -846,25 +825,27 @@ tree constructed is different to the tree constructed by MVL.
 \section{Lassos}
 \label{sec:lassoing-corralling}
 
-All of the methods for reconstructing a tree from a partial distance
-listed in Section~\ref{sec:constr-from-part} have one thing in common: the
-tree produced in undefined when more than one extension to an ultrametric is
-possible.
-
 As we saw in the example shown in Figure~\ref{fig:farach-mvl-ex}, the existing
 partial distance reconstruction methods can construct different trees from the
 same input.  The problem with the example partial distance in that case was
 that no ultrametric extension exists so the methods each modified the given
-distances in different ways.  This may be undesirable.
+distances in different ways to obtain an ultrametric.  This means that for
+some pairs of leaves in the resulting tree the induced tree distance is not
+equal to the inputted distance.  This may be undesirable.
+
+A second problem is that often more than one extension to an ultrametric is
+possible.  We will see this in the example in the following section.  In the
+case where more than one extension is possible the existing algorithms will
+provide one of many solutions.  But we may wish to know not only that an
+ultrametric extension exists but that it is unique.  This section provides us
+with some theory for deciding when this is possible.
 
 Certain partial distances on $X$ have the property that they uniquely
 determine the topology or edge-weights of an $X$-tree.  In other words, only
 one extension to an ultrametric on $X$ is possible.  To enable us to
 understand when partial distances have this uniqueness property, the theory of
-lassos was developed.
-
-In this section we define certain types of lassos as applied to equidistant
-$X$-trees and look at some important characterisations.
+lassos was developed.  We next define certain types of lassos as applied to
+equidistant $X$-trees and look at some important characterisations.
 
 \subsection{Definitions and basic properties}
 \label{sec:defin-basic-prop}
@@ -934,15 +915,15 @@ $G(\cL,v)$ the \textit{child-edge graph} (\textit{of $v$ with respect to $T$
 
 We have the following characterisation of topological lassos which originally
 appeared in \cite{huber13lassoing}:
-\begin{lem}
-  \label{lem:child-edge-graph-complete}
+\begin{thm}
+  \label{thm:child-edge-graph-complete}
   Suppose $T$ is an $X$-tree and $\cL \subseteq {X \choose 2}$ is a covering
   of $X$.  Then the following are equivalent:
   \begin{enumerate}
   \item $\cL$ is a topological lasso for $T$,
   \item for every vertex $v \in \iV(T)$, the graph $G(\cL,v)$ is complete.
   \end{enumerate}
-\end{lem}
+\end{thm}
 
 Due to the characterisation of equidistant lassos also presented in
 \cite{huber13lassoing}, we also have that every topological lasso for $T$ must also be an

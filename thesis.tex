@@ -2,7 +2,8 @@
 \documentclass[a4paper,12pt]{report}
 
 \usepackage[utf8]{inputenc}
-\usepackage[T2A,OT1]{fontenc}
+\usepackage[T2A,T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[english]{babel}
 \usepackage{geometry}
 \usepackage{setspace}
@@ -12,7 +13,7 @@
 \usepackage{booktabs}
 \usepackage[format=hang,font=small,labelfont=bf]{caption}
 \usepackage{subcaption}
-% \usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage[protrusion=true,expansion=true]{microtype}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -55,6 +56,10 @@
   pdfsubject={}
 }
 \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+
+% --- languages ---
+% \newcommand{\fr}[1]{{\begin{otherlanguage*}{french} #1 \end{otherlanguage*}}}
+% \newcommand{\ru}[1]{{\begin{otherlanguage*}{russian} #1 \end{otherlanguage*}}}
 
 % --- TikZ stuff ---
 
@@ -260,7 +265,6 @@ School of Computing Sciences
 University of East Anglia
 \par
 \vspace{0.5in}
-June 2012
 \par
 \vspace{0.5in}
 © 2014 George Kettleborough.
@@ -274,15 +278,15 @@ June 2012
   partitional clustering, that is, the problem of finding groups of similar
   objects within a set of objects.  These groups are seemingly very easy to
   find for humans, but very difficult to find for machines as there are two
-  major difficulties to be overcome: defining precisely an objective criterion
-  for the vague notion of ``groups of similar objects'', and the computational
-  complexity of finding such groups given a criterion.  In the first part of
-  this thesis, we focus on the first difficulty and show that even seemingly
-  similar optimisation criteria used for partitional clustering can produce
-  vastly different results.  In the process of showing this we develop a new
-  metric for comparing clustering solutions called the assignment metric.  We
-  then prove some new NP-completeness results for problems using two related
-  ``sum-of-squares'' clustering criteria.
+  major difficulties to be overcome: the first defining an objective criterion
+  for the vague notion of ``groups of similar objects'', and the second is the
+  computational complexity of finding such groups given a criterion.  In the
+  first part of this thesis, we focus on the first difficulty and show that
+  even seemingly similar optimisation criteria used for partitional clustering
+  can produce vastly different results.  In the process of showing this we
+  develop a new metric for comparing clustering solutions called the
+  assignment metric.  We then prove some new NP-completeness results for
+  problems using two related ``sum-of-squares'' clustering criteria.
 
   Closely related to partitional clustering is the problem of hierarchical
   clustering.  We extend and formalise this problem to the problem of
@@ -298,28 +302,10 @@ June 2012
   distinguished minimal topological lasso and develop an algorithm for
   constructing a tree from such a lasso.  We then develop a more general
   algorithm which can construct a tree together with a lasso from partial
-  distance information.
+  distance information and show how this can be applied to various incomplete
+  datasets.
 \end{abstract}
 \newpage
-
-% \centerline{\textbf{Declaration}}\vspace{1em}
-
-% \noindent
-% Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit
-% tempor tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et,
-% mattis eget, convallis nec, purus. Cum sociis natoque penatibus et magnis dis
-% parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae
-% dolor. Nullam tristique diam non turpis. Cras placerat accumsan nulla. Nullam
-% rutrum. Nam vestibulum accumsan nisl.
-
-% Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit
-% tempor tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et,
-% mattis eget, convallis nec, purus. Cum sociis natoque penatibus et magnis dis
-% parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae
-% dolor. Nullam tristique diam non turpis. Cras placerat accumsan nulla. Nullam
-% rutrum. Nam vestibulum accumsan nisl.
-
-% \newpage
 
 \pagenumbering{roman}
 \setcounter{page}{3}
@@ -340,15 +326,17 @@ June 2012
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-% \include{intro}
+\doublespacing
 
-% \include{background}
+\include{intro}
 
-% \include{sum-squares}
+\include{background}
+
+\include{sum-squares}
 
 \include{background2}
 
-% \include{distinguished-lassos}
+\include{distinguished-lassos}
 
 \include{lasso-construction}
 
@@ -356,7 +344,10 @@ June 2012
 
 % \include{further}
 
-% \include{conclusion}
+\include{conclusion}
+
+\microtypesetup{disable}
+\onehalfspacing
 
 \bibliographystyle{plainnat}
 \bibliography{metrics.bib,comp-clustering.bib,clustering.bib,phylogenetics.bib}

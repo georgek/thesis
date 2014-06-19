@@ -1,4 +1,4 @@
-% removed because it's about unrooted trees
+% ---------- unrooted trees ----------
 
 \subsubsection{Neighbor-joining}
 \label{sec:neighbour-joining}
@@ -57,3 +57,49 @@ Neighbor-joining is shown in Algorithm~\ref{alg:neighbour-joining}.
 The number of possible binary $X$-trees is $(2|X|-5)!!$ and the number of
 possible rooted binary $X$-trees is $(2|X|-3)!!$
 \cite{felsenstein2004inferring}.
+
+% ---------- tree metrics ----------
+
+A distance $\delta \colon X \times X \to \rr$ is called a \textit{tree metric}
+if there exists an $X$-tree $T=(V,E)$ with edge-weighting $\omega \colon E \to
+\rrnn$ such that $\delta(x,y) = D_{(T,\omega)}(x,y)$ for all $x,y \in X$.  So
+for any edge-weighted $X$-tree $(T,\omega)$, the distance $D_{(T,\omega)}$ is
+a tree metric.
+
+\begin{figure}
+  \centering
+  \input{figures/background2/quartet.pdft}
+  \caption{An $\{w,x,y,z\}$-tree with four leaves used to illustrate the
+    four-point condition.}
+  \label{fig:quartet-tree}
+\end{figure}
+
+The \textit{four-point condition} allows us to decide whether a given distance
+is in fact a tree metric \cite{semple2003phylogenetics}.  A distance $\delta
+\colon X \times X \to \rr$ satisfies the four-point condition if for every
+$w,x,y,z \in X$ the following holds:
+\begin{equation*}
+  \delta(w,x) + \delta(y,z) \leq \max(\delta(w,y)+\delta(x,z),
+                                      \delta(w,z)+\delta(x,y)).
+\end{equation*}
+Since the elements $w,x,y,z$ need not be distinct it is easy to see that if
+$\delta$ satisfies the four-point condition then it satisfies the triangle
+inequality and is therefore a metric.  Further, $\delta$ is a tree metric on
+$X$ if and only if it satisfies the four-point condition
+\cite[Theorem 7.2.6]{semple2003phylogenetics}.
+
+To illustrate the fact that an induced distance $D_{(T,\omega)}$ must satisfy
+the four-point condition let $T$ be the tree shown in
+Figure~\ref{fig:quartet-tree} and $\omega$ be any proper edge-weighting for
+it.  Then it is easy to see that $\DTw(w,x)+\DTw(y,z) < \DTw(w,y)+\DTw(x,z)$
+by observing the dotted and dashed lines.  Also $\DTw(w,y)+\DTw(x,z) =
+\DTw(w,z)+\DTw(x,y)$, so the distance induced by $T$ and $\omega$ on
+$\{w,x,y,z\}$ satisfies the four-point condition.
+
+An important property of tree metrics is that for any tree metric $\delta
+\colon X \times X \to \rr$ there is, up to isomorphism of the underlying
+$X$-tree, a unique edge-weighted $X$-tree $(T,\omega)$ for which $\delta(x,y)
+= D_{(T,\omega)}(x,y)$ holds for all $x,y \in X$.  This tree can be recovered
+from the metric in polynomial time \cite{semple2003phylogenetics}.  We will
+see some of the methods for doing this in Section~\ref{sec:constr-from-dist}.
+

@@ -21,10 +21,10 @@ associated decision problem is NP-complete even under a simple $p$-valued
 metric where $p \geq 3$.  However, the problem is solvable in polynomial time
 for a 2-valued metric.  Similarly, we have shown that the decision problem
 associated with all-squares clustering is NP-complete both with Euclidean
-space and with $p$-valued metric when $p \geq 3$.  The problem is solvable in
-polynomial time with a 2-valued metric when the dataset is a set, but the
+space and with a $p$-valued metric when $p \geq 3$.  The problem is solvable
+in polynomial time with a 2-valued metric when the dataset is a set, but the
 problem remains NP-complete even for a 2-valued metric when the dataset is a
-multiset.
+multiset (Section~\ref{sec:complexity-issues}).
 
 In the process of showing the worst case performance of the two sum-of-squares
 criteria we have developed a new metric for comparing clusterings called the
@@ -32,38 +32,80 @@ assignment metric.  In general this metric allows us to compare sets whose
 elements are themselves in a metric space.  This allows us to distinguish
 clusterings by using the underlying metric space in a way which is not
 possible with other metrics.  It is easily extendable to any metric, as well
-as to multiset and fuzzy clusterings.
+as to multiset and fuzzy clusterings (Section~\ref{sec:metr-comp-clust}).
 
 Our findings reinforce the view that partitional clustering is very difficult
-to do precisely.  It is unclear if it even makes sense to try to solve
+to do exactly.  It is unclear if it even makes sense to try to solve
 clustering problems exactly since selection of a criterion is itself so
 difficult.  Even so, heuristics for partitional clustering can often do a very
 good job when an exact solution to the problem is not required.
 
 Our findings for hierarchical clustering are more positive.  We extended the
-problem of simply building a hierarchy of clusters to that of building an
-edge-weighted $X$-tree for our dataset $X$.  We then investigated the problem
-of building such a tree when only a partial distance on $X$ is given.  The
-theory of lassos allows us to decide whether a given set of distances over $X$
-is enough to uniquely determine the tree that it they came from and we have
-used this information to devise an algorithm for tree reconstruction which
-constructs the unique tree for some subset of the given partial distance.
+problem of simply building a hierarchy of clusters from a distance on a set
+$X$ to that of building an edge-weighted $X$-tree.  We then investigated the
+problem of building such a tree when only a partial distance on $X$ is given.
+The theory of lassos allows us to decide whether a given set of distances over
+$X$ is enough to uniquely determine the tree, with regards to topology and
+edge-weighting, that they came from.
 
+In Chapter~\ref{cha:dist-minim-topl} we presented a study into the structural
+properties of lassos and, in particular, minimal topological lassos.  Out
+investigation indicated a special type of minimal lasso called a distinguished
+minimal topological lasso.  The $\Gamma(\cL)$ graph of such a lasso is a
+claw-free block graph which have been widely studied in many areas.  These
+lassos are special since it is possible to turn any minimal topological lasso
+into a distinguished one by repeated application of a simple rule.  We have
+characterised these lassos in terms of a cluster marker map and have given a
+criterion for when these lassos can be inherited by subtrees and supertrees,
+although it is easy to find examples where inheritance does not work for
+supertrees.
 
+In Chapter~\ref{cha:lasso-construction}, we turned our attention to the
+problem of reconstructed an equidistant $X$-tree from partial distance
+information.  We have developed an algorithm called \textsc{Lasso} for
+building a tree from partial distance information that returns a lasso and the
+unique equidistant tree lassoed by it.  We showed using a simulation study
+that it is possible to recover much of the tree even when faced with a large
+number of missing distances.  Our algorithm is resistant to noise in the data
+making it applicable to real biological datasets.  We show that its
+performance on such a dataset is very good when faced with missing distances
+(Section~\ref{sec:yeast-dataset}).
 
-There are still some unsolved problems with regards to the computational
-complexity of the partitional clustering problems.  Namely, we wonder whether
-it is possible to solve in polynomial time any of the approximation problems
-associated to the sum-of-squares optimisation problems or, in other words, can
-a near optimal solution be found to within some bounds of the optimal?
+We also illustrated the applicability of \textsc{Lasso} in a supertree context
+(Section~\ref{sec:wheat-dataset}).  As part of this we compared \textsc{Lasso}
+with modified \textsc{MinCutSupertree}, a well known supertree algorithm,
+using the normalised Robinson-Foulds distance.  We showed that the supertree
+produced by our method was closer to both of the original trees than the one
+produced by modified \textsc{MinCutSupertree}.  In addition, since we are
+using distances our method produces an edge-weighted supertree while the
+\textsc{MinCutSupertree} requires weighting by another method.
 
-It is possible to use the assignment metric with the Hausdorff metric to
-``lift'' the underlying metric space up to the space of clusterings.  It is
-also possible to use the assignment metric itself for this, but it does incur
-a $O(n^5)$ runtime.  It may be possible to reduce this runtime for the special
-case of using two (or more) levels of the assignment metric.
+In addition to the directions of further work outlined in
+Chapters~\ref{cha:sum-squar-clust}, \ref{cha:dist-minim-topl} and
+\ref{cha:lasso-construction} there are number of interesting problems which
+suggest themselves.  There are still many questions with regards to the
+computational complexity of the partitional clustering problems.  Namely, we
+wonder whether it is possible to solve in polynomial time any of the
+approximation problems associated to the sum-of-squares optimisation problems
+or, in other words, can a near optimal solution be found to within some bounds
+of the optimal?  Although we now know that exactly solving the sum-of-squares
+clustering problems is intractable unless $P=NP$, there have been several
+exact polynomial solutions for restricted versions of the problem.  One could
+attempt to extend these solutions to accept larger input sizes thereby
+providing exact solutions in many practical cases.
 
-
+The \textsc{Lasso} algorithm has $O(|\cL|^2)$ runtime complexity, where $\cL$
+is the set of given distances on $X$.  This means it is more applicable to
+cases where a given distance matrix is very sparse.  The best case is when a
+minimal topological lasso of a binary tree is used as input since this results
+in $O(|X|^2)$ runtime.  When a complete distance matrix is used then we have
+$O(|X|^4)$ runtime.  In this case, other reconstruction techniques with
+$O(|X|^3)$ or $O(|X|^2)$ runtime for a complete matrix become more attractive.
+It may be possible, for example using ideas from the fast \textsc{UPGMA}
+algorithm (Section~\ref{sec:upgma}), to modify the algorithm such that the
+runtime complexity is smaller in terms of the size of $X$.  This would allow
+the algorithm to remain applicable to complete distance matrices as well as
+sparse matrices.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"
