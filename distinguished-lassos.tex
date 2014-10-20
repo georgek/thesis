@@ -18,8 +18,8 @@
 \textit{I was involved in developing the idea of a special type of minimal
   topological lasso whose $\Gamma(\cL)$ graph is a block graph, the
   development of much of the terminology, lemma~\ref{lem:size-A(v)},
-  propositions~\ref{theo:unique-block} and \ref{prop:x-i-unique} and all of
-  the examples used throughout.  }
+  propositions~\ref{prop:gamma-l-connected} and \ref{prop:x-i-unique},
+  theorem~\ref{theo:unique-block} and all of the examples used throughout.  }
 \newpage
 
 \section{Introduction}
@@ -72,8 +72,8 @@ $\{a,b\}$ of $\Gamma(\cL)$ by $ab$ rather than $\{a,b\}$.
 
 To illustrate these definitions, let $X=\{a,\cdots,f\}$ and let $\cL$ be the
 set of cords such that $\Gamma(\cL)$ is the graph depicted in
-Fig.~\ref{fig:block-graph-motivation}(i).  It is easy to see that the
-$X$-trees depicted in Fig.~\ref{fig:block-graph-motivation} (ii) are
+Fig.~\ref{fig:block-graph-motivation}~(i).  It is easy to see that the
+$X$-trees depicted in Fig.~\ref{fig:block-graph-motivation}~(ii) are
 topologically lassoed by $\cL$. In fact, $\cL$ is a minimal topological lasso
 for both of them.
 
@@ -142,7 +142,7 @@ As the example of the two minimal topological lassos $
 \{ab,cd,ef,ac,ce,ea\}$ and $
 %\cL'=
 \{ab, bc,$ $cd, de, ef, fa\}$ for the $\{a,\ldots,f\}$-tree depicted in
-Fig.~\ref{fig:block-graph-motivation}(ii) indicates, the graph $\Gamma(\cL)$
+Fig.~\ref{fig:block-graph-motivation}~(ii) indicates, the graph $\Gamma(\cL)$
 associated to a minimal topological lasso $\cL$ may be but need not be a block
 graph.  However if it is then Lemma~\ref{lem:size-A(v)} can be strengthened to
 the following central result where for all positive integers $n$ we put
@@ -199,9 +199,9 @@ $e_2$ implies $x_1=y_1$ as $y_1x_2\in\cL$ also holds which is impossible.
 \end{proof}
 
 To illustrate Proposition~\ref{prop:x-i-unique}, let $T$ be the $X$-tree
-depicted in Fig.~\ref{fig:block-graph-motivation}(ii) and let $\cL$ be the set
+depicted in Fig.~\ref{fig:block-graph-motivation}~(ii) and let $\cL$ be the set
 of cords of $X$ whose $\Gamma(\cL)$ graph is pictured in
-Fig.~\ref{fig:block-graph-motivation}(i).  Using the notation from
+Fig.~\ref{fig:block-graph-motivation}~(i).  Using the notation from
 Proposition~\ref{prop:x-i-unique} and labelling the children of the root of
 $T$ from left to right by $v_1$, $v_2$ and $v_3$ it is easy to see that
 Proposition~\ref{prop:x-i-unique} holds for $x_1=a$, $x_2=c$ and $x_3=e$.
@@ -403,7 +403,7 @@ In this section, we show in Theorem~\ref{theo:transform} that distinguished
 minimal topological lassos are a very special type of lasso in that for every
 $X$-tree $T$ any minimal topological lasso $\cL$ for $T$ can be transformed
 into a distinguished minimal topological lasso $\cL^*$ for $T$ via a {\em
-  repeated application} (i.\,e.\,$l\geq 0$ applications) of the rule:
+  repeated application} (that is, $l\geq 0$ applications) of the rule:
 
 \begin{enumerate}
 \item[(R)] If $xy,yz\in \cL$ and $lca_T(y,z)$ is a descendant of $lca_T(x,y)$
@@ -478,7 +478,7 @@ incident with some cord $c\in \cL$ for which $\gamma_{(\cL,T)}(c)=v$ holds.
 Moreover, we denote the set of cut vertices of a connected block graph $G$ by
 $Cut(G)$ and note that in every connected block graph $G$ there must exist a
 vertex that is contained in at most one block of $G$. This last observation is
-central to the proof of Theorem~\ref{theo:transform}(ii).
+central to the proof of Theorem~\ref{theo:transform}~(ii).
 
 \begin{thm}
   \label{theo:transform}
@@ -628,16 +628,16 @@ central to the proof of Theorem~\ref{theo:transform}(ii).
 
 To illustrate Theorem~\ref{theo:transform}, let $X=\{a,\ldots, f\}$ and
 consider the $X$-tree $T'$ depicted in
-Fig.~\ref{fig:block-graph-motivation}(iii) along with the set
+Fig.~\ref{fig:block-graph-motivation}~(iii) along with the set
 $\cL=\{ad,ec,fa,ef,cd,bd\}$ of cords of $X$ which we depict in
-Fig.~\ref{fig:transformation}(i) in the form of $\Gamma(\cL)$.
+Fig.~\ref{fig:transformation}~(i) in the form of $\Gamma(\cL)$.
 
 \begin{figure}[h]
   \begin{center}
     \input{figures/dist-min-lass/transformation.pdft}
   \end{center}
   \caption{ For $X=\{a,\ldots, f\}$ and the $X$-tree $T'$ pictured in
-    Fig.~\ref{fig:block-graph-motivation}(iii), we depict in (i) the minimal
+    Fig.~\ref{fig:block-graph-motivation}~(iii), we depict in (i) the minimal
     topological lasso $\cL=\{ad,ec,fa,fe,cd,bd\}$ for $T'$ in the form of
     $\Gamma(\cL)$.  In the same way as in (i), we depict in (ii) the
     transformed minimal topological lasso $\cL^{\dagger}$ for $T'$ such that
@@ -656,25 +656,25 @@ the ordering $v_1=lca_{T'}(e,f)$, $v_2=lca_{T'}(c,d)$, $v_3=lca_{T'}(a,d)$,
 $v_4=\rho_{T'}$ of the interior vertices of $T'$. For all $i\in\langle
 4\rangle$, put $\cL_i=\cL_{v_i}$. Then we first transform $\cL$ into a minimal
 topological lasso $\cL^{\dagger}$ for $T'$ as described in
-Theorem~\ref{theo:transform}(i). For this we have $\cL=\cL_0=\cL_1=\cL_2$ and
+Theorem~\ref{theo:transform}~(i). For this we have $\cL=\cL_0=\cL_1=\cL_2$ and
 $\cL_3$ is obtained from $\cL_2$ by first applying Rule (R) to the cords $ec,
 cd \in \cL_2$ resulting in the deletion of the cord $ce$ from $\cL_2 $ and the
 addition of the cord $ed$ to $\cL_2$ and then to the cords $fe,ed\in\cL_2$
 resulting in the deletion of the cord $ed$ from $\cL_2$ and the addition of
 the cord $fd$ to it. The graph $\Gamma(\cL_3)$ is depicted in
-Fig.~\ref{fig:transformation}(ii).  Note that $\cL_3=\cL^{\dagger}$ and that
+Fig.~\ref{fig:transformation}~(ii).  Note that $\cL_3=\cL^{\dagger}$ and that
 although $\Gamma(\cL^{\dagger})$ is clearly a block graph $\cL^{\dagger}$ is
 not distinguished.
 
 To transform $\cL^{\dagger}$ into a distinguished minimal topological lasso
-$\cL^*$ for $T'$, we next apply Theorem~\ref{theo:transform}(ii). For this, we
+$\cL^*$ for $T'$, we next apply Theorem~\ref{theo:transform}~(ii). For this, we
 need only consider the vertex $d$ of $\Gamma(\cL^{\dagger})$ that is, we have
 $\cL^{\dagger}=\cL_0=\cL_1=\cL_2=\cL_3$.  Since the child of $v_4$ on the path
 from $v_4$ to $d$ is $v_3$, we may choose $a$ as the element $y$ in
 $L(v_3)-Cut(\Gamma_{v_3}(\cL_3))$. Then applying Rule (R) to the cords
 $bd,da\in \cL_3$ implies the deletion of $bd$ from $\cL_3$ and the addition of
 the cord $ab$ to it. The resulting minimal topological lasso for $T'$ is
-$\cL^*$ which we depict in Fig.~\ref{fig:transformation}(iii) in the form of
+$\cL^*$ which we depict in Fig.~\ref{fig:transformation}~(iii) in the form of
 $\Gamma(\cL^*)$.
  
 We conclude this section by remarking in passing that combined with
@@ -743,7 +743,7 @@ $$
 $$
 
 To illustrate these definitions, consider the $X=\{a,\ldots, f\}$-tree $T'$
-depicted in Fig.~\ref{fig:block-graph-motivation}(iii).  Let $\sigma$ denote
+depicted in Fig.~\ref{fig:block-graph-motivation}~(iii).  Let $\sigma$ denote
 the lexicographic ordering of the elements in $X$. Then the map $f:cl(T')\to
 X$ defined by setting
 $$
@@ -753,7 +753,7 @@ $$
 is a cluster marker map for $T'$ and $\sigma$ and 
 $\cL_{(T,f)}$
 (or more precisely the graph $\Gamma(\cL_{(T',f)})$) is depicted in
-Fig.~\ref{fig:block-graph-motivation}(i).
+Fig.~\ref{fig:block-graph-motivation}~(i).
 
 To help establish Theorem~\ref{theo: distinguished-lasso-verification}, we
 require some intermediate results which are of interest in their own right and
@@ -788,7 +788,7 @@ by deleting the parent edge of $v$.
 
   (ii) This is an immediate consequence of
   Proposition~\ref{prop:gamma-l-connected} combined with
-  Lemma~\ref{lem:insights}(i).
+  Lemma~\ref{lem:insights}~(i).
 
 
   (iii) This is an immediate consequence of the fact that, for all vertices
@@ -809,7 +809,7 @@ by deleting the parent edge of $v$.
 \end{proof}
 
 Note that $u\in \{v,w\}$ need not hold for $u$, $v$ and $w$ as in the
-statement of Lemma~\ref{lem:insights}(iv).  Indeed, suppose $T$ is the
+statement of Lemma~\ref{lem:insights}~(iv).  Indeed, suppose $T$ is the
 $X=\{a,b,c,d\}$-tree with unique cherry $\{a,b\}$ and $d$ adjacent with the
 root $\rho_T$ of $T$. Let $\sigma$ denote the lexicographic ordering of $X$
 and let $f:cl(T)\to X$ be (the unique) cluster marker map for $T$ and
@@ -847,7 +847,7 @@ $u=lca_T(a,c)$ and $x\in \bigcup\cL(v)\cap \bigcup\cL(w)$ but $u\not\in
   that there exist $i,j\in \langle l \rangle$ distinct such that
   $\phi(u_i,u_{i+1})=\phi(u_j,u_{j+1})$. Consequently,
   $v_i=lca_T(u_i,u_{i+1})=lca_T(u_j,u_{j+1})=v_j$ which is impossible and thus
-  proves the claim.  Combined with Lemma~\ref{lem:insights}(ii) and (iii), it
+  proves the claim.  Combined with Lemma~\ref{lem:insights}~(ii) and (iii), it
   follows that $\Gamma(\cL)$ is a connected block graph. That the blocks of
   $\Gamma(\cL)$ are of the required form is an immediate consequence of the
   construction of $\Gamma(\cL)$.
@@ -872,7 +872,7 @@ compatible.
 \begin{proof}
   For all $v\in \iV(T)$ put $\cL(v) = \cL_{(T,f)}(v)$ and put
   $\cL=\cL_{(T,f)}$.  In view of Proposition~\ref{prop:block} and
-  Lemma~\ref{lem:insights}(i), it suffices to show that $\Gamma(\cL)$ is
+  Lemma~\ref{lem:insights}~(i), it suffices to show that $\Gamma(\cL)$ is
   claw-free.  Assume to the contrary that this is not the case and that there
   exists some $x\in X$ that is contained in the vertex set of $m\geq 3$ blocks
   $A_1,\ldots,A_m$ of $\Gamma(\cL)$. Then, by Proposition~\ref{prop:block},
@@ -1001,10 +1001,10 @@ non-degenerate $X$-trees.
 
   We briefly interrupt the proof of the theorem to illustrate these
   definitions by means of an example. Put $X=\langle 13\rangle$ and consider
-  the $X$-tree $T$ depicted in Fig.~\ref{fig:illustration-main-theorem}(i)
+  the $X$-tree $T$ depicted in Fig.~\ref{fig:illustration-main-theorem}~(i)
   (ignoring the labelling of the interior vertices for the moment) and the
   distinguished minimal topological lasso $\cL$ for $T$ pictured in the form
-  of $\Gamma(\cL)$ in Fig.~\ref{fig:illustration-main-theorem}(ii). Then the
+  of $\Gamma(\cL)$ in Fig.~\ref{fig:illustration-main-theorem}~(ii). Then the
   labelling of the interior vertices of $T$ gives the enumeration of those
   vertices considered in the proof of Theorem~\ref{theo:characterization}. The
   total ordering $\sigma$ of $X$ restricted to the elements in
@@ -1147,7 +1147,7 @@ observation.
   minimal topological lasso for $T$, Theorem~\ref{theo:characterization}
   implies that there exists a total ordering $\omega$ of $X$ and a cluster
   marker map $f_{\omega}: cl(T)\to X$ for $T$ and $\omega$ such that
-  $\cL=\cL_{(T,f_{\omega})}$. Moreover, Lemma~\ref{lem:insights}(iv) implies
+  $\cL=\cL_{(T,f_{\omega})}$. Moreover, Lemma~\ref{lem:insights}~(iv) implies
   that the cut-vertices of $\Gamma(\cL)$ are of the form $f_{\omega}(L_T(v))$
   where $v\in \iV(T)$.
 
@@ -1289,7 +1289,9 @@ in $\Gamma(\cL)$ corresponds to one interior vertex in the tree
 (Theorem~\ref{theo:unique-block} and Corollary~\ref{cor:bijection}).  A
 distinguished minimal topological lasso is special in that for any $X$-tree a
 minimal topological lasso for it can be transformed into a distinguished
-minimal topological lasso by repeated application of a simple rule.  
+minimal topological lasso by repeated application of a simple rule.  We
+characterised these lassos in terms of a cluster marker map and have given a
+criterion for inheritance by subtrees and supertrees.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"

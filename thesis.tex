@@ -1,5 +1,5 @@
 % -------------------------------- PREAMBLE --------------------------------
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper,11pt]{report}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T2A,T1]{fontenc}
@@ -246,65 +246,40 @@
 \vspace*{1in}
 {\LARGE \reporttitle}
 \par
-\vspace{1.5in}
+\vspace{1in}
 {\large \reportauthor}
 \par
 \vspace{.3in}
 { Supervisors:\\
 K.T. Huber\\
 V.J. Rayward-Smith\\
-B. De Le Iglesia}
-\par
-\vfill
-Ph.D. Thesis
+B. De La Iglesia}
 \par
 \vspace{0.5in}
+Ph.D. Thesis\\
+Submitted \today
+\par
+\vspace{0.6in}
 School of Computing Sciences
 \par
-\vspace{0.5in}
+\vspace{0.6in}
 University of East Anglia
 \par
-\vspace{0.5in}
+\vspace{0.3in}
 \par
-\vspace{0.5in}
-© 2014 George Kettleborough.
+\vspace{0.3in}
+{\small This copy of the thesis has been supplied on condition
+  that anyone who consults it is understood to recognise that its copyright
+  rests with the author and that use of any information derived there from
+  must be in accordance with current UK Copyright Law. In addition, any
+  quotation or extract must include full attribution.}
 \end{center}
 \end{titlepage}
 
 \newpage
 
-\begin{abstract}
-  Distances arise in a wide variety of different contexts, one of which is
-  partitional clustering, that is, the problem of finding groups of similar
-  objects within a set of objects.  These groups are seemingly very easy to
-  find for humans, but very difficult to find for machines as there are two
-  major difficulties to be overcome: the first defining an objective criterion
-  for the vague notion of ``groups of similar objects'', and the second is the
-  computational complexity of finding such groups given a criterion.  In the
-  first part of this thesis, we focus on the first difficulty and show that
-  even seemingly similar optimisation criteria used for partitional clustering
-  can produce vastly different results.  In the process of showing this we
-  develop a new metric for comparing clustering solutions called the
-  assignment metric.  We then prove some new NP-completeness results for
-  problems using two related ``sum-of-squares'' clustering criteria.
+\input{abstract.tex}
 
-  Closely related to partitional clustering is the problem of hierarchical
-  clustering.  We extend and formalise this problem to the problem of
-  constructing rooted edge-weighted \textit{$X$-trees}, that is trees with a
-  leafset $X$. It is well known that an $X$-tree can be uniquely reconstructed
-  from a distance on $X$ if the distance is a metric with special properties,
-  namely the distance has been induced by a tree in the first place.  But in
-  practice the complete distance on $X$ may not always be available.  In the
-  second part of this thesis we look at some of the circumstances under which
-  a tree can be uniquely reconstructed from incomplete distance information.
-  We call a distance which uniquely determines an $X$-tree a \textit{lasso}.
-  We investigate the properties of a special type of lasso called a
-  distinguished minimal topological lasso and develop an algorithm for
-  constructing a tree from such a lasso.  We then develop a more general
-  algorithm which can construct a tree together with a lasso from partial
-  distance information and show how this can be applied to various incomplete
-  datasets.
-\end{abstract}
 \newpage
 
 \pagenumbering{roman}

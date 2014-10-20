@@ -49,7 +49,7 @@ $X$ is enough to uniquely determine the tree, with regards to topology and
 edge-weighting, that they came from.
 
 In Chapter~\ref{cha:dist-minim-topl} we presented a study into the structural
-properties of lassos and, in particular, minimal topological lassos.  Out
+properties of lassos and, in particular, minimal topological lassos.  Our
 investigation indicated a special type of minimal lasso called a distinguished
 minimal topological lasso.  The $\Gamma(\cL)$ graph of such a lasso is a
 claw-free block graph which have been widely studied in many areas.  These
@@ -94,18 +94,18 @@ exact polynomial solutions for restricted versions of the problem.  One could
 attempt to extend these solutions to accept larger input sizes thereby
 providing exact solutions in many practical cases.
 
-The \textsc{Lasso} algorithm has $O(|\cL|^2)$ runtime complexity, where $\cL$
-is the set of given distances on $X$.  This means it is more applicable to
-cases where a given distance matrix is very sparse.  The best case is when a
-minimal topological lasso of a binary tree is used as input since this results
-in $O(|X|^2)$ runtime.  When a complete distance matrix is used then we have
-$O(|X|^4)$ runtime.  In this case, other reconstruction techniques with
-$O(|X|^3)$ or $O(|X|^2)$ runtime for a complete matrix become more attractive.
-It may be possible, for example using ideas from the fast \textsc{UPGMA}
-algorithm (Section~\ref{sec:upgma}), to modify the algorithm such that the
-runtime complexity is smaller in terms of the size of $X$.  This would allow
-the algorithm to remain applicable to complete distance matrices as well as
-sparse matrices.
+The \textsc{Lasso} algorithm has $O(|\cL_D|^2)$ runtime complexity, where
+$\cL$ is the set of given distances on $X$.  This means it is more applicable
+to cases where a given distance matrix is very sparse.  The best case is when
+a minimal topological lasso of a binary tree is used as input since this
+results in $O(|X|^2)$ runtime.  When a complete distance matrix is used then
+we have $O(|X|^4)$ runtime.  In this case, other reconstruction techniques
+with $O(|X|^3)$ or $O(|X|^2)$ runtime for a complete matrix become more
+attractive.  It may be possible, for example using ideas from the fast
+\textsc{UPGMA} algorithm (Section~\ref{sec:upgma}), to modify the algorithm
+such that the runtime complexity is smaller in terms of the size of $X$.  This
+would allow the algorithm to remain applicable to complete distance matrices
+as well as sparse matrices.
 
 %%% Local Variables:
 %%% TeX-master: "thesis"

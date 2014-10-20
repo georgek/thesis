@@ -1,3 +1,238 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage[pdftex]{graphicx,color}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage[format=hang,font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{upgreek}
+\usepackage{nbaseprt}
+\usepackage{appendix}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{underscore}
+\usepackage[numbers]{natbib}
+\usepackage{bibentry}
+\nobibliography*
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+% \renewcommand{\baselinestretch}{1.62}
+\onehalfspacing
+
+\newcommand{\reporttitle}{New Algorithms and Methodology for Analysing
+  Distances}
+\newcommand{\reportauthor}{George Kettleborough}
+
+\usepackage[nottoc,numbib]{tocbibind}
+
+% --- hyperref stuff ---
+\definecolor{darkblue}{rgb}{0,0,0.4}
+\hypersetup{
+  pdftex,
+  bookmarks=true,
+  bookmarksopen=true,
+  colorlinks=true,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=darkblue,
+  pdfauthor={\reportauthor},
+  pdftitle={\reporttitle},
+  pdfsubject={}
+}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+
+% --- languages ---
+% \newcommand{\fr}[1]{{\begin{otherlanguage*}{french} #1 \end{otherlanguage*}}}
+% \newcommand{\ru}[1]{{\begin{otherlanguage*}{russian} #1 \end{otherlanguage*}}}
+
+% --- TikZ stuff ---
+
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+  decorations.pathreplacing,decorations.pathmorphing,shapes,%
+  matrix,shapes.symbols}
+
+\tikzstyle{dot}=[circle,fill,inner sep=0,minimum size=1ex]
+\tikzstyle{dist}=[>=stealth,->,shorten >=2pt]
+\tikzstyle{symdist}=[>=stealth,<->,shorten <=2pt,shorten >=2pt]
+\tikzstyle{faint}=[gray!50]
+\tikzstyle{clus}=[circle,draw,inner sep=0,minimum size=5mm]
+\tikzstyle{setnode1}=[dot,regular polygon,regular polygon sides=3,
+      minimum size=1.2ex,fill=black]
+\tikzstyle{setnode2}=[dot,regular polygon,regular polygon sides=3,
+      minimum size=1.2ex,fill=black,rotate=180]
+
+\DeclareRobustCommand\tikzuptriangle{\tikz \node [setnode1] at (0,0) {};}
+\DeclareRobustCommand\tikzupdtriangle{\tikz \node [setnode2] at (0,0) {};}
+\DeclareRobustCommand\tikzbotriangle{\tikz{\node [setnode1] at (0,0) {};\node [setnode2] at (0,0) {};}}
+
+% --- End TikZ stuff ---
+
+% --- Subfigures ---
+
+\DeclareCaptionSubType*{figure}
+\captionsetup[subfigure]{labelfont=normalfont,textfont=normalfont}
+\renewcommand\thesubfigure{\roman{subfigure}}
+
+% make equations and figures numbered (sec.eq)
+% \numberwithin{equation}{section}
+% \numberwithin{figure}{section}
+
+% new operators for maths
+\DeclareMathOperator{\op}{op}
+\DeclareMathOperator{\remainder}{remainder}
+\DeclareMathOperator{\lc}{lc}
+\DeclareMathOperator{\pquo}{pquo}
+\DeclareMathOperator{\prem}{prem}
+\DeclareMathOperator{\pp}{pp}
+\DeclareMathOperator{\cont}{cont}
+\DeclareMathOperator{\resultant}{resultant}
+\DeclareMathOperator{\numerator}{numerator}
+\DeclareMathOperator{\denominator}{denominator}
+\DeclareMathOperator{\ADCO}{ADCO}
+\DeclareMathOperator{\dens}{dens}
+\DeclareMathOperator{\symdif}{\bigtriangleup}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\tr}{tr}
+\DeclareMathOperator{\lca}{lca}
+\DeclareMathOperator{\height}{height}
+\DeclareMathOperator*{\Block}{Block}
+\DeclareMathOperator*{\Cut}{Cut}
+
+% use bold vectors
+\let\oldhat\hat
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\renewcommand{\hat}[1]{\oldhat{\mathbf{#1}}}
+
+% -------------------- convenience things --------------------
+
+\newcommand{\0}{{\emptyset}}
+\newcommand{\rk}{{\rm rk}}
+%\newcommand{\dim}{{\rm dim}}
+\newcommand{\rr}{{\mathbb R}}
+\newcommand{\rrnn}{{\mathbb R}_{\geq 0}}
+\newcommand{\cq}{{\mathcal Q}}
+\newcommand{\cp}{{\mathcal P}}
+\newcommand{\cd}{{\mathcal D}}
+\newcommand{\cc}{{\mathcal C}}
+\newcommand{\cs}{{\mathcal S}}
+\newcommand{\rM}{{\mathbb M}}
+\newcommand{\sgn}{{\rm sgn}}
+\newcommand{\supp}{{\rm supp}}
+\newcommand{\ct}{{\mathcal T}}
+\newcommand{\cl}{{\mathcal L}}
+\newcommand{\s}{{\textfrak c}}
+\newcommand{\ch}{{X \choose 2}}
+\newcommand{\E}{{\mathcal E}}
+\newcommand{\nn}{{\mathbb N}}
+\newcommand{\F}{{\mathbb F}}
+\newcommand{\RR}{{\mathbb R}}
+\newcommand{\cA}{{\mathcal A}}
+\newcommand{\cQ}{{\mathcal Q}}
+\newcommand{\cP}{{\mathcal P}}
+\newcommand{\cD}{{\mathcal D}}
+\newcommand{\cC}{{\mathcal C}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cT}{{\mathcal T}}
+%\newcommand{\cl}{{\mathcal B}}
+\newcommand{\ra}{{\rightarrow}}
+\newcommand{\Ra}{{\Rightarrow}}
+\newcommand{\iV}{\mathring{V}}
+\newcommand{\DTw}{D_{(T,\omega)}}
+\newcommand{\AcL}{A_{\cL}}
+\newcommand{\BecL}{\beta_{\cL}}
+
+%\newcommand{\pf}{\noindent{\em Proof: }}
+%\newcommand{\epf}{\hfill\hbox{\rule{3pt}{6pt}}\\}
+
+
+\newcommand{\dset}{D}
+\newcommand{\clus}{\mathcal{C}}
+\newcommand{\parts}{\mathcal{P}}
+\newcommand{\NP}{\text{NP}}
+
+% for functions between two partitions C_1 and C_2
+\newcommand{\partcompare}[1]{\Delta_{\mathcal{#1}}(\clus_1,\clus_2)}
+\newcommand{\partcomparen}[1]{\Delta_{\mathcal{#1}}}
+\newcommand{\partcomparest}[1]{\Delta_{\mathcal{#1}}(\clus^*_1,\clus^*_2)}
+% for functions between two partitions C and C' and C and C''
+\newcommand{\partcomparep}[1]{\Delta_{\mathcal{#1}}(\clus,\clus')}
+\newcommand{\partcomparepp}[1]{\Delta_{\mathcal{#1}}(\clus,\clus'')}
+% for definition of dissimilarity functions
+\newcommand{\dissimdef}[1]{d_{#1} \colon M \times M \to \mathbb{R}^{\geq 0}}
+\newcommand{\dissimdefn}[1]{d_{#1}}
+
+% -------------------- pretty things --------------------
+
+% works nicely for fraction indices
+\newcommand{\prettyfrac}[2]{^#1\!/\!_#2}
+
+% use this for functions on powersets
+\newcommand{\psettimes}{\! \times}
+% and this for functions on powersets of powersets
+\newcommand{\pspsettimes}{\! \! \times}
+
+% grey line numbers
+\newcommand{\lnum}[1]{\textit{\color{gray}#1}}
+
+% -------------------- environments --------------------
+
+% theorems
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{dfn}{Definition}
+
+% problem template
+\newenvironment{problem}[1]{\par\addvspace{\topsep}\noindent\underline{\textsc{#1}}\\}
+{\par\addvspace{\topsep}\noindent}
+\newcommand{\instance}[1]{\textsc{Instance:} #1\\}
+\newcommand{\question}[1]{\textsc{Question:} #1}
+
+% algorithmic stuff
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% list of algorithms code
+% \makeatletter
+% \AtBeginDocument{%
+% \renewcommand{\listofalgorithms}{%
+% \@cfttocstart \par \begingroup 
+% \parindent\z@ \parskip\cftparskip 
+% \addpenalty \@secpenalty 
+% \if@cfthaschapter \vspace*{\cftbeforeloftitleskip } \else 
+%                   \vspace {\cftbeforeloftitleskip } \fi
+% \@cftpagestyle 
+% {\interlinepenalty \@M 
+%   {\cftloftitlefont \listalgorithmname }%
+%   {\cftafterloftitle } 
+% \@mkboth {\MakeUppercase \listalgorithmname }
+%          {\MakeUppercase \listalgorithmname }
+% \par \nobreak \vskip \cftafterloftitleskip \@afterheading }%
+% \let\l@algorithm\l@figure
+% \@starttoc {loa}\endgroup 
+% \@cfttocfinish }}
+% \makeatother
+
+\begin{document}
+
 % ---------- unrooted trees ----------
 
 \subsubsection{Neighbor-joining}
@@ -103,3 +338,4 @@ $X$-tree, a unique edge-weighted $X$-tree $(T,\omega)$ for which $\delta(x,y)
 from the metric in polynomial time \cite{semple2003phylogenetics}.  We will
 see some of the methods for doing this in Section~\ref{sec:constr-from-dist}.
 
+\end{document}
