@@ -105,14 +105,14 @@ dataset.  To make this more precise, let $\dset =
 \textit{covariance} of the $i$th and $j$th components in $\dset$ is defined
 as:
 \begin{equation*}
-  S_{ij} = \frac{1}{n-1} \sum_{k=1}^{n} (\vec{s}_{ki}-\bar{\vec{s}}_i)(\vec{s}_{kj}-\bar{\vec{s}}_j),
+  S_{ij} = \frac{1}{n-1} \sum_{k=1}^{n} (s_{ki}-\bar{s}_i)(s_{kj}-\bar{s}_j),
 \end{equation*}
-where $\vec{s}_{ki}$ means the $i$th component of the $k$th element and
-$\bar{\vec{s}}_i$ means the mean of component $i$ across $\dset$.  In this
-context, components are often called \textit{features} or \textit{fields}.
-The covariance matrix associated with $\dset$ is then the $m \times m$ matrix
-$S = [S_{ij}]$, which is clearly symmetric.  The Mahalanobis distance, $d_{P}
-\colon \dset \times \dset \to \mathbb{R}^{\geq 0}$, is then defined as:
+where $s_{ki}$ means the $i$th component of the $k$th element and $\bar{s}_i$
+means the mean of component $i$ across $\dset$.  In this context, components
+are often called \textit{features} or \textit{fields}.  The covariance matrix
+associated with $\dset$ is then the $m \times m$ matrix $S = [S_{ij}]$, which
+is clearly symmetric.  The Mahalanobis distance, $d_{P} \colon \dset \times
+\dset \to \mathbb{R}^{\geq 0}$, is then defined as:
 \begin{equation*}
   d_{P}(\vec{x},\vec{y}) = \sqrt{(\vec{x}-\vec{y})S^{-1}(\vec{x}-\vec{y})^T},
 \end{equation*}
