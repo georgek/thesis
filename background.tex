@@ -1561,8 +1561,8 @@ but not outliers.
 
     \While{$m < k$}
        \State $\displaystyle c_{m+1} \gets
-               \argmax_{c \in \dset \setminus C}
-               \min_{\raisebox{-.2em}{$\scriptstyle c' \in C$}} d(c,c')$
+               \argmax_{c \in \dset \setminus S}
+               \min_{\raisebox{-.2em}{$\scriptstyle c' \in S$}} d(c,c')$
        \State $S \gets S \cup \{c_{m+1}\}$
        \State $m \gets m+1$
     \EndWhile
