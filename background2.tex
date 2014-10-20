@@ -689,13 +689,13 @@ problem in more detail in Section~\ref{sec:lasso-motivation}.
 
 For this reason it becomes useful to ask whether a partial distance can be
 extended into a complete distance that is also an ultrametric.  More formally,
-a \textit{partial distance} on $X$ is a function $d^* \colon X \times X - M
+a \textit{partial distance} on $X$ is a function $d^* \colon (X \times X) - M
 \to \rrnn$ where $M$ is the set of pairs for which the distance value is
 missing.  The problem is to find a complete distance $d \colon X \times X \to
-\rrnn$ where $d(x,y) = d^*(x,y)$ for all $x,y \in X \times X - M$ and which is
-an ultrametric.  In \cite{farach1995robust} it was shown that it is possible
-to decide in polynomial time whether an extension to an ultrametric exists
-(and to compute such an extension), although the corresponding decision
+\rrnn$ where $d(x,y) = d^*(x,y)$ for all $x,y \in (X \times X) - M$ and which
+is an ultrametric.  In \cite{farach1995robust} it was shown that it is
+possible to decide in polynomial time whether an extension to an ultrametric
+exists (and to compute such an extension), although the corresponding decision
 problem for unrooted trees (that is, deciding if an extension to a general
 tree metric exists) is NP-complete.
 
@@ -710,13 +710,13 @@ in, for example, \cite{guenoche1999approximations}, \cite{farach1995robust},
 \label{sec:part-dist-optim-method}
 
 The approach taken by \citet{de1984ultrametric} is to consider a least squares
-constrained optimisation problem.  Given a partial distance $d^* \colon X
-\times X - M \to \rrnn$, a function $Loss \colon \rrnn^{X \times X} \to \rrnn$
-(where $\rrnn^{X \times X}$ is the set of all dissimilarities on $X$) is
-defined as:
+constrained optimisation problem.  Given a partial distance $d^* \colon (X
+\times X) - M \to \rrnn$, a function $Loss \colon \rrnn^{X \times X} \to
+\rrnn$ (where $\rrnn^{X \times X}$ is the set of all dissimilarities on $X$)
+is defined as:
 \begin{equation*}
   \label{eq:partial-dist-least-squares}
-  Loss(d) = \sum_{(x,y) \in X \times X - M} (d^*(x,y)-d(x,y))^2.
+  Loss(d) = \sum_{(x,y) \in (X \times X) - M} (d^*(x,y)-d(x,y))^2.
 \end{equation*}
 This is called the \textit{loss function}.  The problem is now to find a
 function $d \colon X \times X \to \rrnn$ such that $Loss(d)$ is minimised and
@@ -766,9 +766,9 @@ average-linkage criterion for two nonempty sets $S_1, S_2$ is:
   D_{MVL}(S_1,S_2) =
   \begin{cases}
     \displaystyle
-    \frac{\displaystyle (\sum_{(x,y) \in S_1 \times S_2 - M} d(x,y)}
-         {|S_1 \times S_2 - M|} & \text{if $S_1
-      \times S_2 - M \neq \emptyset$,} \\
+    \frac{\displaystyle \sum_{(x,y) \in (S_1 \times S_2) - M} d(x,y)}
+         {|(S_1 \times S_2) - M|} & \text{if $(S_1
+      \times S_2) - M \neq \emptyset$,} \\
     \infty & \text{otherwise},
   \end{cases}
 \end{equation*}
@@ -789,7 +789,7 @@ $d(a,b)=1, d(b,c)=1, d(c,d)=2, d(c,e)=2, d(d,e)=3$.
 \label{sec:part-dist-divisive-method}
 
 \cite{farach1995robust} use a top down, divisive approach.  Given a partial
-distance function $d^* \colon X \times X - M \to \rrnn$ let $G=(V,E)$ be a
+distance function $d^* \colon (X \times X) - M \to \rrnn$ let $G=(V,E)$ be a
 graph with vertex set $X$ and an edge $\{x,y\}$ with $x,y \in X$ but $(x,y)
 \notin M$ (so the distance between $x$ and $y$ is known).  We also define an
 edge-weighting $\omega \colon E \to \rr$ by $\omega(\{x,y\}) = d^*(x,y)$ for
