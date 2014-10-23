@@ -311,10 +311,10 @@ repetition (or of the input distance if the current step is the start of the
 repetition). Note that these cliques correspond to the complete graphs of
 theorem~\ref{thm:child-edge-graph-complete} and give us one internal vertex.
 In the case where the tree is binary these cliques are trivial (consisting of
-only one edge).  To be able to a suitable clique, let $m$ be the minimal
-edge-weight in the graph $C$ and $S_m$ a connected component with minimal
-edge-weight chosen as above.  Exploiting again the fact that the new element
-$u_m$ constructed in the current repetition step can be thought of as the
+only one edge).  To find a suitable clique, let $m$ be the minimal edge-weight
+in the graph $C$ and $S_m$ a connected component with minimal edge-weight
+chosen as above.  Exploiting again the fact that the new element $u_m$
+constructed in the current repetition step can be thought of as the
 equidistant tree $(U_m,\omega_m)$ whose leaf set is contained in $X$, we say
 that a clique in $K_m$ is {\em suitable} if, over all cliques of $S_m$, the
 number of taxa of $X$ it contains is as high as possible.
@@ -555,7 +555,7 @@ set $X$, the set $\cL'$ of cords returned by \textsc{Lasso} (together with the
 distances for the cords in that set) uniquely determines the topology as well
 as the edge-weighting of the equidistant $X'$-tree $(T,\omega)$ returned by
 {\sc Lasso}, where $X'$ is the vertex set of $\Gamma(\cL')$.  In particular,
-if $D$ is such that $\cL_D$ is a topological lasso for $T$ then $X=X'$ that
+if $D$ is such that $\cL_D$ is a topological lasso for $T$ then $X=X'$.  That
 is, the leaf set of $T$ is the whole of $X$.  Moreover, if $D$ is in fact a
 complete distance on $X$ and ultrametric then the distance induced by
 $(T,\omega)$ on $X$ is $D$.
