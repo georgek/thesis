@@ -30,3 +30,5 @@
 #auctex
 auto/
 /_region_.tex
+
+coords/coords-output/

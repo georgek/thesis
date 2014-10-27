@@ -1,0 +1,15 @@
+\documentclass[a4paper,11pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{axis}[x=2mm,y=2mm,xmin=-10,xmax=10,ymin=-10,ymax=10,tick label style={font=\tiny}]
+    \addplot[only marks,color=blue,mark=x] table {coords-output/ball2};
+  \end{axis}
+\end{tikzpicture}
+
+\end{document}
