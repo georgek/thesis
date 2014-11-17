@@ -608,7 +608,7 @@ then the object is called by contrast a \textit{crisp set} and may be handled
 by ordinary set theory \cite{zadeh1965fuzzy,klir1995fuzzy}.
 
 A \textit{$k$-fuzzy-partition} of an $n$-set $\dset$ is a set of $k \in
-\{1,\dotsc,n\}$ fuzzy sets: \[\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\}\]
+\{1,\dotsc,n\}$ fuzzy sets: \[\big\{(C_1,\mu_1),(C_2,\mu_2),\dotsc,(C_k,\mu_k)\big\}\]
 where $C_1 \cup \dotsb \cup C_k = \dset$, $C_i \neq \emptyset$ for all $i \in
 \{1,\dotsc,k\}$ and $\sum_{i=1}^{k} \mu_i(x) = 1$ for all $x \in \dset$.  Note
 that the underlying sets of the fuzzy sets $(C_i,\mu_i)$ are not necessarily
@@ -671,13 +671,13 @@ where
 Then, for example, we have $\clus^*_1(3) = C^*_{11}$, and the confusion matrix
 associated with $\clus^*_1$ and $\clus^*_2$ is:
 \begin{equation*}
-  [n_{ij}]^*=\left[
+  [n_{ij}]^*=\left[\,
   \begin{matrix}
     1 & 2 & 0 & 0 \\
     1 & 1 & 1 & 0 \\
     0 & 0 & 1 & 2
   \end{matrix}
-  \right]
+  \,\right]
 \end{equation*}
 
 \subsubsection{Pair counting}
@@ -694,18 +694,18 @@ distinct pair $(a,b) \in \dset \times \dset$ one of the following is true:
 Counting the number of element in each category gives us four counts which are
 defined formally as:
 \begin{align*}
-  N_{11} &= |\{(a,b) \in \dset \times \dset \colon
+  N_{11} &= \big|\{(a,b) \in \dset \times \dset \colon
               \clus_1(a)=\clus_1(b) \text{ and } \clus_2(a)=\clus_2(b)
-            \}|, \\
-  N_{00} &= |\{(a,b) \in \dset \times \dset \colon
+            \}\big|, \\
+  N_{00} &= \big|\{(a,b) \in \dset \times \dset \colon
               \clus_1(a)\neq\clus_1(b) \text{ and } \clus_2(a)\neq\clus_2(b)
-            \}|, \\
-  N_{10} &= |\{(a,b) \in \dset \times \dset \colon
+            \}\big|, \\
+  N_{10} &= \big|\{(a,b) \in \dset \times \dset \colon
               \clus_1(a)=\clus_1(b) \text{ and } \clus_2(a)\neq\clus_2(b)
-            \}|, \\
-  N_{01} &= |\{(a,b) \in \dset \times \dset \colon
+            \}\big|, \\
+  N_{01} &= \big|\{(a,b) \in \dset \times \dset \colon
               \clus_1(a)\neq\clus_1(b) \text{ and } \clus_2(a)=\clus_2(b)
-            \}|.
+            \}\big|.
 \end{align*}
 The size of $N_{11}$ and $N_{00}$ are considered to be measurements of
 \textit{agreement} between $\clus_1$ and $\clus_2$, while $N_{10}$ and
@@ -720,16 +720,16 @@ obtained from the confusion matrix using the following formul\ae
   N_{11} &= \frac{1}{2} \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}(n_{ij}-1),\\
   N_{00} &= \frac{1}{2} \left(n^2 + \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
                              - \sum_{i=1}^{k}
-                                \left(\sum_{j=1}^{k'} n_{ij} \right)^2
+                                \left(\,\sum_{j=1}^{k'} n_{ij} \right)^2
                              - \sum_{j=1}^{k'}
-                                \left(\sum_{i=1}^{k} n_{ij} \right)^2
+                                \left(\,\sum_{i=1}^{k} n_{ij} \right)^2
                        \right),\\
-  N_{10} &= \frac{1}{2} \left(\sum_{i=1}^{k}
-                              \left(\sum_{j=1}^{k'} n_{ij} \right)^2
+  N_{10} &= \frac{1}{2} \left(\,\sum_{i=1}^{k}
+                              \left(\,\sum_{j=1}^{k'} n_{ij} \right)^2
                              - \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
                        \right),\\
-  N_{01} &= \frac{1}{2} \left(\sum_{j=1}^{k'}
-                              \left(\sum_{i=1}^{k} n_{ij} \right)^2
+  N_{01} &= \frac{1}{2} \left(\,\sum_{j=1}^{k'}
+                              \left(\,\sum_{i=1}^{k} n_{ij} \right)^2
                              - \sum_{i=1}^{k} \sum_{j=1}^{k'} n_{ij}^2
                        \right).
 \end{align*}
@@ -745,7 +745,7 @@ One of the simplest pair counting measures between $\clus_1$ and $\clus_2$ is
 the widely-used \textit{Rand index} $\partcomparen{R}$ introduced in
 \citep{rand-1971} and defined as:
 \begin{equation*}
-\partcompare{R} = \frac{(N_{11}+N_{00})}{\binom{n}{2}}.
+\partcompare{R} = (N_{11}+N_{00})/\binom{n}{2}.
 \end{equation*}
 The Rand index is a similarity measure with a lower bound of 0 and an upper
 bound of 1.  \citet{hubert-arabie-1985} use the following variation:
@@ -956,15 +956,15 @@ whenever $0< f < 1/2$.
 
 To give a numerical example, let $\dset = \{1,\dotsc,15\}$,
 \begin{equation*}
-  \clus = \{\{1,2,3,4,5\},\{6,7,8,9,10\},\{11,12,13,14,15\}\}
+  \clus = \big\{\{1,2,3,4,5\},\{6,7,8,9,10\},\{11,12,13,14,15\}\big\}
 \end{equation*}
 be a partition of $\dset$ and $f = 2/5$.  Then
 \begin{equation*}
-\clus' = \{\{1,2,3,14,15\},\{6,7,8,4,5\},\{11,12,13,9,10\}\}
+\clus' = \big\{\{1,2,3,14,15\},\{6,7,8,4,5\},\{11,12,13,9,10\}\big\}
 \end{equation*}
 and
 \begin{equation*}
-\clus'' = \{\{1,2,3,9,14\},\{6,7,8,4,15\},\{11,12,13,5,10\}\}
+\clus'' = \big\{\{1,2,3,9,14\},\{6,7,8,4,15\},\{11,12,13,5,10\}\big\}
 \end{equation*}
 are partitions of $\dset$ obtained from $\clus$ as described above.  In this
 case we have
@@ -1274,7 +1274,7 @@ also be established by the \textit{Huygens-Steiner}, or
 \mathbb{R}^m$:
 \begin{equation}
   \label{eq:huygens}
-  \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{s}) = d_E^2(\vec{c},\vec{s}) \dot |C| +
+  \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{s}) = d_E^2(\vec{c},\vec{s}) \cdot |C| +
                              \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{c}).
 \end{equation}
 
@@ -1284,8 +1284,8 @@ beginning with equation~\eqref{eq:huygens} and assign some $\vec{y} \in C$ to
 $\vec{s}$ and sum over all $\vec{y} \in C$:
 \begin{equation*}
   \sum_{\vec{x},\vec{y} \in C} d_E^2(\vec{x},\vec{y}) = \sum_{\vec{y} \in C}
-  d_E^2(\vec{c},\vec{y}) \dot |C| 
-  + \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{c}) \dot |C|
+  d_E^2(\vec{c},\vec{y}) \cdot |C| 
+  + \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{c}) \cdot |C|
 \end{equation*}
 and, since $d_E$ is symmetric,
 \begin{equation}
