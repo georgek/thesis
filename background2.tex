@@ -568,7 +568,7 @@ complete-linkage:
 and average-linkage:
 \begin{equation*}
   \label{eq:alink}
-  D_{AL}(S_1,S_2) = \left( \sum_{x \in S_1} \sum_{y \in S_2} d(x,y) \right) / |S_1| |S_2|.
+  D_{AL}(S_1,S_2) = \left(\,\sum_{x \in S_1} \sum_{y \in S_2} d(x,y) \right) / |S_1| |S_2|.
 \end{equation*}
 
 The general algorithm for agglomerative clustering has runtime complexity of
@@ -716,7 +716,7 @@ constrained optimisation problem.  Given a partial distance $d^* \colon (X
 is defined as:
 \begin{equation*}
   \label{eq:partial-dist-least-squares}
-  Loss(d) = \sum_{(x,y) \in (X \times X) - M} (d^*(x,y)-d(x,y))^2.
+  Loss(d) = \sum_{(x,y) \in (X \times X) - M} \!\big(d^*(x,y)-d(x,y)\big)^2.
 \end{equation*}
 This is called the \textit{loss function}.  The problem is now to find a
 function $d \colon X \times X \to \rrnn$ such that $Loss(d)$ is minimised and
@@ -737,11 +737,11 @@ where $Loss$ is the loss function and $Pen \colon \rrnn^{X \times X} \to
 ultrametric condition.  $Pen$ is defined as:
 \begin{equation*}
   \label{eq:penalty-function}
-  Pen(d_n) = \sum_{(i,j,k) \in \Omega(d_n)} (d_n(i,k) - d_n(j,k))^2
+  Pen(d_n) = \sum_{(i,j,k) \in \Omega(d_n)} \! \big(d_n(i,k) - d_n(j,k)\big)^2
 \end{equation*}
 where
 \begin{equation*}
-  \Omega(d_n) = \{(i,j,k) \in X^3 \colon d(i,j) \leq \min(d_n(i,k),d_n(j,k))
+  \Omega(d_n) = \{(i,j,k) \in X^3 \colon d(i,j) \leq \min\big(d_n(i,k),d_n(j,k)\big)
   \text{ and } d_n(i,k) \neq d_n(j,k)\}.
 \end{equation*}
 In other words, $\Omega(d_n)$ denotes the set of $3$-tuples for which the
