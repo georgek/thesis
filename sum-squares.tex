@@ -1154,9 +1154,10 @@ Since $k! < k^3$ when $k < 6$, it may be more efficient to simply enumerate
 all solutions when $k$ is small.
 
 Clusterings with different $k$ can be compared by the addition of the
-pseudometric $||\clus_1|-|\clus_2||$.  Let $\mathcal{P}$ be the set of all
-partitions of $\dset$.  The assignment metric then becomes a function $\Delta
-\colon \mathcal{P} \times \mathcal{P} \to \mathbb{R}$ defined as
+pseudometric $||\clus_1|-|\clus_2||$ (ie. the absolute difference between the
+set cardinalities).  Let $\mathcal{P}$ be the set of all partitions of
+$\dset$.  The assignment metric then becomes a function $\Delta \colon
+\mathcal{P} \times \mathcal{P} \to \mathbb{R}$ defined as
 \begin{equation*}
   \Delta(\clus_1, \clus_2)
   = \min_{\sigma \in S_k} \sum_{i=1}^{k} \delta(C_{1i},C_{2\sigma(i)})
