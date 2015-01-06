@@ -1,0 +1,23 @@
+\documentclass[a4paper,11pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{axis}[xmin=30,xmax=270,ymin=80,ymax=270,ticks=none]
+    \addplot[only marks,color=blue,mark=x] table {chaining};
+    \addplot[only marks,color=red,mark=o] table {chaining2};
+  \end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+  \begin{axis}[xmin=90,xmax=230,ymin=230,ymax=400,ticks=none]
+    \addplot[only marks,color=blue,mark=x] table {dissection};
+    \addplot[only marks,color=red,mark=o] table {dissection2};
+  \end{axis}
+\end{tikzpicture}
+
+\end{document}

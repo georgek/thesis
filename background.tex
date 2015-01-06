@@ -1169,11 +1169,21 @@ Some criteria for homogeneity are equivalent to criteria for separation.  Most
 notably, minimising sum-of-cliques is equivalent to maximising sum-of-cuts.
 Such criteria are therefore criteria for both homogeneity and separation.
 
+\input{chaining-dissection-graphs}
+
 As it turns out, criteria which only measure one or the other, like min-split
 and max-diameter, are often conflicting.  For example, maximising min-split
 produces clusters with poor homogeneity, called the \textit{chaining effect},
 and minimising max-diameter results in clusters with poor separation, called
-the \textit{dissection effect}.  Such criteria are therefore not so useful on
+the \textit{dissection effect}.
+Figure~\ref{fig:chaining-dissection}~(\ref{fig:chaining}) shows a 2-clustering
+displaying poor cluster homogeneity due to the chaining effect and
+Figure~\ref{fig:chaining-dissection}~(\ref{fig:dissection}) shows a
+2-clustering displaying poor separation due to the dissection effect.  These
+are the clusterings produced by maximising min-split and minimising
+max-diameter, respectively.
+
+Such criteria are therefore not so useful on
 their own, but one way to overcome this problem is to consider a
 \textit{bicriterion}, that is simultaneously consider a criterion for
 homogeneity and a criterion for separation \citep{delattre1980bicriterion}.

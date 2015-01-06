@@ -1,0 +1,26 @@
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[width=1.2\textwidth,xmin=30,xmax=270,ymin=80,ymax=270,ticks=none]
+        \addplot[only marks,color=blue,mark=x] table {figures/chaining-dissection/chaining};
+        \addplot[only marks,color=red,mark=o] table {figures/chaining-dissection/chaining2};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Chaining effect.}
+    \label{fig:chaining}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.4\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[width=1.2\textwidth,xmin=90,xmax=230,ymin=230,ymax=400,ticks=none]
+        \addplot[only marks,color=blue,mark=x] table {figures/chaining-dissection/dissection};
+        \addplot[only marks,color=red,mark=o] table {figures/chaining-dissection/dissection2};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Dissection effect.}
+    \label{fig:dissection}
+  \end{subfigure}
+  \caption{The chaining effect can produce clusters with poor homogeneity and
+    the dissection effect can produce clusters with poor separation.}
+  \label{fig:chaining-dissection}
+\end{figure}
