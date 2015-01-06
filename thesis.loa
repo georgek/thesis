@@ -2,7 +2,7 @@
 \contentsline {algorithm}{\numberline {2}{\ignorespaces Yuan-Meng-Zhang-Dong initial centres algorithm.\relax }}{40}{algorithm.2}
 \contentsline {algorithm}{\numberline {3}{\ignorespaces $k$-means++ initial centres algorithm.\relax }}{41}{algorithm.3}
 \contentsline {algorithm}{\numberline {4}{\ignorespaces Partition Around Medoids (PAM).\relax }}{43}{algorithm.4}
-\contentsline {algorithm}{\numberline {5}{\ignorespaces CLARANS.\relax }}{44}{algorithm.5}
+\contentsline {algorithm}{\numberline {5}{\ignorespaces CLARANS.\relax }}{45}{algorithm.5}
 \contentsline {algorithm}{\numberline {6}{\ignorespaces \textsc {Build}.\relax }}{92}{algorithm.6}
 \contentsline {algorithm}{\numberline {7}{\ignorespaces Agglomerative hierarchical clustering algorithm.\relax }}{95}{algorithm.7}
 \contentsline {algorithm}{\numberline {8}{\ignorespaces UPGMA.\relax }}{96}{algorithm.8}

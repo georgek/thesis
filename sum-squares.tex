@@ -62,12 +62,12 @@ metric space.
 
 However, there is usually no restriction on how many times an element from $M$
 may be sampled so, contrary to the name, a dataset is not usually a set, but
-is often a multiset.  One way to consider a multiset dataset is as an ordered
-pair $(\dset,\mu_{\dset})$ where $\dset$ is the \textit{underlying set} and
-$\mu_{\dset} \colon \dset \to \mathbb{Z}^+$ is the \textit{membership
-  function}.  For some element $x \in \dset$ $\mu_{\dset}(x) = n$ means that
-$n$ copies $x$ appear in $(\dset,\mu_{\dset})$ (note that $x \in \dset$ is
-ordinary set notation).
+is often a multiset.  A multiset can be considered a generalisation of a fuzzy
+set, that is an ordered pair $(\dset,\mu_{\dset})$ where $\dset$ is the
+\textit{underlying set} and is the \textit{membership function} but with
+$\mu_{\dset} \colon \dset \to \mathbb{R}^+$.  For some element $x \in \dset$
+$\mu_{\dset}(x) = n$ means that $n$ copies $x$ appear in $(\dset,\mu_{\dset})$
+(note that $x \in \dset$ is ordinary set notation).
 
 \subsection{Multiset clusterings}
 \label{sec:multiset-clusterings}
@@ -78,7 +78,9 @@ $k$-clustering of $(\dset,\mu_{\dset})$ is therefore $\clus =
 \{(C_{1},\mu_{1}),(C_{2},\mu_{2}),\dotsc,(C_{k},\mu_{k})\}$ where $\mu_i$ is
 the membership function for cluster $C_i$.  For any such clustering we have
 that $C_{1} \cup C_{2} \cup \dotsb \cup C_{k} = \dset$ and for all $x \in
-\dset$, $\sum_{i=1}^{k} \mu_{i}(x) = \mu_{\dset}(x)$.
+\dset$, $\sum_{i=1}^{k} \mu_{i}(x) = \mu_{\dset}(x)$.  We will see later that
+there are some surprising differences between normal clusterings and multiset
+clusterings.
 
 \section{Clustering criteria}
 \label{sec:clustering-criteria}
