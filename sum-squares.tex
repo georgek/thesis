@@ -80,7 +80,7 @@ the membership function for cluster $C_i$.  For any such clustering we have
 that $C_{1} \cup C_{2} \cup \dotsb \cup C_{k} = \dset$ and for all $x \in
 \dset$, $\sum_{i=1}^{k} \mu_{i}(x) = \mu_{\dset}(x)$.  We will see later that
 there are some surprising differences between normal clusterings and multiset
-clusterings.
+clusterings (see Theorem~\ref{thm:2-met-multiset-np-complete}).
 
 \section{Clustering criteria}
 \label{sec:clustering-criteria}
@@ -786,6 +786,7 @@ bound.  We conclude with:
 However, if the dataset is a multiset this is not the case; the problem
 becomes NP-complete.
 \begin{thm}
+  \label{thm:2-met-multiset-np-complete}
   When the dataset is a multiset with a 2-valued metric, ASC is an NP-complete
   problem.
 \end{thm}
