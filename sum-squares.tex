@@ -650,12 +650,12 @@ all-squares clustering (EASC).
     into Triangles} (PT).  An instance $I$ of PT is transformed into an
   instance $f(I)$ of ASC as follows: first we construct a 3-valued metric
   space by setting $\dset$ to $V$ and defining a function $d \colon \dset
-  \times \dset \to \{0,1,2\}$ by
+  \times \dset \to \{0,\alpha,\beta\}$ where $0 > a > b$ by
   \begin{equation*}
     d(u,v) = \begin{cases}
       0 & \text{if $u=v$,}\\
-      1 & \text{if there exists an edge in $G$ between $u$ and $v$,}\\
-      2 & \text{otherwise.}
+      \alpha & \text{if there exists an edge in $G$ between $u$ and $v$,}\\
+      \beta & \text{otherwise.}
     \end{cases}
   \end{equation*}
 
@@ -672,18 +672,19 @@ all-squares clustering (EASC).
     \item $d(u,v)=d(v,u)$ by definition,
     \item $d(u,v)+d(v,w) \geq d(u,w)$ (triangle inequality)\\
       If $u=w$ then this is trivially true.\\
-      If $d(u,w)=1$ then $u \neq w$ so either $u \neq v$ or $v \neq w$ or
+      If $d(u,w)=\alpha$ then $u \neq w$ so either $u \neq v$ or $v \neq w$ or
       both.\\
-      If $d(u,w)=2$ then $u \neq w$ and there is no edge between $u$ and $w$,
-      we then have two cases: either both $u \neq v$ and $v \neq w$ which
+      If $d(u,w)=\beta$ then $u \neq w$ and there is no edge between $u$ and
+      $w$, we then have two cases: either both $u \neq v$ and $v \neq w$ which
       satisfies the inequality, or one of $u=v$ or $v=w$, but we know there is
       no edge between $u$ and $w$ so therefore there is no edge between $v$
       and $w$ or $v$ and $u$ respectively, so the inequality is satisfied.
     \end{enumerate}
   \end{proof}
 
-  We then set $B$ to $6q$ and $k$ to $q$ to complete the transformation.  It
-  is easy to see that this transformation can be computed in polynomial time.
+  We then set $B$ to $6q\alpha$ and $k$ to $q$ to complete the transformation.
+  It is easy to see that this transformation can be computed in polynomial
+  time.
 
   \begin{lem}
     \label{lem:3-val-iff}
@@ -694,12 +695,12 @@ all-squares clustering (EASC).
     If $I \in Y_{\text{PT}}$ then observe that we can construct a clustering,
     $\clus$, by assigning to each cluster $C_i$ the set $V_i$.  Since each
     $V_i$ has an edge between each pair of vertices, the cost of each cluster
-    $C_i$ is $6$, and therefore the cost of $\clus$ is $6q$.  So therefore
-    $f(I) \in Y_{\text{ASC}}$.
+    $C_i$ is $6\alpha$, and therefore the cost of $\clus$ is $6q\alpha$.  So
+    therefore $f(I) \in Y_{\text{ASC}}$.
 
     If $I \in N_{\text{PT}}$ then we cannot have a clustering where all
     clusters have cardinality $3$ as this will contain at least one distance
-    greater than 1 and therefore not meet the bound.  But, due to
+    greater than $\alpha$ and therefore not meet the bound.  But, due to
     Lemma~\ref{lem:eq-dis}, any clustering with differently sized clusters
     always has a higher cost so they also cannot meet the bound.  Therefore
     $f(I) \in N_{\text{ASC}}$.
