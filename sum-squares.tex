@@ -700,10 +700,11 @@ all-squares clustering (EASC).
 
     If $I \in N_{\text{PT}}$ then we cannot have a clustering where all
     clusters have cardinality $3$ as this will contain at least one distance
-    greater than $\alpha$ and therefore not meet the bound.  But, due to
-    Lemma~\ref{lem:eq-dis}, any clustering with differently sized clusters
-    always has a higher cost so they also cannot meet the bound.  Therefore
-    $f(I) \in N_{\text{ASC}}$.
+    greater than $\alpha$ and therefore not meet the bound.  We must consider
+    clusterings where all within cluster distances are equal to $\alpha$, but
+    due to Lemma~\ref{lem:eq-dis}, any such clustering with clusters of
+    different sizes always has a higher cost so they also cannot meet the
+    bound.  Therefore $f(I) \in N_{\text{ASC}}$.
   \end{proof}
 
   Hence, due to Lemmata~\ref{lem:3-val-met} and \ref{lem:3-val-iff}, the
