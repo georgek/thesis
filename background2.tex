@@ -553,22 +553,22 @@ The general algorithm for agglomerative clustering is shown in
 Algorithm~\ref{alg:agglomerative}.  The choice of linkage function determines
 how the distances are recomputed at each stage and therefore which trees are
 joined in each subsequent stage.  Given a set $X$ and distance $d \colon X
-\times X \to \rr$ and two nonempty subsets $S_1,S_2 \subseteq X$, some common
+\times X \to \rr$ and two nonempty subsets $C_1,C_2 \subseteq X$, some common
 choices for linkage functions include:\\
 single-linkage:
 \begin{equation*}
   \label{eq:slink}
-  D_{SL}(S_1,S_2) = \min_{x \in S_1, y \in S_2} d(x,y),
+  D_{SL}(C_1,C_2) = \min_{x \in C_1, y \in C_2} d(x,y),
 \end{equation*}
 complete-linkage:
 \begin{equation*}
   \label{eq:clink}
-  D_{CL}(S_1,S_2) = \max_{x \in S_1, y \in S_2} d(x,y),
+  D_{CL}(C_1,C_2) = \max_{x \in C_1, y \in C_2} d(x,y),
 \end{equation*}
 and average-linkage:
 \begin{equation*}
   \label{eq:alink}
-  D_{AL}(S_1,S_2) = \left(\,\sum_{x \in S_1} \sum_{y \in S_2} d(x,y) \right) / |S_1| |S_2|.
+  D_{AL}(C_1,C_2) = \left(\,\sum_{x \in C_1} \sum_{y \in C_2} d(x,y) \right) / |C_1| |C_2|.
 \end{equation*}
 
 The general algorithm for agglomerative clustering has runtime complexity of
