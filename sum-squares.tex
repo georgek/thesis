@@ -535,7 +535,7 @@ all-squares clustering (EASC).
     \instance{Graph $G = (V,E)$, with $|V| = 3q$ for some integer $q$.}
     \question{Can each of the vertices of $G$ be partitioned into $q$ disjoint
       sets $V_1,V_2,\dotsc,V_q$, each containing exactly $3$ vertices, such
-      that for each $V_i = \{u_i,v_i,w_i\}, 1 \leq i \leq q$, all three of the
+      that for each $V_i = \{u_i,v_i,w_i\}$, $1 \leq i \leq q$, all three of the
       edges $\{u_i,v_i\}, \{u_i,w_i\}$ and $\{v_i,w_i\}$ belong to $E$?}
   \end{problem}
 
@@ -818,7 +818,7 @@ becomes NP-complete.
   \end{equation*}
 
   To find the value for $B$, consider an optimal multiset clustering
-  $\clus=\{C_1,C_2,\dotsc,C_k\}$ which is consistent, so
+  $\clus=\{C_1,\dotsc,C_k\}$ which is consistent, so
   $\mu_{C_i}(x)=\mu_{\dset}(x)$ for all $x \in \dset$ and $1 \leq i \leq k$.
   The cost of a single cluster, $C_i$, is
   \begin{equation*}
@@ -1191,9 +1191,9 @@ normalised symmetric difference metric.
 
 This version of the assignment metric is bounded by $\lambda \cdot
 \max(|\clus_1|,|\clus_2|)$, and this bound is approached arbitrarily closely
-by $\clus_1 = \{\{1,2,\dotsc,n\}\}, \clus_2 = \{\{1\},\{2\},\dotsc,\{n\}\}$ in
-the limit of large $n$ for any metric $\delta$.  Tighter bounds may exist for
-specific choices of $\delta$ and fixed $k$ (we prove one in
+by $\clus_1 = \{\{1,2,\dotsc,n\}\}$. $\clus_2 = \{\{1\},\{2\},\dotsc,\{n\}\}$
+in the limit of large $n$ for any metric $\delta$.  Tighter bounds may exist
+for specific choices of $\delta$ and fixed $k$ (we prove one in
 Section~\ref{sec:upper-bound}).
 
 In Section~\ref{sec:asgn-met-fuzzy-partitions} we show how the assignment

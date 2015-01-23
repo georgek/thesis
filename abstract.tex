@@ -1,28 +1,29 @@
-\begin{abstract}
-  Distances arise in a wide variety of different contexts, one of which is
-  partitional clustering, that is, the problem of finding groups of similar
-  objects within a set of objects.  These groups are seemingly very easy to
-  find for humans, but very difficult to find for machines as there are two
-  major difficulties to be overcome: the first defining an objective criterion
-  for the vague notion of ``groups of similar objects'', and the second is the
-  computational complexity of finding such groups given a criterion.  In the
-  first part of this thesis, we focus on the first difficulty and show that
-  even seemingly similar optimisation criteria used for partitional clustering
-  can produce vastly different results.  In the process of showing this we
-  develop a new metric for comparing clustering solutions called the
-  assignment metric.  We then prove some new NP-completeness results for
-  problems using two related ``sum-of-squares'' clustering criteria.
+\chapter*{\centering Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
 
-  Closely related to partitional clustering is the problem of hierarchical
-  clustering.  We extend and formalise this problem to the problem of
-  constructing rooted edge-weighted \textit{$X$-trees}, that is trees with a
-  leafset $X$. It is well known that an $X$-tree can be uniquely reconstructed
-  from a distance on $X$ if the distance is an ultrametric.  But in practice
-  the complete distance on $X$ may not always be available.  In the second
-  part of this thesis we look at some of the circumstances under which a tree
-  can be uniquely reconstructed from incomplete distance information.  We use
-  a concept called a \textit{lasso} and give some theoretical properties of a
-  special type of lasso.  We then develop an algorithm which can construct a
-  tree together with a lasso from partial distance information and show how
-  this can be applied to various incomplete datasets.
-\end{abstract}
+Distances arise in a wide variety of different contexts, one of which is
+partitional clustering, that is, the problem of finding groups of similar
+objects within a set of objects.  These groups are seemingly very easy to find
+for humans, but very difficult to find for machines as there are two major
+difficulties to be overcome: the first defining an objective criterion for the
+vague notion of ``groups of similar objects'', and the second is the
+computational complexity of finding such groups given a criterion.  In the
+first part of this thesis, we focus on the first difficulty and show that even
+seemingly similar optimisation criteria used for partitional clustering can
+produce vastly different results.  In the process of showing this we develop a
+new metric for comparing clustering solutions called the assignment metric.
+We then prove some new NP-completeness results for problems using two related
+``sum-of-squares'' clustering criteria.
+
+Closely related to partitional clustering is the problem of hierarchical
+clustering.  We extend and formalise this problem to the problem of
+constructing rooted edge-weighted \textit{$X$-trees}, that is trees with a
+leafset $X$. It is well known that an $X$-tree can be uniquely reconstructed
+from a distance on $X$ if the distance is an ultrametric.  But in practice the
+complete distance on $X$ may not always be available.  In the second part of
+this thesis we look at some of the circumstances under which a tree can be
+uniquely reconstructed from incomplete distance information.  We use a concept
+called a \textit{lasso} and give some theoretical properties of a special type
+of lasso.  We then develop an algorithm which can construct a tree together
+with a lasso from partial distance information and show how this can be
+applied to various incomplete datasets.

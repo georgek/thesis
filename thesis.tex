@@ -1,12 +1,15 @@
 % -------------------------------- PREAMBLE --------------------------------
 \listfiles
-\documentclass[a4paper,11pt]{report}
+\documentclass[a4paper,11pt,oneside]{book}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T2A,T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[english]{babel}
-\usepackage{geometry}
+\usepackage[left=45mm,right=30mm,top=45mm,headsep=12mm,bottom=45mm,footskip=15mm]{geometry}
+\usepackage{sectsty}
+\usepackage{tocloft}
+\usepackage{datetime}
 \usepackage{setspace}
 \usepackage[pdftex]{graphicx,color}
 \usepackage{tikz}
@@ -35,9 +38,18 @@
 % \renewcommand{\baselinestretch}{1.62}
 \onehalfspacing
 
+\renewcommand{\cfttoctitlefont}{\Huge\bfseries\sffamily}
+\renewcommand{\cftloftitlefont}{\Huge\bfseries\sffamily}
+\renewcommand{\cftlottitlefont}{\Huge\bfseries\sffamily}
+\renewcommand{\cftchapfont}{\bfseries\sffamily}
+\allsectionsfont{\sffamily}
+
 \newcommand{\reporttitle}{New Algorithms and Methodology for Analysing
   Distances}
 \newcommand{\reportauthor}{George Kettleborough}
+
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
 
 \usepackage[nottoc,numbib]{tocbibind}
 
@@ -240,15 +252,14 @@
 
 \begin{document}
 
-% \maketitle
+% ------------------------------ TITLE PAGE ------------------------------
 
 \begin{titlepage}
 \begin{center}
-\vspace*{1in}
-{\LARGE \reporttitle}
-\par
-\vspace{1in}
-{\large \reportauthor}
+\vspace*{0.4in}
+{\Huge\bfseries\sffamily \reporttitle\par}
+\vspace{.7in}
+{\large\bfseries\sffamily \reportauthor\par}
 \par
 \vspace{.3in}
 { Supervisors:\\
@@ -258,12 +269,12 @@ B. De La Iglesia}
 \par
 \vspace{0.5in}
 Ph.D. Thesis\\
-Submitted \today
+\monthyeardate\today
 \par
-\vspace{0.6in}
+\vspace{0.5in}
 School of Computing Sciences
 \par
-\vspace{0.6in}
+\vspace{0.5in}
 University of East Anglia
 \par
 \vspace{0.3in}
@@ -277,14 +288,16 @@ University of East Anglia
 \end{center}
 \end{titlepage}
 
-\newpage
-
-\input{abstract.tex}
+% ------------------------------ END TITLE PAGE ------------------------------
 
 \newpage
 
 \pagenumbering{roman}
-\setcounter{page}{3}
+\setcounter{page}{2}
+
+\input{abstract.tex}
+
+\newpage
 
 \tableofcontents
 \newpage
@@ -303,6 +316,8 @@ University of East Anglia
 \setcounter{page}{1}
 
 \doublespacing
+
+% ------------------------------ MAIN CHAPTERS ------------------------------
 
 \include{intro}
 

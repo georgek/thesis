@@ -1,4 +1,4 @@
-\chapter{Partitional Clustering Background}
+\chapter{Partitional Clustering}
 \label{cha:background}
 
 \section{Summary}
@@ -466,7 +466,7 @@ common practice, we will refer to the elements of $\clus$ as
 \begin{figure}
   \centering
   \begin{tikzpicture}[
-    xscale=2.1, font=\footnotesize]
+    xscale=2, font=\footnotesize]
 
     % vertices
     
@@ -828,11 +828,11 @@ they use the cardinality of the intersection between two clusters as a
 similarity measure.  The differences between the measures are essentially due
 to the way that they find the matched pairs of clusters for comparison.
 
-As before, let $\dset$ be an $n$-set and let $\clus_1 =
-\{C_{11},\dotsc,C_{1k}\}$ and $\clus_2 = \{C_{21},\dotsc,C_{1k'}\}$, where
-$k,k' \geq 1$, denote two partitions of $\dset$.  Also assume, without loss of
-generality, that $k' \geq k$.  Then, a \textit{matching} between $\clus_1$ and
-$\clus_2$ is a function $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.
+As before, let $\dset$ be an $n$-set and $\clus_1 = \{C_{11},\dotsc,C_{1k}\}$
+and $\clus_2 = \{C_{21},\dotsc,C_{1k'}\}$, where $k,k' \geq 1$, denote two
+partitions of $\dset$.  Also assume, without loss of generality, that $k' \geq
+k$.  Then, a \textit{matching} between $\clus_1$ and $\clus_2$ is a function
+$\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.
 
 \begin{figure}
   \centering
@@ -841,8 +841,8 @@ $\clus_2$ is a function $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.
     % clus/.style={circle,draw=black,inner sep=0,minimum size=5mm},
     % dist/.style={->,shorten >=2pt},
     % faint/.style={dist,gray!50},
-    nonmatch/.style={dist,faint},
-    match/.style={dist,black}
+    nonmatch/.style={dist,dashed,very thin},
+    match/.style={dist,black,thick}
     ]
 
     \node [clus] (c11) at (0,1) {$C_{11}$};
@@ -868,7 +868,7 @@ $\clus_2$ is a function $\sigma \colon \{1,\dotsc,k\} \to \{1,\dotsc,k'\}$.
   \end{tikzpicture}
   \caption{The clusters belonging to two partitions $\{C_{11},\dotsc,C_{13}\}$
     and $\{C_{21},\dotsc,C_{24}\}$ are shown with all similarities between
-    pairs shown in grey.  The black lines represent one possible matching
+    pairs shown dashed.  The solid lines represent one possible matching
     between the clusters.  In this case, the matching is an injection.}
   \label{fig:matching}
 \end{figure}
@@ -1096,7 +1096,7 @@ and predict future behaviour.  A further example is document clustering which
 is an important area concerned with clustering on datasets consisting of
 objects written in a natural language.  Search engines such as those found on
 the World Wide Web use document clustering to suggest, among other things,
-``similar'' documents to the one a user is currently interested in
+``similar'' documents to the one in which a user is currently interested
 \citep{steinbach2000comparison}.
 
 \subsection{Criteria}
@@ -1324,10 +1324,10 @@ each direction, but for a metric this is obviously redundant.
 \citet{friedman1967criteria} suggested two further criteria based on scatter
 matrices, these are the minimisation of the determinant of
 $\mathbf{W_{\clus}}$ (denoted $\det(\mathbf{W}_{\clus})$), which is sometimes
-called \textit{generalised variance}, and the maximisation of
-$\tr(\mathbf{B_{\clus}W_{\clus}}^{-1})$.  These criteria tend to produce
-clusters of similar shape and size as centroid-distance with the Euclidean
-distance \citep{marriott1982optimization}.
+called \textit{generalised variance}, and the maximisation of the trace of
+$\mathbf{B_{\clus}W_{\clus}}^{-1}$.  These criteria tend to produce clusters
+of similar shape and size as centroid-distance with the Euclidean distance
+\citep{marriott1982optimization}.
 
 A further three criteria based on scatter matrices are discussed in
 \citep{marriott1982optimization}, these are
