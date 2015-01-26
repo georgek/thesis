@@ -202,32 +202,6 @@ symmetric difference, $\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to
 \end{equation*}
 for all $X,Y \in 2^{\dset}$.
 
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    % circles
-    \draw (90:1) circle (1.5);
-    \draw (210:1) circle (1.5);
-    \draw (330:1) circle (1.5);
-
-    % labels
-    \node at (90:2.8) {$X$};
-    \node at (330:2.8) {$Y$};
-    \node at (210:2.8) {$Z$};
-    
-    \node at (90:1.5) {$a$};
-    \node at (330:1.5) {$b$};
-    \node at (210:1.5) {$c$};
-    \node at (30:.9) {$d$};
-    \node at (270:.9) {$e$};
-    \node at (150:.9) {$f$};
-    \node at (0:0) {$g$};
-  \end{tikzpicture}
-  \caption{Partition of $X \cup Y \cup Z$.  The quantities $a,b,c,d,e,f,g$
-    represent the cardinalities of each disjoint set as shown.}
-  \label{fig:partition}
-\end{figure}
-\pagebreak
 A related dissimilarity is the normalised symmetric difference,
 $\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to \mathbb{R}^{\geq 0}$,
 defined as:
@@ -249,6 +223,32 @@ The following proof was presented in \citep{yianilos91}, with some errors.  We
 reproduce the proof here with the errors corrected.
 
 \begin{proof}
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}
+      % circles
+      \draw (90:1) circle (1.5);
+      \draw (210:1) circle (1.5);
+      \draw (330:1) circle (1.5);
+
+      % labels
+      \node at (90:2.8) {$X$};
+      \node at (330:2.8) {$Y$};
+      \node at (210:2.8) {$Z$};
+
+      \node at (90:1.5) {$a$};
+      \node at (330:1.5) {$b$};
+      \node at (210:1.5) {$c$};
+      \node at (30:.9) {$d$};
+      \node at (270:.9) {$e$};
+      \node at (150:.9) {$f$};
+      \node at (0:0) {$g$};
+    \end{tikzpicture}
+    \caption{Partition of $X \cup Y \cup Z$.  The quantities $a,b,c,d,e,f,g$
+      represent the cardinalities of each disjoint set as shown.}
+    \label{fig:partition}
+  \end{figure}
+
   It is easy to see the function is nonnegative, symmetric and that
   $\delta_{\symdif_n}(X,Y)=0$ if and only if $X=Y$ for all $X,Y \in 2^{\dset}$
   so we will show that the triangle inequality holds which is:
@@ -331,6 +331,19 @@ reproduce the proof here with the errors corrected.
 \subsubsection{Hausdorff distance}
 \label{sec:hausdorff-distance}
 
+Let $(M,d)$ be a metric space and $\mathcal{M}=2^M \setminus \{\emptyset\}$.
+The Hausdorff distance, $\delta_{H} \colon \mathcal{M} \times \mathcal{M} \to
+\mathbb{R}^{\geq 0}$, is defined as:
+\begin{equation*}
+  \delta_{H}(X,Y) = \max\left(\max_{x \in X} \min_{y \in Y} d(x,y),
+                             \max_{y \in Y} \min_{x \in X} d(x,y)\right), 
+\end{equation*}
+for all $X,Y \in \mathcal{M}$.  The Hausdorff distance is a metric on
+$\mathcal{M}$ \citep{braun2003geometry}.  This distance is illustrated in
+Figure~\ref{fig:haussdorf} by showing the Hausdorff distance between two sets
+with elements in a metric space.  In Chapter~\ref{cha:sum-squar-clust} we
+present a new metric on $\mathcal{M}$.
+
 \begin{figure}
   \centering
   \begin{tikzpicture}[
@@ -383,19 +396,6 @@ reproduce the proof here with the errors corrected.
     distance is marked by $d$ in the diagram.}
   \label{fig:haussdorf}
 \end{figure}
-
-Let $(M,d)$ be a metric space and $\mathcal{M}=2^M \setminus \{\emptyset\}$.
-The Hausdorff distance, $\delta_{H} \colon \mathcal{M} \times \mathcal{M} \to
-\mathbb{R}^{\geq 0}$, is defined as:
-\begin{equation*}
-  \delta_{H}(X,Y) = \max\left(\max_{x \in X} \min_{y \in Y} d(x,y),
-                             \max_{y \in Y} \min_{x \in X} d(x,y)\right), 
-\end{equation*}
-for all $X,Y \in \mathcal{M}$.  The Hausdorff distance is a metric on
-$\mathcal{M}$ \citep{braun2003geometry}.  This distance is illustrated in
-Figure~\ref{fig:haussdorf} by showing the Hausdorff distance between two sets
-with elements in a metric space.  In Chapter~\ref{cha:sum-squar-clust} we
-present a new metric on $\mathcal{M}$.
 
 \subsubsection{Linkage functions}
 \label{sec:linkage-functions}
@@ -677,20 +677,23 @@ associated with $\clus^*_1$ and $\clus^*_2$ is:
     1 & 1 & 1 & 0 \\
     0 & 0 & 1 & 2
   \end{matrix}
-  \,\right]
+  \,\right].
 \end{equation*}
 
 \subsubsection{Pair counting}
 \label{sec:pair-counting}
 
-There are $\binom{n}{2}$ distinct pairs of elements in $\dset$.  For each
-distinct pair $(a,b) \in \dset \times \dset$ one of the following is true:
+These measures show the agreement and disagreement between $\clus_1$ and
+$\clus_2$ by counting pairs of element in $\dset$.  There are $\binom{n}{2}$
+distinct pairs of elements in $\dset$.  For each distinct pair $(a,b) \in
+\dset \times \dset$ one of the following is true:
 \begin{align*}
 \clus_1(a)=\clus_1(b) &\text{ and } \clus_2(a)=\clus_2(b),\\
 \clus_1(a)\neq \clus_1(b) &\text{ and } \clus_2(a)\neq \clus_2(b),\\
 \clus_1(a)=\clus_1(b) &\text{ and } \clus_2(a)\neq \clus_2(b),\\
 \clus_1(a)\neq \clus_1(b) &\text{ and } \clus_2(a)=\clus_2(b).
 \end{align*}
+
 Counting the number of element in each category gives us four counts which are
 defined formally as:
 \begin{align*}

@@ -214,59 +214,6 @@ are adjacent then we also call $v$ the \textit{parent} of $v'$ and $v'$ a
 \textit{child} of $v$.  The number of children of a particular vertex equals
 its out-degree.
 
-The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in an
-$X$-tree is the unique vertex $u$ such that $u$ is an ancestor of both $v$ and
-$v'$ and the path from the root $\rho$ to $u$ is longer than the path to any
-other ancestor of both $v$ and $v'$.  The lowest common ancestor of $v$ and
-$v'$ is denoted $\lca(v,v')$.  In the $X'$-tree in Figure~\ref{fig:x-tree-ex}
-(ii) the lowest common ancestor of $a$ and $d$ is the root $\rho$.
-
-A connected subgraph of a tree is called a \textit{subtree}.  If $T$ is an
-$X$-tree and $X' \subseteq X$ then we denote by $T|X'$ the subtree of $T$
-whose leafset is $X'$, with degree 2 vertices suppressed.  $T|X'$ is then
-called a \textit{restricted subtree}.  If $T$ is binary and $|X'| = 3$ then
-$T|X'$ is called a \textit{triplet}.
-
-We call two $X$-trees $T$ and $T'$ \textit{equivalent} (written $T \simeq T'$)
-if there exists a bijection $\phi \colon V(T) \to V(T')$ that extends to a
-graph isomorphism that is the identity on $X$.  Since an $X$-tree is rooted,
-$\phi$ must also map $\rho_{T}$ to $\rho_{T'}$.
-
-For a set $X$ the number of possible non-equivalent binary $X$-trees is
-$(2|X|-3)!!$ (where $!!$ means double factorial).  Therefore to find a tree in
-this space with particular properties we cannot look at each possible tree and
-must instead use a special tree reconstruction method.  Next we look at how
-distances are related to trees and then at the problem of reconstructing a
-tree from distance information.
-
-\subsubsection{Ultrametrics}
-\label{sec:ultrametrics}
-
-Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
-\colon E \to \rrnn$ we can associate a distance $D_{(T,\omega)} \colon X
-\times X \to \rrnn$ to $(T,\omega)$ by setting for all $x,y \in X$:
-\begin{equation*}
-  D_{(T,\omega)}(x,y) =
-  \begin{cases}
-    \displaystyle
-    \sum_{e \in P(x,y)} \omega(e) & \text{if $x \neq y$},\\
-    0 & \text{otherwise,}
-  \end{cases}
-\end{equation*}
-where $P(x,y)$ is the set of edges on the path from $x$ to $y$.  We call
-$D_{(T,\omega)}$ the distance \textit{induced} by $(T,\omega)$.  
-
-The distance induced by a tree is a special type of metric called a
-\textit{tree metric}.  These metrics have some interesting properties which
-are discussed in \cite[Chapter 7]{semple2003phylogenetics}.  For our purposes
-we are most interested in a special type of tree metric called an
-\textit{ultrametric}.  A distance $\delta \colon X \times X \to \rr$ is called
-an ultrametric if for every distinct $x,y,z \in X$ the following stronger form
-of the triangle inequality holds:
-\begin{equation*}
-  \delta(x,y) \leq \max(\delta(x,z),\delta(y,z)).
-\end{equation*}
-
 \begin{figure}
   \centering
     \begin{subfigure}[b]{0.5\textwidth}
@@ -322,6 +269,59 @@ of the triangle inequality holds:
    \label{fig:example-equidistant}
 \end{figure}
 
+The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in an
+$X$-tree is the unique vertex $u$ such that $u$ is an ancestor of both $v$ and
+$v'$ and the path from the root $\rho$ to $u$ is longer than the path to any
+other ancestor of both $v$ and $v'$.  The lowest common ancestor of $v$ and
+$v'$ is denoted $\lca(v,v')$.  In the $X'$-tree in Figure~\ref{fig:x-tree-ex}
+(ii) the lowest common ancestor of $a$ and $d$ is the root $\rho$.
+
+A connected subgraph of a tree is called a \textit{subtree}.  If $T$ is an
+$X$-tree and $X' \subseteq X$ then we denote by $T|X'$ the subtree of $T$
+whose leafset is $X'$, with degree 2 vertices suppressed.  $T|X'$ is then
+called a \textit{restricted subtree}.  If $T$ is binary and $|X'| = 3$ then
+$T|X'$ is called a \textit{triplet}.
+
+We call two $X$-trees $T$ and $T'$ \textit{equivalent} (written $T \simeq T'$)
+if there exists a bijection $\phi \colon V(T) \to V(T')$ that extends to a
+graph isomorphism that is the identity on $X$.  Since an $X$-tree is rooted,
+$\phi$ must also map $\rho_{T}$ to $\rho_{T'}$.
+
+For a set $X$ the number of possible non-equivalent binary $X$-trees is
+$(2|X|-3)!!$ (where $!!$ means double factorial).  Therefore to find a tree in
+this space with particular properties we cannot look at each possible tree and
+must instead use a special tree reconstruction method.  Next we look at how
+distances are related to trees and then at the problem of reconstructing a
+tree from distance information.
+
+\subsubsection{Ultrametrics}
+\label{sec:ultrametrics}
+
+Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
+\colon E \to \rrnn$ we can associate a distance $D_{(T,\omega)} \colon X
+\times X \to \rrnn$ to $(T,\omega)$ by setting for all $x,y \in X$:
+\begin{equation*}
+  D_{(T,\omega)}(x,y) =
+  \begin{cases}
+    \displaystyle
+    \sum_{e \in P(x,y)} \omega(e) & \text{if $x \neq y$},\\
+    0 & \text{otherwise,}
+  \end{cases}
+\end{equation*}
+where $P(x,y)$ is the set of edges on the path from $x$ to $y$.  We call
+$D_{(T,\omega)}$ the distance \textit{induced} by $(T,\omega)$.  
+
+The distance induced by a tree is a special type of metric called a
+\textit{tree metric}.  These metrics have some interesting properties which
+are discussed in \cite[Chapter 7]{semple2003phylogenetics}.  For our purposes
+we are most interested in a special type of tree metric called an
+\textit{ultrametric}.  A distance $\delta \colon X \times X \to \rr$ is called
+an ultrametric if for every distinct $x,y,z \in X$ the following stronger form
+of the triangle inequality holds:
+\begin{equation*}
+  \delta(x,y) \leq \max(\delta(x,z),\delta(y,z)).
+\end{equation*}
+
 An edge-weighting $\omega \colon E \to \rr$ for an $X$-tree $T=(V,E)$ with
 root $\rho_T$ is called \textit{equidistant} if it satisfies the following
 properties:
@@ -338,12 +338,13 @@ equidistant edge-weightings arise naturally in many places, for example in
 phylogenetics.  For convenience we will from now on refer to such an $X$-tree
 with equidistant edge-weighting as simply an \textit{equidistant $X$-tree}.
 
-Figure~\ref{fig:example-equidistant} shows an example of an equidistant
-$X$-tree with $X = \{a, \dotsc, j\}$ using two common display formats
-(dendrograms).  In (i) the edges are simply labelled with their weights (edges
-with weight 1 are left unlabelled for clarity).  In (ii) the weight of each
-edge is proportional to the horizontal component of its length on the bar with
-the actual length shown with a scale bar.
+Figure~\ref{fig:example-equidistant} (page~\pageref{fig:example-equidistant})
+shows an example of an equidistant $X$-tree with $X = \{a, \dotsc, j\}$ using
+two common display formats (dendrograms).  In (i) the edges are simply
+labelled with their weights (edges with weight 1 are left unlabelled for
+clarity).  In (ii) the weight of each edge is proportional to the horizontal
+component of its length on the bar with the actual length shown with a scale
+bar.
 
 For any ultrametric $\delta \colon X \times X \to \rr$ there is, up to
 isomorphism, a unique equidistant $X$-tree $(T,\omega)$ such that $\delta(x,y)
