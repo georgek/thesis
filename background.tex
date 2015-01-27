@@ -1068,14 +1068,14 @@ holds.
 The values of Variation of Information and its components applied to our
 example partitions, $\clus^*_1$ and $\clus^*_2$, are given in
 Table~\ref{tab:vi-comparison}.
-\\\\
-\noindent We conclude this section with mentioning a further measure called
-ADCO, which is a density profile based measure.  We will save discussion of
-this measure until we introduce our own Assignment Metric later since these
-two metrics share a unique feature possessed by no other measure discussed in
-this section.  Namely, they take into account that the partitions to be
-compared are partitions of a dataset themselves, with elements that have a
-metric defined on them.
+
+We conclude this section with mentioning a further measure called ADCO, which
+is a density profile based measure.  We will save discussion of this measure
+until we introduce our own Assignment Metric later since these two metrics
+share a unique feature possessed by no other measure discussed in this
+section.  Namely, they take into account that the partitions to be compared
+are partitions of a dataset themselves, with elements that have a metric
+defined on them.
 
 \section{Partitional clustering}
 \label{sec:part-clust-algor}
@@ -1399,6 +1399,8 @@ for the criterion $f$ is fixed:
     that $f(\clus) \leq B$?}
 \end{problem}
 
+\pagebreak
+
 Optimisation problems also have corresponding \textit{approximation problems}.
 The $n$-approximation problem corresponding to an optimisation problem is the
 problem of finding solutions with an objective criterion value within $n$
@@ -1412,10 +1414,10 @@ to implicitly when speaking of NP-completeness results.
 %     such that the sum of weights of the edges from $E$ that have one endpoint
 %     in $V_1$ and one endpoint in $V_2$ is at least $K$?}
 % \end{problem}
-\\\\
-\noindent \textsc{Sum-of-Cuts Clustering} (\textsc{S-Cuts}) is seen to be
-NP-complete by considering the classic NP-complete graph problem \textsc{Max
-  Cut} \citep{karp72twentyone,gonzalez1982computational}.  It turns out that
+
+\textsc{Sum-of-Cuts Clustering} (\textsc{S-Cuts}) is seen to be NP-complete by
+considering the classic NP-complete graph problem \textsc{Max Cut}
+\citep{karp72twentyone,gonzalez1982computational}.  It turns out that
 \textsc{Max Cut} is simply a special case of \textsc{S-Cuts} with $k=2$ and
 where a dissimilarity with values in $\{0,1\}$ is used
 \citep{garey76simplified}.  Since an optimal partition according to the
@@ -1425,13 +1427,13 @@ sum-of-cliques criterion, it is clear that \textsc{Sum-of-Cliques Clustering}
 \textsc{S-Cuts} is possible to find in polynomial time, but, interestingly,
 the approximation problem of \textsc{S-Cliques} remains NP-complete
 \citep{sahni1976p}.
-\\\\
-\noindent A number of partitional clustering problems were shown to be in
-NP-complete by \citet{brucker1978complexity}.  Among these was
-\textsc{Max-Diameter Clustering} (\textsc{M-Diam}), a result which, as it
-turns out, is directly deducible from the earlier results of
-\citet{sahni1976p}.  \textsc{M-Diam} remains NP-complete for $k=3$ and when
-all dissimilarities are in $\{0,1\}$ \citep{gareyjohnson79}.
+
+A number of partitional clustering problems were shown to be in NP-complete by
+\citet{brucker1978complexity}.  Among these was \textsc{Max-Diameter
+  Clustering} (\textsc{M-Diam}), a result which, as it turns out, is directly
+deducible from the earlier results of \citet{sahni1976p}.  \textsc{M-Diam}
+remains NP-complete for $k=3$ and when all dissimilarities are in $\{0,1\}$
+\citep{gareyjohnson79}.
 
 It was shown in \citet{gonzalez1985clustering} that \textsc{M-Diam} is
 NP-complete when the dataset is in 2-dimensional Euclidean space and Euclidean
@@ -1448,8 +1450,8 @@ Euclidean distance, the 1.969-approximation problem associated with
 \textsc{M-Diam} is NP-complete.  It is also shown that, for the similar
 \textsc{Max-Radius Clustering} problem, the 1.822-approximation problem is
 NP-complete.
-\\\\
-\noindent Another result of \citet{brucker1978complexity} is that
+
+Another result of \citet{brucker1978complexity} is that
 \textsc{Sum-of-Diameters Clustering} (\textsc{S-Diam}) is NP-complete for $k
 \geq 3$.  \citet{doddi2000approximation} show that the associated
 2-approximation problem can be solved efficiently when the dissimilarity used
@@ -1476,26 +1478,25 @@ In \citet{hansen87sumofdiameters} it is shown that, when $k=2$,
 \textsc{S-Diam} is solvable in $O(n^2 \log n)$ time.  It is also shown that
 minimising any function of the diameters can be done in $O(n^5)$ time when
 $k=2$.
-\\\\
-\noindent In \citet{garey82quant} it is shown that the \textit{quantization
-  problem} is NP-complete.  It turns out that this problem is a special case
-of \textsc{Sum-of-Stars Clustering} (\textsc{S-Stars}) where a dissimilarity
-with values in $\{0,1\}$ is used.  Further, it is shown that the problem is
+
+In \citet{garey82quant} it is shown that the \textit{quantization problem} is
+NP-complete.  It turns out that this problem is a special case of
+\textsc{Sum-of-Stars Clustering} (\textsc{S-Stars}) where a dissimilarity with
+values in $\{0,1\}$ is used.  Further, it is shown that the problem is
 NP-complete even when the parameter corresponding to $k$ is set to 2.
-\\\\
-\noindent The above complexity results, especially the last one for
-\textsc{S-Stars}, has led many authors to believe that
-\textsc{Centroid-Distance Clustering} in Euclidean space is also NP-complete.
-In fact this was proved only relatively recently.  It is in fact NP-complete
-even when $k=2$ \citep{aloise09exact} and for general $k$ in 2-dimensional
-Euclidean space \citep{mahajan09}.  If both $k$ and the number of dimensions,
-$m$, are fixed, then the problem is exactly solvable in $O(n^{mk+1} \log n)$
-time \citep{inaba94weightedvoronoi}.
-\\\\
-\noindent We conclude by remarking that not all clustering problems are hard.
-One example is \textsc{Min-Split Clustering} for which a polynomial time
-algorithm exists (for the optimisation problem).  In particular, the problem
-is solved with the \textsc{Slink} hierarchical clustering algorithm of
+
+The above complexity results, especially the last one for \textsc{S-Stars},
+has led many authors to believe that \textsc{Centroid-Distance Clustering} in
+Euclidean space is also NP-complete.  In fact this was proved only relatively
+recently.  It is in fact NP-complete even when $k=2$ \citep{aloise09exact} and
+for general $k$ in 2-dimensional Euclidean space \citep{mahajan09}.  If both
+$k$ and the number of dimensions, $m$, are fixed, then the problem is exactly
+solvable in $O(n^{mk+1} \log n)$ time \citep{inaba94weightedvoronoi}.
+
+We conclude by remarking that not all clustering problems are hard.  One
+example is \textsc{Min-Split Clustering} for which a polynomial time algorithm
+exists (for the optimisation problem).  In particular, the problem is solved
+with the \textsc{Slink} hierarchical clustering algorithm of
 \citet{johnson67hierarchical}.  The runtime of this algorithm is $O(n^2)$
 \citep{delattre1980bicriterion}.  However, the min-split criterion does suffer
 from the previously mentioned chaining effect and for this reason it is often
@@ -1662,9 +1663,9 @@ partition $\clus'$ of $\dset$ is an improvement of $\clus$ if $f(\clus') <
 f(\clus)$ or $f(\clus') > f(\clus)$, whichever is appropriate for the
 criterion.  We will now look at some of the methods that have been devised for
 making improvements.
-\\\\
-\noindent \textit{Hartigan's method} \citep{hartigan1975clustering} is a
-simple heuristic that is general in the sense that it takes a criterion as a
+
+\textit{Hartigan's method} \citep{hartigan1975clustering} is a simple
+heuristic that is general in the sense that it takes a criterion as a
 parameter and attempts to produce an improvement with respect to that
 criterion.  This is unlike most methods which are specialised to a particular
 criterion and often even to a particular type of dataset and metric.  Many of
@@ -1680,17 +1681,17 @@ optimised at each stage.  This is called an optimal reassignment.  Elements
 are repeatedly optimally reassigned until no more reassignments would produce
 an improvement.  Thus, upon termination, a locally optimal partition has been
 found.
-\\\\
-\noindent \textit{Lloyd's method}, which is specialised to the
-centroid-distance criterion with the Euclidean distance, is probably the most
-well-known and widely used clustering method today.  The centroid-distance
-problem is also commonly called the $k$-means problem.  The popularity of
-Lloyd's method had led to many authors referring to it simply as ``the
-$k$-means algorithm'' (although, as we note below, calling it an algorithm may
-be erroneous).  There is some confusion here, though, as some authors also
-refer to Hartigan's method with respect to the centroid-distance criterion as
-$k$-means and others refer Lloyd's method as H-means.  To try to avoid
-ambiguity we avoid any of these alternative names.
+
+\textit{Lloyd's method}, which is specialised to the centroid-distance
+criterion with the Euclidean distance, is probably the most well-known and
+widely used clustering method today.  The centroid-distance problem is also
+commonly called the $k$-means problem.  The popularity of Lloyd's method had
+led to many authors referring to it simply as ``the $k$-means algorithm''
+(although, as we note below, calling it an algorithm may be erroneous).  There
+is some confusion here, though, as some authors also refer to Hartigan's
+method with respect to the centroid-distance criterion as $k$-means and others
+refer Lloyd's method as H-means.  To try to avoid ambiguity we avoid any of
+these alternative names.
 
 The method is simple and easy to understand, given an initial $k$ partition of
 a dataset $\dset$ it proceeds as follows:
@@ -1735,12 +1736,12 @@ including in some of the more prominent software, for example in Weka and R.
 A comparison of Lloyd's method and Hartigan's method, in which Hartigan's
 method is shown to produce more attractive partitions in fewer iterations, is
 given in \citep{telgarsky2010hartigan}.
-\\\\
-\noindent We turn now to sum-of-stars clustering, which is also known as
-$k$-medoids clustering analogous to $k$-means clustering and reflecting the
-fact that medoids are calculated in the process of calculating the
-sum-of-stars criterion.  The oldest and simplest heuristic method for
-sum-of-stars clustering is Partitioning Around Medoids (PAM), shown in
+
+We turn now to sum-of-stars clustering, which is also known as $k$-medoids
+clustering analogous to $k$-means clustering and reflecting the fact that
+medoids are calculated in the process of calculating the sum-of-stars
+criterion.  The oldest and simplest heuristic method for sum-of-stars
+clustering is Partitioning Around Medoids (PAM), shown in
 Algorithm~\ref{alg:pam}, was introduced by \citet{kaufman2005finding}.
 \begin{algorithm}[h]
   \caption{Partition Around Medoids (PAM).}
@@ -1839,13 +1840,13 @@ those produced by CLARA \citep{ng2002clarans}.
 
 \end{algorithm}
 
-\noindent Heuristics remain the most popular choice for clustering
-applications in general, probably due to their ability to produce acceptable
-solutions for a wide variety of input.  But it is often more desirable to have
-an algorithm with a proven worst-case runtime complexity and which is
-guaranteed to produce either optimal solutions or solutions within some known
-degree of the optimal.  The former type are called \textit{exact algorithms}
-and the latter \textit{approximation algorithms}.
+Heuristics remain the most popular choice for clustering applications in
+general, probably due to their ability to produce acceptable solutions for a
+wide variety of input.  But it is often more desirable to have an algorithm
+with a proven worst-case runtime complexity and which is guaranteed to produce
+either optimal solutions or solutions within some known degree of the optimal.
+The former type are called \textit{exact algorithms} and the latter
+\textit{approximation algorithms}.
 
 Approximation algorithms are a popular way to deal with many NP-hard
 optimisation problems.  An algorithm is called an $n$-approximation algorithm
