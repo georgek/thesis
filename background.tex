@@ -176,10 +176,9 @@ for all $\vec{x}=(x_1,\dotsc,x_m),\vec{y}=(y_1,\dotsc,y_m) \in \dset$ where
   \end{cases}
 \end{equation*}
 for all $1 \geq i \geq m$ where $range_i$ is the difference between maximum
-and minimum observed values for component $i$ in $\dset$.
-
-There also exist generalised Mahalanobis distances for mixed data, see for
-example \citep{leon2005generalized}.
+and minimum observed values for component $i$ in $\dset$.  There also exist
+generalised Mahalanobis distances for mixed data, see for example
+\citep{leon2005generalized}.
 
 \subsection{Set metrics}
 \label{sec:set-metric}
@@ -776,6 +775,25 @@ taking the geometric mean of the Wallace measures:
 This measure was also introduced independently by Fowlkes and Mallows in
 \citep{fowlkes-mallows-1983}.
 
+\begin{table}
+  \centering
+  \begin{tabular}{lr}
+    \toprule
+    Name & Measure \\
+    \midrule
+    Rand index          & $\partcomparest{R} \approx 0.694$ \\
+    Wallace measures    & $\mathcal{W}_{I}(\clus^*_1,\clus^*_2) \approx 0.222$ \\
+                        & $\mathcal{W}_{II}(\clus^*_1,\clus^*_2) \approx 0.333$ \\
+    Fowlkes \& Mallows  & $\partcomparest{F} \approx 0.272$ \\
+    Jaccard coefficient & $\partcomparest{J} \approx 0.154$ \\
+    Merkin metric       & $\partcomparest{M} = 22.00$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Various pair counting based measures applied to the example
+    partitions $\clus^*_1$ and $\clus^*_2$~\eqref{eq:example-parts}.}
+  \label{tab:pair-counting-comparison}
+\end{table}
+
 The \textit{Jaccard coefficient} $\partcomparen{J}$ is another widely-used
 similarity measure and is defined, for $\clus_1$ and $\clus_2$, as:
 \begin{equation*}
@@ -796,25 +814,6 @@ and $\clus_2$.  As it turns out, \[\partcompare{M}=2(N_{10}+N_{01}).\] The
 closely related measure: \[\partcompare{AB}=(N_{10}+N_{01})/\binom{n}{2}\] is
 also a metric on $\parts_{\dset}$ and was used by
 \citet{mirkin1970measurement} and \citet{arabie1973multidimensional}.
-
-\begin{table}
-  \centering
-  \begin{tabular}{lr}
-    \toprule
-    Name & Measure \\
-    \midrule
-    Rand index          & $\partcomparest{R} \approx 0.694$ \\
-    Wallace measures    & $\mathcal{W}_{I}(\clus^*_1,\clus^*_2) \approx 0.222$ \\
-                        & $\mathcal{W}_{II}(\clus^*_1,\clus^*_2) \approx 0.333$ \\
-    Fowlkes \& Mallows  & $\partcomparest{F} \approx 0.272$ \\
-    Jaccard coefficient & $\partcomparest{J} \approx 0.154$ \\
-    Merkin metric       & $\partcomparest{M} = 22.00$ \\
-    \bottomrule
-  \end{tabular}
-  \caption{Various pair counting based measures applied to the example
-    partitions $\clus^*_1$ and $\clus^*_2$~\eqref{eq:example-parts}.}
-  \label{tab:pair-counting-comparison}
-\end{table}
 
 The values of the reviewed pair counting measures when applied to $\clus^*_1$
 and $\clus^*_2$ are given in Table~\ref{tab:pair-counting-comparison}.
@@ -1398,8 +1397,6 @@ for the criterion $f$ is fixed:
     that $f(\clus) \leq B$?}
 \end{problem}
 
-\pagebreak
-
 Optimisation problems also have corresponding \textit{approximation problems}.
 The $n$-approximation problem corresponding to an optimisation problem is the
 problem of finding solutions with an objective criterion value within $n$
@@ -1621,7 +1618,7 @@ their experiments.
     \State \Return $\{c_1,c_2,\dotsc,c_k\}$.
   \end{algorithmic}
 \end{algorithm}
-\pagebreak
+
 A further method, introduced by \citet{arthur2007kmeans++} is called
 $k$-means++ and is shown in Algorithm~\ref{alg:kmeans++}.  Its name reflects
 the fact that it was designed to be used in conjunction with an improvement

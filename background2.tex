@@ -214,6 +214,48 @@ are adjacent then we also call $v$ the \textit{parent} of $v'$ and $v'$ a
 \textit{child} of $v$.  The number of children of a particular vertex equals
 its out-degree.
 
+The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in an
+$X$-tree is the unique vertex $u$ such that $u$ is an ancestor of both $v$ and
+$v'$ and the path from the root $\rho$ to $u$ is longer than the path to any
+other ancestor of both $v$ and $v'$.  The lowest common ancestor of $v$ and
+$v'$ is denoted $\lca(v,v')$.  In the $X'$-tree in Figure~\ref{fig:x-tree-ex}
+(ii) the lowest common ancestor of $a$ and $d$ is the root $\rho$.
+
+A connected subgraph of a tree is called a \textit{subtree}.  If $T$ is an
+$X$-tree and $X' \subseteq X$ then we denote by $T|X'$ the subtree of $T$
+whose leafset is $X'$, with degree 2 vertices suppressed.  $T|X'$ is then
+called a \textit{restricted subtree}.  If $T$ is binary and $|X'| = 3$ then
+$T|X'$ is called a \textit{triplet}.
+
+We call two $X$-trees $T$ and $T'$ \textit{equivalent} (written $T \simeq T'$)
+if there exists a bijection $\phi \colon V(T) \to V(T')$ that extends to a
+graph isomorphism that is the identity on $X$.  Since an $X$-tree is rooted,
+$\phi$ must also map $\rho_{T}$ to $\rho_{T'}$.
+
+For a set $X$ the number of possible non-equivalent binary $X$-trees is
+$(2|X|-3)!!$ (where $!!$ means double factorial).  Therefore to find a tree in
+this space with particular properties we cannot look at each possible tree and
+must instead use a special tree reconstruction method.  Next we look at how
+distances are related to trees and then at the problem of reconstructing a
+tree from distance information.
+
+\subsubsection{Ultrametrics}
+\label{sec:ultrametrics}
+
+Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
+\colon E \to \rrnn$ we can associate a distance $D_{(T,\omega)} \colon X
+\times X \to \rrnn$ to $(T,\omega)$ by setting for all $x,y \in X$:
+\begin{equation*}
+  D_{(T,\omega)}(x,y) =
+  \begin{cases}
+    \displaystyle
+    \sum_{e \in P(x,y)} \omega(e) & \text{if $x \neq y$},\\
+    0 & \text{otherwise,}
+  \end{cases}
+\end{equation*}
+where $P(x,y)$ is the set of edges on the path from $x$ to $y$.  We call
+$D_{(T,\omega)}$ the distance \textit{induced} by $(T,\omega)$.
+
 \begin{figure}
   \centering
     \begin{subfigure}[b]{0.5\textwidth}
@@ -269,48 +311,6 @@ its out-degree.
    \label{fig:example-equidistant}
 \end{figure}
 
-The \textit{lowest common ancestor} of two vertices $v$ and $v'$ in an
-$X$-tree is the unique vertex $u$ such that $u$ is an ancestor of both $v$ and
-$v'$ and the path from the root $\rho$ to $u$ is longer than the path to any
-other ancestor of both $v$ and $v'$.  The lowest common ancestor of $v$ and
-$v'$ is denoted $\lca(v,v')$.  In the $X'$-tree in Figure~\ref{fig:x-tree-ex}
-(ii) the lowest common ancestor of $a$ and $d$ is the root $\rho$.
-
-A connected subgraph of a tree is called a \textit{subtree}.  If $T$ is an
-$X$-tree and $X' \subseteq X$ then we denote by $T|X'$ the subtree of $T$
-whose leafset is $X'$, with degree 2 vertices suppressed.  $T|X'$ is then
-called a \textit{restricted subtree}.  If $T$ is binary and $|X'| = 3$ then
-$T|X'$ is called a \textit{triplet}.
-
-We call two $X$-trees $T$ and $T'$ \textit{equivalent} (written $T \simeq T'$)
-if there exists a bijection $\phi \colon V(T) \to V(T')$ that extends to a
-graph isomorphism that is the identity on $X$.  Since an $X$-tree is rooted,
-$\phi$ must also map $\rho_{T}$ to $\rho_{T'}$.
-
-For a set $X$ the number of possible non-equivalent binary $X$-trees is
-$(2|X|-3)!!$ (where $!!$ means double factorial).  Therefore to find a tree in
-this space with particular properties we cannot look at each possible tree and
-must instead use a special tree reconstruction method.  Next we look at how
-distances are related to trees and then at the problem of reconstructing a
-tree from distance information.
-
-\subsubsection{Ultrametrics}
-\label{sec:ultrametrics}
-
-Given an edge-weighted $X$-tree $(T,\omega)$ where $T=(V,E)$ and $\omega
-\colon E \to \rrnn$ we can associate a distance $D_{(T,\omega)} \colon X
-\times X \to \rrnn$ to $(T,\omega)$ by setting for all $x,y \in X$:
-\begin{equation*}
-  D_{(T,\omega)}(x,y) =
-  \begin{cases}
-    \displaystyle
-    \sum_{e \in P(x,y)} \omega(e) & \text{if $x \neq y$},\\
-    0 & \text{otherwise,}
-  \end{cases}
-\end{equation*}
-where $P(x,y)$ is the set of edges on the path from $x$ to $y$.  We call
-$D_{(T,\omega)}$ the distance \textit{induced} by $(T,\omega)$.  
-
 The distance induced by a tree is a special type of metric called a
 \textit{tree metric}.  These metrics have some interesting properties which
 are discussed in \cite[Chapter 7]{semple2003phylogenetics}.  For our purposes
@@ -338,13 +338,12 @@ equidistant edge-weightings arise naturally in many places, for example in
 phylogenetics.  For convenience we will from now on refer to such an $X$-tree
 with equidistant edge-weighting as simply an \textit{equidistant $X$-tree}.
 
-Figure~\ref{fig:example-equidistant} (page~\pageref{fig:example-equidistant})
-shows an example of an equidistant $X$-tree with $X = \{a, \dotsc, j\}$ using
-two common display formats (dendrograms).  In (i) the edges are simply
-labelled with their weights (edges with weight 1 are left unlabelled for
-clarity).  In (ii) the weight of each edge is proportional to the horizontal
-component of its length on the bar with the actual length shown with a scale
-bar.
+Figure~\ref{fig:example-equidistant} shows an example of an equidistant
+$X$-tree with $X = \{a, \dotsc, j\}$ using two common display formats
+(dendrograms).  In (i) the edges are simply labelled with their weights (edges
+with weight 1 are left unlabelled for clarity).  In (ii) the weight of each
+edge is proportional to the horizontal component of its length on the bar with
+the actual length shown with a scale bar.
 
 For any ultrametric $\delta \colon X \times X \to \rr$ there is, up to
 isomorphism, a unique equidistant $X$-tree $(T,\omega)$ such that $\delta(x,y)
@@ -395,7 +394,25 @@ $T|\{a,b,c\}$ of $T$ to $\{a,b,c\}$ is binary and $lca_T(a,c) = lca_T(b,c)$ is
 an ancestor of $lca_T(a,b)$ in $T$.  For example, the tree $T_2$ in
 Figure~\ref{fig:build-ex} is a triplet and can be written as $ad|c$.
 
-\begin{algorithm}[h]
+\begin{figure}
+  \centering
+  \input{figures/background2/build-ex2.pdft}
+  \caption{An illustration of \textsc{Build} with an input of $R =
+    \{T_1,T_2\}$.  $[R,S]$ is the auxiliary graph built in the first iteration
+    of the algorithm and $T$ is the final tree constructed.}
+  \label{fig:build-ex}
+\end{figure}
+
+The \textsc{Build} algorithm \cite{aho1981inferring} can be used to
+reconstruct an $X$-tree $T$ from the set of all triplets displayed by $T$.  We
+show the \textsc{Build} algorithm in pseudocode in Algorithm~\ref{alg:build}
+and give an example in Figure~\ref{fig:build-ex}.  The algorithm uses a set
+$R$ of rooted trees $\{T_1,\dotsc,T_n\}$ where $L(T_1) \cup \dotsb \cup L(T_n)
+= X$ and an auxiliary graph $[R,S]$ which has vertex set $S \subseteq X$ and
+an edge $\{a,b\}$ for each $a,b \in S$ whenever there exists some $c \in S$
+and some $T' \in R$ such that $T'|\{a,b,c\}$ and $ab|c$ are equivalent.
+
+\begin{algorithm}
   \caption{\textsc{Build}.}
   \label{alg:build}
 
@@ -425,24 +442,6 @@ Figure~\ref{fig:build-ex} is a triplet and can be written as $ad|c$.
     
   \end{algorithmic}
 \end{algorithm}
-
-\begin{figure}
-  \centering
-  \input{figures/background2/build-ex2.pdft}
-  \caption{An illustration of \textsc{Build} with an input of $R =
-    \{T_1,T_2\}$.  $[R,S]$ is the auxiliary graph built in the first iteration
-    of the algorithm and $T$ is the final tree constructed.}
-  \label{fig:build-ex}
-\end{figure}
-
-The \textsc{Build} algorithm \cite{aho1981inferring} can be used to
-reconstruct an $X$-tree $T$ from the set of all triplets displayed by $T$.  We
-show the \textsc{Build} algorithm in pseudocode in Algorithm~\ref{alg:build}
-and give an example in Figure~\ref{fig:build-ex}.  The algorithm uses a set
-$R$ of rooted trees $\{T_1,\dotsc,T_n\}$ where $L(T_1) \cup \dotsb \cup L(T_n)
-= X$ and an auxiliary graph $[R,S]$ which has vertex set $S \subseteq X$ and
-an edge $\{a,b\}$ for each $a,b \in S$ whenever there exists some $c \in S$
-and some $T' \in R$ such that $T'|\{a,b,c\}$ and $ab|c$ are equivalent.
 
 This algorithm has some nice properties, for example if \textsc{Build} returns
 a tree then the set of input trees is said to be \textit{compatible}.  The
@@ -731,7 +730,7 @@ X \to \rrnn$ which minimises the augmented function $\Phi \colon \rrnn^{X
   \times X} \times \rrnn \to \rrnn$ defined as:
 \begin{equation*}
   \label{eq:partial-dist-optimisation}
-  \Phi(d_n,\sigma) = Loss(d_n) + \sigma Pen(d_n), \qquad (\sigma > 0).
+  \Phi(d_n,\sigma) = Loss(d_n) + \sigma Pen(d_n), \qquad (\sigma > 0),
 \end{equation*}
 where $Loss$ is the loss function and $Pen \colon \rrnn^{X \times X} \to
 \rrnn$ is called the \textit{penalty function} which is meant to enforce the
@@ -748,9 +747,9 @@ where
 In other words, $\Omega(d_n)$ denotes the set of $3$-tuples for which the
 ultrametric condition is violated.  The unconstrained minimisation is
 performed successively with an increasing value for $\sigma$, each time using
-the previous result $d_{n-1}$ to begin the search for the next $d_n$.  To
-perform the unconstrained minimisation of the augmented function, a method by
-\cite{powell1977restart} is used.
+the previous result $d_{n-1}$ to begin the search for the next $d_n$.  A
+method by \cite{powell1977restart} is used to perform the unconstrained
+minimisation.
 
 \subsubsection{An agglomerative method}
 \label{sec:part-dist-agglom-method}
