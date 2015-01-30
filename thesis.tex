@@ -8,8 +8,10 @@
 \usepackage[opticals]{CronosPro}
 % \usepackage{MyriadPro}
 % \usepackage{lmodern}
+\usepackage[toc,eqno,enum,bib]{tabfigures}
 \usepackage[english]{babel}
 \usepackage[left=45mm,right=30mm,top=45mm,headsep=12mm,bottom=39mm,footskip=15mm]{geometry}
+\usepackage{fancyhdr}
 \usepackage{sectsty}
 \usepackage{tocloft}
 \usepackage{datetime}
@@ -38,15 +40,24 @@
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 
-% \renewcommand{\baselinestretch}{1.62}
 \onehalfspacing
 \flushbottom
 
+% use sans serif for headings
 \renewcommand{\cfttoctitlefont}{\Huge\bfseries\sffamily}
 \renewcommand{\cftloftitlefont}{\Huge\bfseries\sffamily}
 \renewcommand{\cftlottitlefont}{\Huge\bfseries\sffamily}
 \renewcommand{\cftchapfont}{\bfseries\sffamily}
 \allsectionsfont{\sffamily}
+
+% set headings to use lining figures
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\it\figureversion{lf}\leftmark}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\AtBeginEnvironment{tabular}{\figureversion{lf,tab}}
 
 \newcommand{\reporttitle}{New Algorithms and Methodology for Analysing
   Distances}
