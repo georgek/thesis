@@ -1,7 +1,8 @@
         \begin{axis}[xlabel=$P_{miss}$,
           ylabel=Mean Robinson-Foulds distance,
-          yticklabels={,0,0.05,0.1,0.15,0.2,0.25}]
-      \addplot[color=blue,mark=triangle*] table[x=missing,y=mean]{
+          yticklabels={,0,0.05,0.1,0.15,0.2,0.25},
+          legend pos=north west]
+      \addplot[color=black,mark=triangle*] table[x=missing,y=mean]{
 missing  mean      min      max     minc     maxc
 0.0    0.000    0.000    0.000       64       64
 1.0    0.000    0.000    0.000       64       64
@@ -11,7 +12,7 @@ missing  mean      min      max     minc     maxc
 30.0    0.233    0.000    0.698       30       64
       };
       \addlegendentry{Balanced}
-      \addplot table[x=missing,y=mean]{
+      \addplot[color=black,mark=square*] table[x=missing,y=mean]{
 missing  mean      min      max     minc     maxc
 0.0    0.000    0.000    0.000       64       64
 1.0    0.000    0.000    0.000       64       64
@@ -21,7 +22,7 @@ missing  mean      min      max     minc     maxc
 30.0    0.210    0.000    0.857       14       64
       };
       \addlegendentry{Yule}
-      \addplot table[x=missing,y=mean]{
+      \addplot[color=black,mark=*] table[x=missing,y=mean]{
 missing  mean      min      max     minc     maxc
 0.0    0.000    0.000    0.000       64       64
 1.0    0.000    0.000    0.000       64       64

@@ -657,11 +657,11 @@ the associated set of cords the $\Gamma(\cL)$ graph remained connected. More
 precisely, we generated 500 incomplete distance matrices for each of the three
 equidistant $X$-tree types using the values $1\%$, $5\%$, $10\%$, $20\%$ and
 $30\%$ for $P_{miss}$.  We then used the resulting $3 \times 5 \times 500$
-incomplete distance matrices as input to \textsc{Lasso}. Each equidistant tree
-found by \textsc{Lasso} was then compared with the respective equidistant
-$X$-tree $(T',\omega')$ used to generate the underlying input matrix. More
-precisely, for $Y$ denoting the leaf set of a tree $(T,\omega)$ returned by
-\textsc{Lasso}, we computed the Robinson-Foulds distance
+incomplete distance matrices as input to \textsc{Lasso}. Each equidistant
+$X$-tree found by \textsc{Lasso} was then compared with the respective
+equidistant $X$-tree $(T',\omega')$ used to generate the underlying input
+matrix. More precisely, for $Y$ denoting the leaf set of a tree $(T,\omega)$
+returned by \textsc{Lasso}, we computed the Robinson-Foulds distance
 \cite{robinson1981comparison} $D_{RF}(T,T'|_Y)$ between $T$ and the
 restriction $T'|_Y$ of $T'$ to $Y$, that is, we counted the number of clusters
 induced by $T'|_Y$ but not by $T$ and vice versa.  For each equidistant
@@ -811,7 +811,8 @@ evolutionary history. While some minor changes in topology are seen within the
 European and American groups, the relationships within the Far Eastern group
 are wholly preserved once 10\% of distances have been removed.
 
-\begin{figure}
+\begin{figure}[t]
+  \figureversion{lf}\tbfigures
   \centering
   \beginpgfgraphicnamed{yeast-tree-complete}
   \begin{tikzpicture}[xscale=50,yscale=0.35]
@@ -832,8 +833,8 @@ Since \textsc{Lasso}'s ability to reconstruct an equidistant tree from a
 partial distance depends on both which distances are missing and the random
 decisions made by the algorithm to break ties, we also constructed a consensus
 tree from the equidistant trees returned by \textsc{Lasso} (see
-Fig.~\ref{fig:yeast-tree-consense}).  For this, we used an approach similar to
-bootstrapping and indicate in terms of numbers assigned to each internal
+Figure~\ref{fig:yeast-tree-consense}).  For this, we used an approach similar
+to bootstrapping and indicate in terms of numbers assigned to each internal
 vertex, except the root, how often each cluster induced by such a vertex is
 displayed by an equidistant tree returned by \textsc{Lasso}.  More precisely
 we generated 100 partial distances with $10\%$ of the distances removed at
@@ -849,7 +850,8 @@ European strains Q89\_8, Q95\_3 and S36\_7. Noticeably, the support for the
 bifurcation of the latter two strains is the only one in
 Figure~\ref{fig:yeast-tree-consense} less than 74.
 
-\begin{figure}
+\begin{figure}[t]
+  \figureversion{lf}\tbfigures
   \centering
   \beginpgfgraphicnamed{yeast-tree-consense}
   \begin{tikzpicture}[xscale=0.8,yscale=0.35]
@@ -880,7 +882,7 @@ GEDIFLUX wheat accessions. Consequently, the two datasets share a common set
 of 26 European winter wheat accessions, comprising 6.3\% and 22.0\% of their
 accessions respectively. We will refer to this shared dataset as dataset $C$.
 
-\begin{figure}
+\begin{figure}[t]
   \centering
   \includegraphics[scale=1]{figures/lasso-construction/supp-gedi-groups.pdf}
   \caption{The \textsc{Lasso} tree for wheat dataset $A$ coloured according to
@@ -888,7 +890,7 @@ accessions respectively. We will refer to this shared dataset as dataset $C$.
   \label{fig:lasso-wheat-a}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[t]
   \centering
   \includegraphics[scale=0.8]{figures/lasso-construction/supp-muge-groups.pdf}
   \caption{The \textsc{Lasso} tree for wheat dataset $B$ coloured according to
@@ -959,7 +961,7 @@ we exclude entries of the form $D(x,x)$ and only count entries of the form
 $D(x,y)$ and $D(y,x)$ once) which equates to $28.1\%$ of the $126,253$
 potential distance values of a distance matrix on $503$ taxa missing.  We then
 used this distance as input for \textsc{Lasso} to obtain a supertree $T$ on
-the combined dataset. We depict that supertree in (Fig.~
+the combined dataset. We depict that supertree in (Figure~
 \ref{fig:wheat-supertree}) and remark in passing that the tree contains all
 503 input taxa and that the size of the strong lasso returned by
 \textsc{Lasso} supporting $T$ is 89,642. Put differently, $T$ is the unique
@@ -999,13 +1001,12 @@ as a supertree method.
 \textsc{In this chapter}, we have proposed the novel \textsc{Lasso} approach
 both for distance-based phylogenetic tree reconstruction and supertree
 construction.  \textsc{Lasso} is similar in spirit to \textsc{UPGMA} but takes
-as input partial distances (as opposed to the complete distances required by
-\textsc{UPGMA}) and aims to reconstruct a unique (in a well-defined sense),
-equidistant tree by exploiting redundancy in a given distance matrix rather
-than trying to estimate missing distance values as do approaches such as
-\cite{criscuolo2008fastnj}. Given that equidistant trees can be exploited as
-starting trees within a search of tree space, for sophisticated phylogenetic
-methods such as Maximum Likelihood and Bayesian Inference
+as input partial distances and aims to reconstruct a unique (in a well-defined
+sense), equidistant tree by exploiting redundancy in a given distance matrix
+rather than trying to estimate missing distance values as do approaches such
+as \cite{criscuolo2008fastnj}. Given that equidistant trees can be exploited
+as starting trees within a search of tree space, for sophisticated
+phylogenetic methods such as Maximum Likelihood and Bayesian Inference
 \cite{burbrink09molecular,bouckaert14beast}, \textsc{Lasso} might provide a
 quick and promising way to extend these methods to data sets for which only
 partial distance information is available. Such datasets might arise when, for

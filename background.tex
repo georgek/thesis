@@ -186,9 +186,9 @@ generalised Mahalanobis distances for mixed data, see for example
 Metrics are also possible on more complex structures, like sets.  Throughout
 this thesis we use a convention for naming dissimilarities: $d$ is used in
 general, $\delta$ is used for dissimilarities on sets and, later, we will use
-$\Delta$ for dissimilarities on partitions.  In this subsection we look at
-some metrics on sets and in Section~\ref{sec:comparing-partitions} we will
-look at dissimilarities on partitions.
+$\Delta$ for dissimilarities on partitions.  % In this subsection we look at
+% some metrics on sets and in Section~\ref{sec:comparing-partitions} we will
+% look at dissimilarities on partitions.
 
 \subsubsection{Symmetric difference}
 \label{sec:symmetric-difference}
@@ -222,6 +222,21 @@ The following proof was presented in \citep{yianilos91}, with some errors.  We
 reproduce the proof here with the errors corrected.
 
 \begin{proof}
+  It is easy to see the function is nonnegative, symmetric and that
+  $\delta_{\symdif_n}(X,Y)=0$ if and only if $X=Y$ for all $X,Y \in 2^{\dset}$
+  so we will show that the triangle inequality holds which is:
+  \begin{equation*}
+    \frac{|X \symdif Y|}{|X \cup Y|} + \frac{|Y \symdif Z|}{|Y \cup Z|} \geq
+    \frac{|X \symdif Z|}{|X \cup Y|}
+  \end{equation*}
+  or, equivalently:
+  \begin{equation}
+    \label{eq:tri-inequality}
+    1 - \frac{|X \cap Y|}{|X \cup Y|} +
+    1 - \frac{|Y \cap Z|}{|Y \cup Z|} \geq
+    1 - \frac{|X \cap Z|}{|X \cup Z|}.
+  \end{equation}
+
   \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -247,21 +262,6 @@ reproduce the proof here with the errors corrected.
       represent the cardinalities of each disjoint set as shown.}
     \label{fig:partition}
   \end{figure}
-
-  It is easy to see the function is nonnegative, symmetric and that
-  $\delta_{\symdif_n}(X,Y)=0$ if and only if $X=Y$ for all $X,Y \in 2^{\dset}$
-  so we will show that the triangle inequality holds which is:
-  \begin{equation*}
-    \frac{|X \symdif Y|}{|X \cup Y|} + \frac{|Y \symdif Z|}{|Y \cup Z|} \geq
-    \frac{|X \symdif Z|}{|X \cup Y|}
-  \end{equation*}
-  or, equivalently:
-  \begin{equation}
-    \label{eq:tri-inequality}
-    1 - \frac{|X \cap Y|}{|X \cup Y|} +
-    1 - \frac{|Y \cap Z|}{|Y \cup Z|} \geq
-    1 - \frac{|X \cap Z|}{|X \cup Z|}.
-  \end{equation}
 
   We partition $X \cup Y \cup Z$ into disjoint subsets as shown in
   Figure~\ref{fig:partition} and let
