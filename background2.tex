@@ -4,12 +4,12 @@
 \section{Summary}
 \label{sec:summary}
 
-In this section we review the relevant terminology and background that is
-required for the remainder of this thesis.  We begin with the general theory
-of graphs, trees and their relationship to distances and special types of
-metrics.  We then look at the problem of reconstructing trees from distances and
-finally at the theory of ``lassoing'' a tree from incomplete distance
-information.
+\textsc{In this section} we review the relevant terminology and background
+that is required for the remainder of this thesis.  We begin with the general
+theory of graphs, trees and their relationship to distances and special types
+of metrics.  We then look at the problem of reconstructing trees from
+distances and finally at the theory of ``lassoing'' a tree from incomplete
+distance information.
 
 \section{Graphs, Trees and Distances}
 \label{sec:graphs-trees-dist}
@@ -17,12 +17,12 @@ information.
 \subsection{History}
 \label{sec:history}
 
-Trees have been used to represent hierarchical structures for many hundreds of
-years \cite{knuth97taocp1}.  One of the most well-known and ubiquitous
-occurrences is that of the family tree.  The use of a tree to represent
-lineages was widespread in Europe by the 14th Century in Christian artwork
-depicting the ancestors of Jesus of Nazareth.  This depiction is known as the
-Tree of Jesse \cite{corblet1860etude}.
+\textsc{Trees have been used} to represent hierarchical structures for many
+hundreds of years \cite{knuth97taocp1}.  One of the most well-known and
+ubiquitous occurrences is that of the family tree.  The use of a tree to
+represent lineages was widespread in Europe by the 14th Century in Christian
+artwork depicting the ancestors of Jesus of Nazareth.  This depiction is known
+as the Tree of Jesse \cite{corblet1860etude}.
 
 Darwin would later popularise the concept of the more general ``tree of life''
 in his seminal work popularly known as \textit{On the Origin of Species}
@@ -353,10 +353,11 @@ the ultrametric in polynomial time, as we will see in the next section.
 \section{Tree reconstruction}
 \label{sec:tree-construction}
 
-In this section, we look at various methods of reconstructing trees.  Of most
-interest to us is the problem of reconstructing an $X$-tree from a distance on
-$X$.  This is generally done by one of two broad classes of hierarchical
-clustering methods which we discuss in Section~\ref{sec:hier-clust-meth}.
+\textsc{In this section}, we look at various methods of reconstructing trees.
+Of most interest to us is the problem of reconstructing an $X$-tree from a
+distance on $X$.  This is generally done by one of two broad classes of
+hierarchical clustering methods which we discuss in
+Section~\ref{sec:hier-clust-meth}.
 
 A further problem is that of reconstructing an edge-weighted $X$-tree from a
 distance on $X$.  This is desirable in many cases, for example in
@@ -825,13 +826,13 @@ tree constructed is different to the tree constructed by MVL.
 \section{Lassos}
 \label{sec:lassoing-corralling}
 
-As we saw in the example shown in Figure~\ref{fig:farach-mvl-ex}, the existing
-partial distance reconstruction methods can construct different trees from the
-same input.  The problem with the example partial distance in that case was
-that no ultrametric extension exists so the methods each modified the given
-distances in different ways to obtain an ultrametric.  This means that for
-some pairs of leaves in the resulting tree the induced tree distance is not
-equal to the inputted distance.  This may be undesirable.
+\textsc{As we saw} in the example shown in Figure~\ref{fig:farach-mvl-ex}, the
+existing partial distance reconstruction methods can construct different trees
+from the same input.  The problem with the example partial distance in that
+case was that no ultrametric extension exists so the methods each modified the
+given distances in different ways to obtain an ultrametric.  This means that
+for some pairs of leaves in the resulting tree the induced tree distance is
+not equal to the inputted distance.  This may be undesirable.
 
 A second problem is that often more than one extension to an ultrametric is
 possible.  We will see this in the example in the following section.  In the
