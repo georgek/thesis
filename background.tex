@@ -147,15 +147,15 @@ female.
 The simplest metric for categorical data is the \textit{overlap metric}, which
 is also variously called the \textit{split metric}, \textit{discrete metric}
 or \textit{$0/1$ metric}.  For a set, $\dset$, the overlap metric, $d_{O}
-\colon \dset \times \dset \to \mathbb{R}^{\geq 0}$, is defined as:
+\colon \dset \times \dset \to \mathbb{R}^{\geq 0}$, is defined for all $x,y
+\in \dset$ as:
 \begin{equation*}
   d_O(x,y) =
   \begin{cases}
     0 & \text{if $x=y$,} \\
-    1 & \text{otherwise,}
+    1 & \text{otherwise.}
   \end{cases}
 \end{equation*}
-for all $x,y \in \dset$.
 
 A frequently occurring type of data appearing in many areas is mixed data,
 which consists of $m$-tuples with both numerical and categorical components.
@@ -195,11 +195,11 @@ $\Delta$ for dissimilarities on partitions.  % In this subsection we look at
 
 Let $\dset$ be a set and $2^\dset$ its powerset.  The cardinality of the
 symmetric difference, $\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to
-\mathbb{R}^{\geq 0}$ is a well-known metric on sets defined as:
+\mathbb{R}^{\geq 0}$ is a well-known metric on sets defined for all $X,Y \in
+2^{\dset}$ as:
 \begin{equation*}
-  \delta_{\symdif}(X,Y) = |X \symdif Y|,
+  \delta_{\symdif}(X,Y) = |X \symdif Y|.
 \end{equation*}
-for all $X,Y \in 2^{\dset}$.
 
 A related dissimilarity is the normalised symmetric difference,
 $\delta_{\symdif} \colon 2^{\dset} \times 2^{\dset} \to \mathbb{R}^{\geq 0}$,
