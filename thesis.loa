@@ -1,10 +1,10 @@
-\contentsline {algorithm}{\numberline {1}{\ignorespaces Kennard-Stone initial centres algorithm.\relax }}{37}{algorithm.1}
-\contentsline {algorithm}{\numberline {2}{\ignorespaces Yuan-Meng-Zhang-Dong initial centres algorithm.\relax }}{38}{algorithm.2}
-\contentsline {algorithm}{\numberline {3}{\ignorespaces $k$-means++ initial centres algorithm.\relax }}{39}{algorithm.3}
-\contentsline {algorithm}{\numberline {4}{\ignorespaces Partition Around Medoids (PAM).\relax }}{41}{algorithm.4}
-\contentsline {algorithm}{\numberline {5}{\ignorespaces CLARANS.\relax }}{43}{algorithm.5}
-\contentsline {algorithm}{\numberline {6}{\ignorespaces \textsc {Build}.\relax }}{88}{algorithm.6}
-\contentsline {algorithm}{\numberline {7}{\ignorespaces Agglomerative hierarchical clustering algorithm.\relax }}{90}{algorithm.7}
-\contentsline {algorithm}{\numberline {8}{\ignorespaces UPGMA.\relax }}{92}{algorithm.8}
-\contentsline {algorithm}{\numberline {9}{\ignorespaces The \textsc {Lasso} algorithm\relax }}{110}{algorithm.9}
-\contentsline {algorithm}{\numberline {10}{\ignorespaces Random tree generation\relax }}{116}{algorithm.10}
+\contentsline {algorithm}{\numberline {1}{\ignorespaces Kennard-Stone initial centres algorithm.\relax }}{36}{algorithm.1}
+\contentsline {algorithm}{\numberline {2}{\ignorespaces Yuan-Meng-Zhang-Dong initial centres algorithm.\relax }}{37}{algorithm.2}
+\contentsline {algorithm}{\numberline {3}{\ignorespaces $k$-means++ initial centres algorithm.\relax }}{38}{algorithm.3}
+\contentsline {algorithm}{\numberline {4}{\ignorespaces Partition Around Medoids (PAM).\relax }}{40}{algorithm.4}
+\contentsline {algorithm}{\numberline {5}{\ignorespaces CLARANS.\relax }}{42}{algorithm.5}
+\contentsline {algorithm}{\numberline {6}{\ignorespaces \textsc {Build}.\relax }}{87}{algorithm.6}
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Agglomerative hierarchical clustering algorithm.\relax }}{89}{algorithm.7}
+\contentsline {algorithm}{\numberline {8}{\ignorespaces UPGMA.\relax }}{91}{algorithm.8}
+\contentsline {algorithm}{\numberline {9}{\ignorespaces The \textsc {Lasso} algorithm\relax }}{109}{algorithm.9}
+\contentsline {algorithm}{\numberline {10}{\ignorespaces Random tree generation\relax }}{115}{algorithm.10}
