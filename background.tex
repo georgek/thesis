@@ -1284,15 +1284,15 @@ also be established by the \textit{Huygens-Steiner}, or
 \subset \mathbb{R}^m$ with mean $\vec{c}$ and any element $\vec{s} \in
 \mathbb{R}^m$:
 \begin{equation}
-  \label{eq:huygens}
+  \label{eq:huygens-back}
   \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{s}) = d_E^2(\vec{c},\vec{s}) \cdot |C| +
                              \sum_{\vec{x} \in C} d_E^2(\vec{x},\vec{c}).
 \end{equation}
 
 We now use this theorem to establish a relationship between centroid-distance
 and sum-of-cliques.  With some $C \subset \mathbb{R}^m$ as before, we
-beginning with equation~\eqref{eq:huygens} and assign some $\vec{y} \in C$ to
-$\vec{s}$ and sum over all $\vec{y} \in C$:
+beginning with equation~\eqref{eq:huygens-back} and assign some $\vec{y} \in
+C$ to $\vec{s}$ and sum over all $\vec{y} \in C$:
 \begin{equation*}
   \sum_{\vec{x},\vec{y} \in C} d_E^2(\vec{x},\vec{y}) = \sum_{\vec{y} \in C}
   d_E^2(\vec{c},\vec{y}) \cdot |C| 
@@ -1362,7 +1362,7 @@ Criteria based on information theory are also possible.
 which attempts to optimise one such information measure.
 
 \subsection{Computational complexity}
-\label{sec:complexity-issues}
+\label{sec:comp-compl}
 
 Given the potentially huge space of possible partitions of a set, partitional
 clustering is intuitively a hard problem.  In fact, as we will see below, it
