@@ -1478,16 +1478,17 @@ Therefore
 \begin{equation*}
   \Delta(\clus_1,\clus_2) \leq 2m - \left\lceil \frac{2m}{k} \right\rceil.
 \end{equation*}
-This bound is tight and can be met with the worst case
+This bound is tight and can be met with the worst case which is illustrated in
+Figure~\ref{fig:worst-case}:
 \begin{align*}
   \clus_1 = \{&\{1,\dotsc,k\},\{k+1,\dotsc,2k\},\dotsc,\{(k-1)k+1,\dotsc,k^2\}\} \\
   \clus_2 = \{&\{1,k+1,\dotsc,(k-1)k+1\},\\
   &\{2,k+2,\dotsc,(k-1)k+2\},\\
   &\dotsc,\\
-  &\{k,k+k,\dotsc,(k-1)k+k\}\}
+  &\{k,k+k,\dotsc,(k-1)k+k\}\}.
 \end{align*}
-which is also shown in Figure~\ref{fig:worst-case}.  This also produces the
-worst case under the VI metric, as shown in \citep{meila-2007}.
+This also produces the worst case under the VI metric, as shown in
+\citep{meila-2007}.
 
 \section{Worst case performance}
 \label{sec:worst-case-perf}
