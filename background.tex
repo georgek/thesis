@@ -1621,7 +1621,7 @@ their experiments.
 A further method, introduced by \citet{arthur2007kmeans++} is called
 $k$-means++ and is shown in Algorithm~\ref{alg:kmeans++}.  Its name reflects
 the fact that it was designed to be used in conjunction with an improvement
-method, which we will see later, that is often referred to as $k$-means.
+method that is often referred to as $k$-means.
 
 \begin{algorithm}[h]
   \caption{$k$-means++ initial centres algorithm.}
@@ -1685,11 +1685,10 @@ led to many authors referring to it simply as ``the $k$-means algorithm''
 (although, as we note below, calling it an algorithm may be erroneous).  There
 is some confusion here, though, as some authors also refer to Hartigan's
 method with respect to the centroid-distance criterion as $k$-means and others
-refer Lloyd's method as H-means.  To try to avoid ambiguity we avoid any of
-these alternative names.
+refer Lloyd's method as H-means.
 
-The method is simple and easy to understand, given an initial $k$ partition of
-a dataset $\dset$ it proceeds as follows:
+Lloyd's method is simple and easy to understand, given an initial $k$
+partition of a dataset $\dset$ it proceeds as follows:
 \begin{enumerate}
 \item Call the current centroid of each cluster the ``centre''.  Move each
   element to the cluster with the closest centre.
@@ -1727,7 +1726,7 @@ But despite these drawbacks, Lloyd's method remains very popular.  In a brief
 survey of some popular data mining and machine learning software it was found
 that Lloyd's method is used in around three-quarters of implementations for
 centroid-distance clustering.  Hartigan's method is used the rest of the time
-including in some of the more prominent software, for example in Weka and R.
+including in some of the more prominent software, for example in R and Weka.
 A comparison of Lloyd's method and Hartigan's method, in which Hartigan's
 method is shown to produce more attractive partitions in fewer iterations, is
 given in \citep{telgarsky2010hartigan}.
